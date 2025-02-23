@@ -1,590 +1,2549 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>网址收藏</title>
-<style type="text/css">
-<!--
-.fei {
-	font-family: "微软雅黑";
-	font-size: 15px;
-	font-style: normal;
-	font-weight: normal;
-	color: #B8B8B8;
-	cursor: pointer;
-}
-a:link {
-	text-decoration: none;
-	color: #B8B8B8;
-}
-a:visited {
-	text-decoration: none;
-	color: #B8B8B8;
-}
-a:hover {
-	text-decoration: underline;
-	color: #CC3366;
-}
-a:active {
-	text-decoration: none;
-}
-.STYLE18 {font-size: 18px; color: #B8B8B8; font-family: "微软雅黑"; }
-.STYLE19 {font-size: 30px; font-weight: bold; color: #B8B8B8; }
-.STYLE20 {color: #B8B8B8}
-.STYLE21 {color: #B8B8B8}
-.STYLE28 {font-family: "微软雅黑"}
-.STYLE34 {
-	font-size: 15px;
-	font-style: normal;
-	font-weight: normal;
-	cursor: pointer;
-	font-family: "微软雅黑";
-	color: #FF0000;
-}
-.STYLE35 {color: #99FF00}
-.STYLE42 {color: #FFFF00;font-family: "微软雅黑";font-size: 12px;}
-.STYLE45 {color: #FFFF00}
-.STYLE47 {font-size: 18px; color: #FFFF00; font-family: "微软雅黑"; }
-.STYLE30 {font-size: 28px; color: #A52A2A;}
-.STYLE52 {font-size: 15px; font-family: "微软雅黑"; }
-.STYLE54 {font-family: "微软雅黑"; font-weight: bold; }
--->
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极简导航</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-light: #f5f8fa;
+            --text-dark: #2c3e50;
+            --gradient-1: linear-gradient(135deg, #8EC5FC 0%, #E0C3FC 100%);
+            --gradient-2: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%);
+            --gradient-3: linear-gradient(135deg, #A1C4FD 0%, #C2E9FB 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.5rem 1rem 2rem; /* 顶部间距减少为0.5rem */
+        }
+
+        .category {
+            margin: 2rem 0; /* 分类间距优化 */
+        }
+
+        .category-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 12px;
+            text-decoration: none;
+            background: white;
+            min-height: 80px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .favicon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            object-fit: contain;
+        }
+
+        .link-card div {
+            text-align: center;
+            flex: 1;
+        }
+
+        .link-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .link-card p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-light: #1a1a1a;
+                --text-dark: #ffffff;
+            }
+            .link-card {
+                background: #2d2d2d;
+            }
+            .link-card p {
+                color: #ccc;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem; /* 移动端顶部间距同步优化 */
+            }
+            .links-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            .category {
+                margin: 1.5rem 0;
+            }
+            .category-title {
+                font-size: 1.2rem;
+            }
+            .favicon {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
 </head>
-<body bgcolor="#113F3D" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0">
-
-<table width="80%" border="0" bordercolor="#16524F" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td width="80%" height="20" align="center" valign="middle">
-    <div align="center" class="STYLE35">
-	<a href="https://xduo.app/" target="_blank" class="STYLE34">风向标</a>
-	<a href="https://toolsdar.com/" target="_blank" class="STYLE34">工具达人</a>
-	<a href="https://tool.lu/" target="_blank" class="STYLE34">在线工具</a>
-	<a href="http://www.ip138.com/" target="_blank" class="STYLE34">常用查询</a>
-	<a href="http://www.huntkey.com.cn" target="_blank" class="STYLE34">功率计算</a>
-	<a href="http://www.kiees.cn/" target="_blank" class="STYLE34">快递之家</a>
-	<a href="https://ip.skk.moe/" target="_blank" class="STYLE34">IP</a>
-	<a href="https://www.speedtest.net/" target="_blank" class="STYLE34">speed1</a>
-	<a href="https://speed.cloudflare.com" target="_blank" class="STYLE34">speed2</a>
-	<a href="http://www.qunar.com/" target="_blank" class="STYLE34">机票</a>
-	<a href="http://www.12306.cn/" target="_blank" class="STYLE34">12306</a>
-	<a href="https://twitter.com/" target="_blank" class="STYLE34">twitter</a> 
-	<a href="https://www.facebook.com/" target="_blank" class="STYLE34">facebook</a>
-	<a href="https://weibo.com" target="_blank" class="STYLE34">微博</a>
-	<a href="https://github.com/HaiLa1902" target="_blank" class="STYLE34">HaiLa</a>
+<body>
+    <div class="container">
+        <!-- 常用工具资源分类 -->
+        <section class="category">
+            <h2 class="category-title">AI工具</h2>
+            <div class="links-grid">
+                <a href="https://www.baidu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Baidu图标">
+                    <div>
+                        <h3>Baidu</h3>
+                        <p>搜索平台</p>
+                    </div>
+                </a>
+                <a href="https://www.bing.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Bing图标">
+                    <div>
+                        <h3>Bing</h3>
+                        <p>搜索平台</p>
+                    </div>
+                </a>
+                <a href="https://www.google.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Google图标">
+                    <div>
+                        <h3>Google</h3>
+                        <p>搜索平台</p>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Youtube图标">
+                    <div>
+                        <h3>Youtube</h3>
+                        <p>视频网站</p>
+                    </div>
+                </a>
+                <a href="https://chat.deepseek.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Deepseek图标">
+                    <div>
+                        <h3>Deepseek</h3>
+                        <p>AI工具</p>
+                    </div>
+                </a>
+                <a href="https://www.10jqka.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="同花顺图标">
+                    <div>
+                        <h3>同花顺</h3>
+                        <p>财经资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.bilibili.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Bilibili图标">
+                    <div>
+                        <h3>Bilibili</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.douyin.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="抖音图标">
+                    <div>
+                        <h3>抖音</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.423down.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="423down图标">
+                    <div>
+                        <h3>423down</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://www.52pojie.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="吾爱破解图标">
+                    <div>
+                        <h3>吾爱破解</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://fanyi.baidu.com/#en/zh/" class="link-card" target="_blank">
+                    <img class="favicon" alt="百度翻译图标">
+                    <div>
+                        <h3>百度翻译</h3>
+                        <p>百度翻译服务</p>
+                    </div>
+                </a>
+                <a href="https://translate.google.com/?source=gtx" class="link-card" target="_blank">
+                    <img class="favicon" alt="谷歌翻译图标">
+                    <div>
+                        <h3>Google翻译</h3>
+                        <p>谷歌翻译工具</p>
+                    </div>
+                </a>
+                <a href="https://github.com/HaiLa1902" class="link-card" target="_blank">
+                    <img class="favicon" alt="GitHub HaiLa图标">
+                    <div>
+                        <h3>HaiLa</h3>
+                        <p>HaiLa 的 GitHub</p>
+                    </div>
+                </a>
+                <a href="http://www.mydrivers.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="驱动之家图标">
+                    <div>
+                        <h3>驱动之家</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- AI工具资源分类 -->
+        <section class="category">
+            <h2 class="category-title">AI工具</h2>
+            <div class="links-grid">
+                <a href="https://gemini.google.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Gemini图标">
+                    <div>
+                        <h3>Gemini</h3>
+                        <p>谷歌AI</p>
+                    </div>
+                </a>
+                <a href="https://chatgpt.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="ChatGPT图标">
+                    <div>
+                        <h3>ChatGPT</h3>
+                        <p>OpenAI</p>
+                    </div>
+                </a>
+                <a href="https://grok.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Grok图标">
+                    <div>
+                        <h3>Grok</h3>
+                        <p>马斯克AI</p>
+                    </div>
+                </a>
+                <a href="https://yuanbao.tencent.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="元宝图标">
+                    <div>
+                        <h3>元宝</h3>
+                        <p>腾讯AI</p>
+                    </div>
+                </a>
+                <a href="https://www.doubao.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="豆包图标">
+                    <div>
+                        <h3>豆包</h3>
+                        <p>抖音AI</p>
+                    </div>
+                </a>
+                <a href="https://tongyi.aliyun.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="通义图标">
+                    <div>
+                        <h3>通义</h3>
+                        <p>阿里AI</p>
+                    </div>
+                </a>
+                <a href="https://kimi.moonshot.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Kimi图标">
+                    <div>
+                        <h3>Kimi</h3>
+                        <p>AI工具</p>
+                    </div>
+                </a>
+                <a href="https://xiaoyi.huawei.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小艺图标">
+                    <div>
+                        <h3>小艺</h3>
+                        <p>华为AI</p>
+                    </div>
+                </a>
+                <a href="https://www.deepseek.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Deepseek图标">
+                    <div>
+                        <h3>Deepseek</h3>
+                        <p>Deepseek平台</p>
+                    </div>
+                </a>
+                <a href="https://siliconflow.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="硅基流动图标">
+                    <div>
+                        <h3>硅基流动</h3>
+                        <p>AI工具</p>
+                    </div>
+                </a>
+                <a href="https://ai-bot.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="AI Bot图标">
+                    <div>
+                        <h3>ai工具集</h3>
+                        <p>AI工具</p>
+                    </div>
+                </a>
+                <a href="https://github.com/CherryHQ/cherry-studio" class="link-card" target="_blank">
+                    <img class="favicon" alt="Cherry Studio图标">
+                    <div>
+                        <h3>Cherry Studio</h3>
+                        <p>AI工具</p>
+                    </div>
+                </a>
+                <a href="https://www.volcengine.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="火山引擎图标">
+                    <div>
+                        <h3>火山引擎</h3>
+                        <p>API模型</p>
+                    </div>
+                </a>
+                <a href="https://jimeng.jianying.com/ai-tool/home" class="link-card" target="_blank">
+                    <img class="favicon" alt="即梦图标">
+                    <div>
+                        <h3>即梦</h3>
+                        <p>AI工具</p>
+                    </div>
+                </a>
+                <a href="https://so.n.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="纳米搜索图标">
+                    <div>
+                        <h3>纳米搜索</h3>
+                        <p>AI工具</p>
+                    </div>
+                </a>
+                <a href="https://metaso.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="秘塔搜索图标">
+                    <div>
+                        <h3>秘塔搜索</h3>
+                        <p>AI工具</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 网盘搜索分类 -->
+        <section class="category">
+            <h2 class="category-title">网盘搜索</h2>
+            <div class="links-grid">
+                <a href="https://pan.baidu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="百度网盘图标">
+                    <div>
+                        <h3>百度网盘</h3>
+                        <p>网盘搜索</p>
+                    </div>
+                </a>
+                <a href="https://www.aliyundrive.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="阿里云盘图标">
+                    <div>
+                        <h3>阿里云盘</h3>
+                        <p>网盘搜索</p>
+                    </div>
+                </a>
+                <a href="https://mypikpak.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="PikPak图标">
+                    <div>
+                        <h3>PikPak</h3>
+                        <p>网盘搜索</p>
+                    </div>
+                </a>
+                <a href="https://www.lzpanx.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="懒盘搜索图标">
+                    <div>
+                        <h3>懒盘搜索</h3>
+                        <p>盘资源搜索</p>
+                    </div>
+                </a>
+                <a href="https://115.com" class="link-card" target="_blank">
+                    <img class="favicon" alt="115图标">
+                    <div>
+                        <h3>115</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://app.koofr.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Koofr图标">
+                    <div>
+                        <h3>Koofr</h3>
+                        <p>网盘搜索</p>
+                    </div>
+                </a>
+                <a href="https://www.jianguoyun.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="坚果云图标">
+                    <div>
+                        <h3>坚果云</h3>
+                        <p>网盘搜索</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 数软科技分类 -->
+        <section class="category">
+            <h2 class="category-title">数软科技</h2>
+            <div class="links-grid">
+                <a href="https://www.luochenzhimu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="落尘之木图标">
+                    <div>
+                        <h3>落尘之木</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://www.yxssp.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="异星空间图标">
+                    <div>
+                        <h3>异星空间</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="http://bbs.kafan.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="卡饭论坛图标">
+                    <div>
+                        <h3>卡饭论坛</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="http://www.appinn.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小众软件图标">
+                    <div>
+                        <h3>小众软件</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://iao.su/" class="link-card" target="_blank">
+                    <img class="favicon" alt="不死鸟图标">
+                    <div>
+                        <h3>不死鸟</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://juejin.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="稀土掘金图标">
+                    <div>
+                        <h3>稀土掘金</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="http://www.v2ex.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="V2EX图标">
+                    <div>
+                        <h3>V2EX</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://www.reddit.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Reddit图标">
+                    <div>
+                        <h3>Reddit</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="http://bbs.kafan.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="卡饭论坛图标">
+                    <div>
+                        <h3>卡饭论坛</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="http://www.chiphell.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Chiphell图标">
+                    <div>
+                        <h3>Chiphell</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://www.newsmth.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="水木社区图标">
+                    <div>
+                        <h3>水木社区</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="http://www.ithome.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="IT 之家图标">
+                    <div>
+                        <h3>IT 之家</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://alist.nn.ci/zh/" class="link-card" target="_blank">
+                    <img class="favicon" alt="AList图标">
+                    <div>
+                        <h3>AList</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://greasyfork.org/zh-CN" class="link-card" target="_blank">
+                    <img class="favicon" alt="Greasyfork icons">
+                    <div>
+                        <h3>Greasyfork</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/cjx82630/cjxlist" class="link-card" target="_blank">
+                    <img class="favicon" alt="Cjxlist图标">
+                    <div>
+                        <h3>Cjxlist</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="http://www.yckceo.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="源仓库图标">
+                    <div>
+                        <h3>源仓库</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://apkpure.com/cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="APKPure图标">
+                    <div>
+                        <h3>APKPure</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://www.chongbuluo.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="虫部落图标">
+                    <div>
+                        <h3>虫部落</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 科学上网分类 -->
+        <section class="category">
+            <h2 class="category-title">科学上网</h2>
+            <div class="links-grid">
+                <a href="https://github.com/ACL4SSR/ACL4SSR" class="link-card" target="_blank">
+                    <img class="favicon" alt="ACL4SSR图标">
+                    <div>
+                        <h3>ACL4SSR</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://flowercloud.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="花云图标">
+                    <div>
+                        <h3>花云</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://maying.co/" class="link-card" target="_blank">
+                    <img class="favicon" alt="魅影图标">
+                    <div>
+                        <h3>魅影</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://atomlantis.cloud/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Atom图标">
+                    <div>
+                        <h3>Atom</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://www.itdog.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="IT 狗图标">
+                    <div>
+                        <h3>IT 狗</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://www.evan888.top/" class="link-card" target="_blank">
+                    <img class="favicon" alt="爱分享图标">
+                    <div>
+                        <h3>爱分享</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="http://clash.razord.top/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Clash 外控图标">
+                    <div>
+                        <h3>Clash 外控</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/tindy2013" class="link-card" target="_blank">
+                    <img class="favicon" alt="Sub Master图标">
+                    <div>
+                        <h3>Sub Master</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/getsurfboard" class="link-card" target="_blank">
+                    <img class="favicon" alt="Surfboard图标">
+                    <div>
+                        <h3>Surfboard</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/MatsuriDayo" class="link-card" target="_blank">
+                    <img class="favicon" alt="NekoBox图标">
+                    <div>
+                        <h3>NekoBox</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/FQrabbit/SSTap-Rule" class="link-card" target="_blank">
+                    <img class="favicon" alt="SSTap-Rule图标">
+                    <div>
+                        <h3>SSTap-Rule</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/xxf098/shadowsocksr-v2ray-trojan-android/releases" class="link-card" target="_blank">
+                    <img class="favicon" alt="SSR-V2图标">
+                    <div>
+                        <h3>SSR-V2</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/v2ray/v2ray-core" class="link-card" target="_blank">
+                    <img class="favicon" alt="V2Ray Core图标">
+                    <div>
+                        <h3>V2Ray Core</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/2dust" class="link-card" target="_blank">
+                    <img class="favicon" alt="v2rayNG图标">
+                    <div>
+                        <h3>v2rayNG</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://github.com/zzzgydi/clash-verge" class="link-card" target="_blank">
+                    <img class="favicon" alt="Clash_V图标">
+                    <div>
+                        <h3>Clash_V</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+                <a href="https://api.nameless13.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Clash 转换图标">
+                    <div>
+                        <h3>Clash 转换</h3>
+                        <p>数软科技</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 商城网购分类 -->
+        <section class="category">
+            <h2 class="category-title">商城网购</h2>
+            <div class="links-grid">
+                <a href="http://www.apple.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Apple图标">
+                    <div>
+                        <h3>Apple中国</h3>
+                        <p>科技产品</p>
+                    </div>
+                </a>
+                <a href="http://www.dangdang.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="当当网图标">
+                    <div>
+                        <h3>当当网</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+                <a href="http://www.suning.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="苏宁易购图标">
+                    <div>
+                        <h3>苏宁易购</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+                <a href="https://www.1688.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="1688图标">
+                    <div>
+                        <h3>1688</h3>
+                        <p>阿里巴巴 1688</p>
+                    </div>
+                </a>
+                <a href="http://www.vip.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="唯品会图标">
+                    <div>
+                        <h3>唯品会</h3>
+                        <p>名牌折扣</p>
+                    </div>
+                </a>
+                <a href="http://www.yhd.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="1号店图标">
+                    <div>
+                        <h3>1号店</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+                <a href="http://yangkeduo.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="拼多多图标">
+                    <div>
+                        <h3>拼多多</h3>
+                        <p>团购网购</p>
+                    </div>
+                </a>
+                <a href="http://www.jd.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="京东商城图标">
+                    <div>
+                        <h3>京东商城</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+                <a href="http://www.samsclub.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="山姆会员图标">
+                    <div>
+                        <h3>山姆会员</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+                <a href="http://www.mi.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小米图标">
+                    <div>
+                        <h3>小米</h3>
+                        <p>手机产品</p>
+                    </div>
+                </a>
+                <a href="https://www.hihonor.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="荣耀图标">
+                    <div>
+                        <h3>荣耀</h3>
+                        <p>手机产品</p>
+                    </div>
+                </a>
+                <a href="http://www.vmall.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="华为商城图标">
+                    <div>
+                        <h3>华为商城</h3>
+                        <p>手机产品</p>
+                    </div>
+                </a>
+                <a href="http://www.amazon.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="卓越亚马逊图标">
+                    <div>
+                        <h3>卓越亚马逊</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+                <a href="https://www.gmarket.co.kr/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Gmarket图标">
+                    <div>
+                        <h3>Gmarket</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+                <a href="http://www.taobao.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="淘宝网图标">
+                    <div>
+                        <h3>淘宝网</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+                <a href="https://www.tmall.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="天猫图标">
+                    <div>
+                        <h3>天猫</h3>
+                        <p>网上购物</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 生活服务类 -->
+        <section class="category">
+            <h2 class="category-title">生活服务类</h2>
+            <div class="links-grid">
+                <a href="http://www.qunar.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="去哪儿网图标">
+                    <div>
+                        <h3>去哪儿网</h3>
+                        <p>机票预定</p>
+                    </div>
+                </a>
+                <a href="http://www.12306.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="12306图标">
+                    <div>
+                        <h3>火车票预定</h3>
+                        <p>火车票预定</p>
+                    </div>
+                </a>
+                <a href="https://www.amap.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="高德地图图标">
+                    <div>
+                        <h3>高德地图</h3>
+                        <p>高德地图</p>
+                    </div>
+                </a>
+                <a href="https://map.baidu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="百度地图图标">
+                    <div>
+                        <h3>百度地图</h3>
+                        <p>百度地图</p>
+                    </div>
+                </a>
+                <a href="http://www.xiachufang.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="下厨房图标">
+                    <div>
+                        <h3>下厨房</h3>
+                        <p>美食菜谱分享</p>
+                    </div>
+                </a>
+                <a href="http://www.meishij.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="美食网图标">
+                    <div>
+                        <h3>美食网</h3>
+                        <p>美食菜谱导航</p>
+                    </div>
+                </a>
+                <a href="http://sz.91160.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="91160图标">
+                    <div>
+                        <h3>医院挂号</h3>
+                        <p>医院挂号</p>
+                    </div>
+                </a>
+                <a href="http://service.szgas.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="深燃煤气图标">
+                    <div>
+                        <h3>深圳深燃煤气</h3>
+                        <p>深圳深燃煤气</p>
+                    </div>
+                </a>
+                <a href="http://gd.189.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="深圳电信图标">
+                    <div>
+                        <h3>深圳电信</h3>
+                        <p>深圳电信</p>
+                    </div>
+                <a href="http://map.sz.bendibao.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="本地宝图标">
+                    <div>
+                        <h3>深圳本地宝</h3>
+                        <p>深圳本地宝地铁公交查询</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 成长教育分类 -->
+        <section class="category">
+            <h2 class="category-title">成长教育</h2>
+            <div class="links-grid">
+                <a href="https://zh.z-lib.gs/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Z-Library图标">
+                    <div>
+                        <h3>Z-Library</h3>
+                        <p>电子书资源</p>
+                    </div>
+                </a>
+                <a href="https://www.liepin.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="猎聘网图标">
+                    <div>
+                        <h3>猎聘网</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://www.cjol.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="人才热线图标">
+                    <div>
+                        <h3>人才热线</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://www.chinahr.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="中华英才网图标">
+                    <div>
+                        <h3>中华英才网</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://www.51job.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="前程无忧图标">
+                    <div>
+                        <h3>前程无忧</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://www.zhaopin.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="智联招聘图标">
+                    <div>
+                        <h3>智联招聘</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="https://cn.linkedin.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Linkedin图标">
+                    <div>
+                        <h3>领英</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://www.eastmoney.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="东方财富图标">
+                    <div>
+                        <h3>东方财富</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://mail.163.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="网易邮箱图标">
+                    <div>
+                        <h3>网易邮箱</h3>
+                        <p>应用服务</p>
+                    </div>
+                </a>
+                <a href="https://exp.newsmth.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="水木社区图标">
+                    <div>
+                        <h3>水木社区</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://www.kidsbox365.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Kidsbox图标">
+                    <div>
+                        <h3>Kidsbox</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="https://lexile.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Lexile图标">
+                    <div>
+                        <h3>蓝思网</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://www.ixfc.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小帆船字体站图标">
+                    <div>
+                        <h3>小帆船字体</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="http://www.xxttq.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="甜甜圈图标">
+                    <div>
+                        <h3>甜甜圈</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="https://www.ebama.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="爸妈网图标">
+                    <div>
+                        <h3>爸妈网</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="https://www.kidsa-z.com" class="link-card" target="_blank">
+                    <img class="favicon" alt="RAZ图标">
+                    <div>
+                        <h3>RAZ 孩子学</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+                <a href="https://www.leleketang.com/cr/" class="link-card" target="_blank">
+                    <img class="favicon" alt="学习计划图标">
+                    <div>
+                        <h3>天天练</h3>
+                        <p>成长教育</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 工具类 -->
+        <section class="category">
+            <h2 class="category-title">工具类</h2>
+            <div class="links-grid">
+                <a href="https://toolsdar.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="工具达人图标">
+                    <div>
+                        <h3>工具达人</h3>
+                        <p>各种实用工具</p>
+                    </div>
+                </a>
+                <a href="https://tool.lu/" class="link-card" target="_blank">
+                    <img class="favicon" alt="在线工具图标">
+                    <div>
+                        <h3>在线工具</h3>
+                        <p>在线工具集合</p>
+                    </div>
+                </a>
+                <a href="http://www.ip138.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="常用查询图标">
+                    <div>
+                        <h3>IP 查询</h3>
+                        <p>IP 查询工具</p>
+                    </div>
+                </a>
+                <a href="https://ip.skk.moe/" class="link-card" target="_blank">
+                    <img class="favicon" alt="IP查询图标">
+                    <div>
+                        <h3>IP 国家查询</h3>
+                        <p>IP 国家查询工具</p>
+                    </div>
+                </a>
+                <a href="https://www.speedtest.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Speedtest图标">
+                    <div>
+                        <h3>Speed1</h3>
+                        <p>宽带速度测试</p>
+                    </div>
+                </a>
+                <a href="https://speed.cloudflare.com" class="link-card" target="_blank">
+                    <img class="favicon" alt="Speedtest Cloudflare图标">
+                    <div>
+                        <h3>speed2</h3>
+                        <p>宽带速度测试</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 社交资讯类 -->
+        <section class="category">
+            <h2 class="category-title">社交资讯类</h2>
+            <div class="links-grid">
+                <a href="https://www.kadaza.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Kadaza图标">
+                    <div>
+                        <h3>Kadaza</h3>
+                        <p>在线音乐资源</p>
+                    </div>
+                </a>
+                <a href="https://www.shuziyimin.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="移民导航图标">
+                    <div>
+                        <h3>移民导航</h3>
+                        <p>移民信息资讯</p>
+                    </div>
+                </a>
+                <a href="https://tophub.today/" class="link-card" target="_blank">
+                    <img class="favicon" alt="热榜导航图标">
+                    <div>
+                        <h3>热榜导航</h3>
+                        <p>实时热点信息</p>
+                    </div>
+                </a>
+                <a href="https://twitter.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Twitter图标">
+                    <div>
+                        <h3>Twitter</h3>
+                        <p>全球社交媒体</p>
+                    </div>
+                </a>
+                <a href="https://www.facebook.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Facebook图标">
+                    <div>
+                        <h3>Facebook</h3>
+                        <p>全球社交媒体</p>
+                    </div>
+                </a>
+                <a href="https://weibo.com" class="link-card" target="_blank">
+                    <img class="favicon" alt="微博图标">
+                    <div>
+                        <h3>微博</h3>
+                        <p>实况热聊</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 影音娱乐分类 -->
+        <section class="category">
+            <h2 class="category-title">影音娱乐</h2>
+            <div class="links-grid">
+                <a href="https://tv.cctv.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="CCTV图标">
+                    <div>
+                        <h3>CCTV</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.ximalaya.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="喜马拉雅图标">
+                    <div>
+                        <h3>喜马拉雅</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.migu.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="咪咕图标">
+                    <div>
+                        <h3>咪咕</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="http://live.yj1211.work/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Just Live图标">
+                    <div>
+                        <h3>Just Live</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="http://v.qq.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="QQ 视频图标">
+                    <div>
+                        <h3>QQ 视频</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="http://www.qiyi.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="奇艺图标">
+                    <div>
+                        <h3>奇艺</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="http://www.huya.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="虎牙直播图标">
+                    <div>
+                        <h3>虎牙直播</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.douyu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="斗鱼图标">
+                    <div>
+                        <h3>斗鱼</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.disneyplus.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Disney+图标">
+                    <div>
+                        <h3>Disney+</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.netflix.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Netflix图标">
+                    <div>
+                        <h3>Netflix</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.twitch.tv/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Twitch图标">
+                    <div>
+                        <h3>Twitch</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="http://www.afreecatv.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Afreeca图标">
+                    <div>
+                        <h3>Afreeca</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.tiktok.com/foryou" class="link-card" target="_blank">
+                    <img class="favicon" alt="TikTok图标">
+                    <div>
+                        <h3>TikTok</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://mynoise.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Mynoise图标">
+                    <div>
+                        <h3>Mynoise</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.yinfans.me/" class="link-card" target="_blank">
+                    <img class="favicon" alt="音范丝图标">
+                    <div>
+                        <h3>音范丝</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.1lou.me/" class="link-card" target="_blank">
+                    <img class="favicon" alt="BT 之家图标">
+                    <div>
+                        <h3>BT 之家</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="http://www.BBQDDQ.com" class="link-card" target="_blank">
+                    <img class="favicon" alt="蓝光影音图标">
+                    <div>
+                        <h3>蓝光影音</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.btnull.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="片库图标">
+                    <div>
+                        <h3>片库</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://rarbg.so/" class="link-card" target="_blank">
+                    <img class="favicon" alt="RARBG图标">
+                    <div>
+                        <h3>RARBG</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.4khdr.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="4kHDR图标">
+                    <div>
+                        <h3>4kHDR</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="http://zmk.pw/" class="link-card" target="_blank">
+                    <img class="favicon" alt="字幕库图标">
+                    <div>
+                        <h3>字幕库</h3>
+                        <p>影音娱乐</p>
+                    </div>
+                </a>
+                <a href="https://www.miaoaaa.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="喵导航图标">
+                    <div>
+                        <h3>喵导航</h3>
+                        <p>影音娱乐导航</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 游戏动漫分类 -->
+        <section class="category">
+            <h2 class="category-title">游戏动漫</h2>
+            <div class="links-grid">
+                <a href="http://patch.ali213.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="游侠补丁网图标">
+                    <div>
+                        <h3>游侠补丁网</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="http://www.gamersky.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="游民星空图标">
+                    <div>
+                        <h3>游民星空</h3>
+                        <p>游戏资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.3dmgame.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="3DMGAME图标">
+                    <div>
+                        <h3>3DMGAME</h3>
+                        <p>游戏资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.9dmsgame.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="9DM图标">
+                    <div>
+                        <h3>9DM</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="http://war3.uuu9.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="永uuu久图标">
+                    <div>
+                        <h3>悠久</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="https://bbs.nga.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="NGA 玩家社区图标">
+                    <div>
+                        <h3>NGA</h3>
+                        <p>游戏论坛</p>
+                    </div>
+                </a>
+                <a href="http://www.ou99.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="OU99 图标">
+                    <div>
+                        <h3>OU99</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="https://bbs.hupu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="虎扑图标">
+                    <div>
+                        <h3>虎扑</h3>
+                        <p>游戏资讯</p>
+                    </div>
+                </a>
+                <a href="http://gjqt.gamebar.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="古剑奇谭图标">
+                    <div>
+                        <h3>古剑奇谭</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="http://pal5.baiyou100.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="仙剑奇侠传五前传图标">
+                    <div>
+                        <h3>仙剑奇侠</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="http://bbs.3dmgame.com" class="link-card" target="_blank">
+                    <img class="favicon" alt="3DM论坛图标">
+                    <div>
+                        <h3>3DM 论坛</h3>
+                        <p>游戏论坛</p>
+                    </div>
+                </a>
+                <a href="http://gbtgame.ysepan.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="GBT小组图标">
+                    <div>
+                        <h3>GBT 小组</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="https://www.gog.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="GOG图标">
+                    <div>
+                        <h3>GOG</h3>
+                        <p>游戏商城</p>
+                    </div>
+                </a>
+                <a href="http://fitgirl-repacks.site/" class="link-card" target="_blank">
+                    <img class="favicon" alt="FitGirl Repacks图标">
+                    <div>
+                        <h3>FitGirl Repacks</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="https://www.sonkwo.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="靠你网图标">
+                    <div>
+                        <h3>杉果</h3>
+                        <p>游戏商城</p>
+                    </div>
+                </a>
+                <a href="https://store.steampowered.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Steam图标">
+                    <div>
+                        <h3>Steam</h3>
+                        <p>游戏商城</p>
+                    </div>
+                </a>
+                <a href="https://zodgame.xyz/" class="link-card" target="_blank">
+                    <img class="favicon" alt="XYZ图标">
+                    <div>
+                        <h3>ZOD 论坛</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="https://bbs.sumisora.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="澄空学园图标">
+                    <div>
+                        <h3>澄空学园</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="http://manhuabudang.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="漫画补档图标">
+                    <div>
+                        <h3>漫画补档</h3>
+                        <p>动漫资源</p>
+                    </div>
+                </a>
+                <a href="http://www.opfans.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="枫雪动漫图标">
+                    <div>
+                        <h3>枫雪动漫</h3>
+                        <p>动漫资源</p>
+                    </div>
+                </a>
+                <a href="http://www.ytd2.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="YT暗黑图标">
+                    <div>
+                        <h3>YT 暗黑</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="https://www.xiaohulu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小葫芦图标">
+                    <div>
+                        <h3>小葫芦</h3>
+                        <p>直播间数据</p>
+                    </div>
+                </a>
+                <a href="https://www.pubg8x.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="八倍镜图标">
+                    <div>
+                        <h3>八倍镜</h3>
+                        <p>游戏资源</p>
+                    </div>
+                </a>
+                <a href="http://www.nexusmods.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Nexus Mods图标">
+                    <div>
+                        <h3>Nexusmods</h3>
+                        <p>游戏 Mod 资源</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 门户综合分类 -->
+        <section class="category">
+            <h2 class="category-title">门户综合</h2>
+            <div class="links-grid">
+                <a href="http://www.sina.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="新浪图标">
+                    <div>
+                        <h3>新浪</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.qq.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="腾讯图标">
+                    <div>
+                        <h3>腾讯</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.sohu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="搜狐图标">
+                    <div>
+                        <h3>搜狐</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.163.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="网易图标">
+                    <div>
+                        <h3>网易</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.xinhuanet.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="新华网图标">
+                    <div>
+                        <h3>新华网</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.people.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="人民网图标">
+                    <div>
+                        <h3>人民网</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://cn.yahoo.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="雅虎图标">
+                    <div>
+                        <h3>雅虎</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://cn.msn.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="MSN图标">
+                    <div>
+                        <h3>MSN 中文网</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.tom.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="TOM图标">
+                    <div>
+                        <h3>TOM</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.hexun.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="和讯图标">
+                    <div>
+                        <h3>和讯</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.cctv.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="CCTV图标">
+                    <div>
+                        <h3>CCTV</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.ifeng.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="凤凰网图标">
+                    <div>
+                        <h3>凤凰网</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="http://www.chinaren.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="ChinaRen图标">
+                    <div>
+                        <h3>ChinaRen</h3>
+                        <p>社交网络</p>
+                    </div>
+                </a>
+                <a href="http://www.sz.net.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="深圳之窗图标">
+                    <div>
+                        <h3>深圳之窗</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+                <a href="https://yandex.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Yandex图标">
+                    <div>
+                        <h3>Yandex</h3>
+                        <p>门户综合</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 其他收藏分类 -->
+        <section class="category">
+            <h2 class="category-title">其他收藏</h2>
+            <div class="links-grid">
+                <a href="http://login.live.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Win Live图标">
+                    <div>
+                        <h3>Win Live</h3>
+                        <p>其他收藏</p>
+                    </div>
+                </a>
+                <a href="http://www.amd.com/cn/pages/amdhomepage.aspx" class="link-card" target="_blank">
+                    <img class="favicon" alt="AMD图标">
+                    <div>
+                        <h3>AMD</h3>
+                        <p>其他收藏</p>
+                    </div>
+                </a>
+                <a href="http://www.meizu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="魅族科技图标">
+                    <div>
+                        <h3>魅族科技</h3>
+                        <p>其他收藏</p>
+                    </div>
+                </a>
+                <a href="http://www.chinameizu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="ChinaMeizu图标">
+                    <div>
+                        <h3>ChinaMeizu</h3>
+                        <p>其他收藏</p>
+                    </div>
+                </a>
+                <a href="http://www.smartdevice.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="智器首页图标">
+                    <div>
+                        <h3>智器首页</h3>
+                        <p>其他收藏</p>
+                    </div>
+                </a>
+                <a href="http://bbs.zhiqifans.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="智器粉丝团图标">
+                    <div>
+                        <h3>智器粉丝团</h3>
+                        <p>其他收藏</p>
+                    </div>
+                </a>
+                <a href="http://75bt.info/" class="link-card" target="_blank">
+                    <img class="favicon" alt="龙BT图标">
+                    <div>
+                        <h3>龙 BT</h3>
+                        <p>其他收藏</p>
+                    </div>
+                </a>
+                <a href="http://184.154.128.246/" class="link-card" target="_blank">
+                    <img class="favicon" alt="草榴社区图标">
+                    <div>
+                        <h3>草榴社区</h3>
+                        <p>其他收藏</p>
+                    </div>
+                </a>
+                <a href="http://www.familydoctor.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="家庭医生图标">
+                    <div>
+                        <h3>家庭医生</h3>
+                        <p>健康医疗</p>
+                    </div>
+                </a>
+                <a href="http://community.39.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="39健康网图标">
+                    <div>
+                        <h3>39健康网</h3>
+                        <p>健康医疗</p>
+                    </div>
+                </a>
+                <a href="http://bbs.uuniao.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="二两笑话图标">
+                    <div>
+                        <h3>二两笑话</h3>
+                        <p>娱乐休闲</p>
+                    </div>
+                </a>
+                <a href="http://sz.ganji.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="赶集网图标">
+                    <div>
+                        <h3>赶集网</h3>
+                        <p>生活服务</p>
+                    </div>
+                </a>
+                <a href="http://sz.58.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="58 同城图标">
+                    <div>
+                        <h3>58 同城</h3>
+                        <p>生活服务</p>
+                    </div>
+                </a>
+                <a href="http://www.dianping.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="大众点评图标">
+                    <div>
+                        <h3>大众点评</h3>
+                        <p>生活服务</p>
+                    </div>
+                </a>
+                <a href="http://www.koubei.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="口碑网图标">
+                    <div>
+                        <h3>口碑网</h3>
+                        <p>生活服务</p>
+                    </div>
+                </a>
+                <a href="http://bbs.rayli.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="瑞丽论坛图标">
+                    <div>
+                        <h3>瑞丽论坛</h3>
+                        <p>娱乐休闲</p>
+                    </div>
+                </a>
+                <a href="http://www.shenzhentour.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="深圳旅游图标">
+                    <div>
+                        <h3>深圳旅游</h3>
+                        <p>旅游出行</p>
+                    </div>
+                </a>
+                <a href="http://www.forbeschina.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="福布斯中文图标">
+                    <div>
+                        <h3>福布斯中文</h3>
+                        <p>商业财经</p>
+                    </div>
+                </a>
+                <a href="http://gb.cri.cn/radio/" class="link-card" target="_blank">
+                    <img class="favicon" alt="国际在线图标">
+                    <div>
+                        <h3>国际在线</h3>
+                        <p>传媒资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.fangxin365.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="放心 365图标">
+                    <div>
+                        <h3>放心 365</h3>
+                        <p>服务咨询</p>
+                    </div>
+                </a>
+                <a href="http://chrome.360.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="360 极速浏览器图标">
+                    <div>
+                        <h3>360 极速</h3>
+                        <p>浏览器</p>
+                    </div>
+                </a>
+                <a href="https://www.360totalsecurity.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="360 安全卫士图标">
+                    <div>
+                        <h3>360 国际版</h3>
+                        <p>安全防护</p>
+                    </div>
+                </a>
+                <a href="http://sd.baidu.com/zh/" class="link-card" target="_blank">
+                    <img class="favicon" alt="百度国际版图标">
+                    <div>
+                        <h3>百度国际版</h3>
+                        <p>搜索引擎</p>
+                    </div>
+                </a>
+                <a href="http://www.ijinshan.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="金山安全图标">
+                    <div>
+                        <h3>金山安全</h3>
+                        <p>安全防护</p>
+                    </div>
+                </a>
+                <a href="http://bbs.zhulong.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="筑龙论坛图标">
+                    <div>
+                        <h3>筑龙论坛</h3>
+                        <p>建筑行业</p>
+                    </div>
+                </a>
+                <a href="http://www.eshuhome.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="E 书之家图标">
+                    <div>
+                        <h3>E 书之家</h3>
+                        <p>电子书资源</p>
+                    </div>
+                </a>
+                <a href="http://bucee.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="杂志网图标">
+                    <div>
+                        <h3>杂志馆</h3>
+                        <p>杂志资源</p>
+                    </div>
+                </a>
+                <a href="http://www.52souluo.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="我爱搜罗图标">
+                    <div>
+                        <h3>我爱搜罗</h3>
+                        <p>资源导航</p>
+                    </div>
+                </a>
+                <a href="http://select.yeeyan.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="译言网图标">
+                    <div>
+                        <h3>译言网</h3>
+                        <p>翻译众包</p>
+                    </div>
+                </a>
+                <a href="http://www.91zazhi.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="91 杂志图标">
+                    <div>
+                        <h3>91 杂志</h3>
+                        <p>杂志资源</p>
+                    </div>
+                </a>
+                <a href="http://www.smzdm.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="什么值得买图标">
+                    <div>
+                        <h3>什么值得买</h3>
+                        <p>购物决策</p>
+                    </div>
+                </a>
+                <a href="http://www.cnbeta.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="中文资讯站图标">
+                    <div>
+                        <h3>中文资讯站</h3>
+                        <p>科技资讯</p>
+                    </div>
+                </a>
+                <a href="http://mapeimapei.blog.163.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小猪贝贝图标">
+                    <div>
+                        <h3>小猪贝贝</h3>
+                        <p>育儿经验</p>
+                    </div>
+                </a>
+                <a href="http://blog.sina.com.cn/szdkt" class="link-card" target="_blank">
+                    <img class="favicon" alt="农妇三拳图标">
+                    <div>
+                        <h3>农妇三拳</h3>
+                        <p>自媒体账号</p>
+                    </div>
+                </a>
+                <a href="https://tt-rss.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="TT-RSS 图标">
+                    <div>
+                        <h3>TT-RSS</h3>
+                        <p>RSS 订阅</p>
+                    </div>
+                </a>
+                <a href="http://sparanoid.com/lab/7z/" class="link-card" target="_blank">
+                    <img class="favicon" alt="7-Zip 中文网图标">
+                    <div>
+                        <h3>7-Zip 中文网</h3>
+                        <p>压缩软件</p>
+                    </div>
+                </a>
+                <a href="http://sunbox.cc/" class="link-card" target="_blank">
+                    <img class="favicon" alt="阳光盒子图标">
+                    <div>
+                        <h3>阳光盒子</h3>
+                        <p>应用软件</p>
+                    </div>
+                </a>
+                <a href="http://www.99ut.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="大师之路图标">
+                    <div>
+                        <h3>大师之路</h3>
+                        <p>应用软件</p>
+                    </div>
+                </a>
+                <a href="http://www.avgsafe.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="AVG 中文站图标">
+                    <div>
+                        <h3>AVG 中文站</h3>
+                        <p>安全防护</p>
+                    </div>
+                </a>
+                <a href="https://www.getgreenjsq.me" class="link-card" target="_blank">
+                    <img class="favicon" alt="Greenvpn图标">
+                    <div>
+                        <h3>Greenvpn</h3>
+                        <p>网络工具</p>
+                    </div>
+                </a>
+                <a href="http://www.56pan.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="我乐盘图标">
+                    <div>
+                        <h3>我乐盘</h3>
+                        <p>网盘资源</p>
+                    </div>
+                </a>
+                <a href="http://www.in189.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="添翼圈图标">
+                    <div>
+                        <h3>添翼圈</h3>
+                        <p>网络交流社区</p>
+                    </div>
+                </a>
+                <a href="http://www.muzhiwan.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="拇指玩图标">
+                    <div>
+                        <h3>拇指玩</h3>
+                        <p>应用软件</p>
+                    </div>
+                </a>
+                <a href="http://potplayer.5d6d.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="PotPlayer中文频道图标">
+                    <div>
+                        <h3>PotPlayer</h3>
+                        <p>媒体播放器</p>
+                    </div>
+                </a>
+                <a href="http://html5test.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="HTML5Test图标">
+                    <div>
+                        <h3>HTML5Test</h3>
+                        <p>HTML5 测试</p>
+                    </div>
+                </a>
+                <a href="http://hi.baidu.com/officecm/" class="link-card" target="_blank">
+                    <img class="favicon" alt="ExcelFans图标">
+                    <div>
+                        <h3>ExcelFans</h3>
+                        <p>办公软件</p>
+                    </div>
+                </a>
+                <a href="http://www.xunleihd.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="TSearch图标">
+                    <div>
+                        <h3>TSearch</h3>
+                        <p>网络搜索工具</p>
+                    </div>
+                </a>
+                <a href="http://cjx82630.ys168.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Ad muncher图标">
+                    <div>
+                        <h3>Ad muncher</h3>
+                        <p>广告屏蔽插件</p>
+                    </div>
+                </a>
+                <a href="http://www.elecfans.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="电子发烧友图标">
+                    <div>
+                        <h3>电子发烧友</h3>
+                        <p>电子技术</p>
+                    </div>
+                </a>
+                <a href="http://www.todex.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="华强资讯图标">
+                    <div>
+                        <h3>华强资讯</h3>
+                        <p>电子技术</p>
+                    </div>
+                </a>
+                <a href="http://www.dbank.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="华为网盘图标">
+                    <div>
+                        <h3>华为网盘</h3>
+                        <p>网盘资源</p>
+                    </div>
+                </a>
+                <a href="http://lixian.vip.xunlei.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="迅雷离线图标">
+                    <div>
+                        <h3>迅雷离线</h3>
+                        <p>下载工具</p>
+                    </div>
+                </a>
+                <a href="http://www.shhuu.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="华强北报价图标">
+                    <div>
+                        <h3>华强北报价</h3>
+                        <p>电子产品报价</p>
+                    </div>
+                </a>
+                <a href="http://xiaojun911.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小俊博客图标">
+                    <div>
+                        <h3>小俊博客</h3>
+                        <p>个人博客</p>
+                    </div>
+                </a>
+                <a href="http://www.jinhu.me/" class="link-card" target="_blank">
+                    <img class="favicon" alt="金狐电脑图标">
+                    <div>
+                        <h3>金狐电脑</h3>
+                        <p>软件教程</p>
+                    </div>
+                </a>
+                <a href="http://xinanzhenfu.blog.163.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="星空不寂寞图标">
+                    <div>
+                        <h3>星空不寂寞</h3>
+                        <p>个人博客</p>
+                    </div>
+                </a>
+                <a href="http://bbs.besgold.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="百事高图标">
+                    <div>
+                        <h3>百事高</h3>
+                        <p>论坛社区</p>
+                    </div>
+                </a>
+                <a href="http://www.deepms.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="深度音乐图标">
+                    <div>
+                        <h3>深度音乐</h3>
+                        <p>音乐资源</p>
+                    </div>
+                </a>
+                <a href="http://1234567i.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小众音乐图标">
+                    <div>
+                        <h3>小众音乐</h3>
+                        <p>音乐资源</p>
+                    </div>
+                </a>
+                <a href="http://bbs.musicool.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="炫音论坛图标">
+                    <div>
+                        <h3>炫音论坛</h3>
+                        <p>音乐论坛</p>
+                    </div>
+                </a>
+                <a href="http://blog.sina.com.cn/liuysen" class="link-card" target="_blank">
+                    <img class="favicon" alt="沧海一声笑图标">
+                    <div>
+                        <h3>沧海一声笑</h3>
+                        <p>个人博客</p>
+                    </div>
+                </a>
+                <a href="http://www.1ting.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="一听音乐图标">
+                    <div>
+                        <h3>一听音乐</h3>
+                        <p>音乐平台</p>
+                    </div>
+                </a>
+                <a href="http://www.tingchina.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="TingChina图标">
+                    <div>
+                        <h3>TingChina</h3>
+                        <p>音乐平台</p>
+                    </div>
+                </a>
+                <a href="http://shop.lovehifi.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="音响论坛图标">
+                    <div>
+                        <h3>音响论坛</h3>
+                        <p>音频设备</p>
+                    </div>
+                </a>
+                <a href="http://www.xingk.cc/" class="link-card" target="_blank">
+                    <img class="favicon" alt="星空家园图标">
+                    <div>
+                        <h3>星空家园</h3>
+                        <p>天文爱好者社区</p>
+                    </div>
+                </a>
+                <a href="http://www.yueing.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="悦影天下图标">
+                    <div>
+                        <h3>悦影天下</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="http://www.4k123.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="4K中国图标">
+                    <div>
+                        <h3>4K中国</h3>
+                        <p>高清视频</p>
+                    </div>
+                </a>
+                <a href="http://www.suppig.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="猪猪乐园图标">
+                    <div>
+                        <h3>猪猪乐园</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="http://bbs.seehd.co/" class="link-card" target="_blank">
+                    <img class="favicon" alt="SeeHD高清论坛图标">
+                    <div>
+                        <h3>SeeHD</h3>
+                        <p>高清视频</p>
+                    </div>
+                </a>
+                <a href="http://www.shinybbs.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="深影论坛图标">
+                    <div>
+                        <h3>深影论坛</h3>
+                        <p>影视爱好者社区</p>
+                    </div>
+                </a>
+                <a href="http://sub.eastgame.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="TLF字幕组图标">
+                    <div>
+                        <h3>TLF字幕组</h3>
+                        <p>影视字幕</p>
+                    </div>
+                </a>
+                <a href="http://www.gaoqingkong.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="高清控联盟图标">
+                    <div>
+                        <h3>高清控联盟</h3>
+                        <p>高清视频</p>
+                    </div>
+                </a>
+                <a href="http://www.txzqw.me/" class="link-card" target="_blank">
+                    <img class="favicon" alt="天下足球图像学图标">
+                    <div>
+                        <h3>天下足球</h3>
+                        <p>体育资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.y4dg.cc/" class="link-card" target="_blank">
+                    <img class="favicon" alt="影视帝国图标">
+                    <div>
+                        <h3>影视帝国</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="http://www.languang.co/" class="link-card" target="_blank">
+                    <img class="favicon" alt="蓝光网图标">
+                    <div>
+                        <h3>蓝光网</h3>
+                        <p>高清视频</p>
+                    </div>
+                </a>
+                <a href="http://yyets.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="人人影视图标">
+                    <div>
+                        <h3>人人影视</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="http://www.jpseek.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="日搜日饭图标">
+                    <div>
+                        <h3>日搜日饭</h3>
+                        <p>日本文化资讯</p>
+                    </div>
+                </a>
+                <a href="http://henbt.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="BT中国图标">
+                    <div>
+                        <h3>BT中国</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="http://www.tiantangbbs.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="电影天堂图标">
+                    <div>
+                        <h3>电影天堂</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="http://tv.cctv.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="央视网图标">
+                    <div>
+                        <h3>央视网</h3>
+                        <p>影视资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.51gho.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="电脑疯子图标">
+                    <div>
+                        <h3>电脑疯子</h3>
+                        <p>系统技术</p>
+                    </div>
+                </a>
+                <a href="http://www.91os.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="91 系统图标">
+                    <div>
+                        <h3>91 系统</h3>
+                        <p>系统技术</p>
+                    </div>
+                </a>
+                <a href="http://www.xitong8.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="系统吧图标">
+                    <div>
+                        <h3>系统吧</h3>
+                        <p>系统技术</p>
+                    </div>
+                </a>
+                <a href="http://www.shenduwin7.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="深度技术图标">
+                    <div>
+                        <h3>深度技术</h3>
+                        <p>系统技术</p>
+                    </div>
+                </a>
+                <a href="http://www.ylmf123.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="雨林木风图标">
+                    <div>
+                        <h3>雨林木风</h3>
+                        <p>系统技术</p>
+                    </div>
+                </a>
+                <a href="http://bbs.mumayi.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="木蚂蚁社区图标">
+                    <div>
+                        <h3>木蚂蚁社区</h3>
+                        <p>应用软件</p>
+                    </div>
+                </a>
+                <a href="http://bbs.vc52.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="精睿网络图标">
+                    <div>
+                        <h3>精睿网络</h3>
+                        <p>网络技术</p>
+                    </div>
+                </a>
+                <a href="http://www.w3school.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="W3School图标">
+                    <div>
+                        <h3>W3School</h3>
+                        <p>在线教程</p>
+                    </div>
+                </a>
+                <a href="https://wx.qq.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="微信网页版图标">
+                    <div>
+                        <h3>微信网页版</h3>
+                        <p>沟通交流</p>
+                    </div>
+                </a>
+                <a href="http://bbs.pcbeta.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="远景信息图标">
+                    <div>
+                        <h3>远景</h3>
+                        <p>PC 技术社区</p>
+                    </div>
+                </a>
+                <a href="http://www.pchome.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="太平洋电脑网图标">
+                    <div>
+                        <h3>太平洋电脑网</h3>
+                        <p>电子产品资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.pconline.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="太平洋电脑网图标">
+                    <div>
+                        <h3>Pconline</h3>
+                        <p>电子产品资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.zol.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="中关村在线图标">
+                    <div>
+                        <h3>中关村在线</h3>
+                        <p>电子产品资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.enet.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="硅谷动力图标">
+                    <div>
+                        <h3>硅谷动力</h3>
+                        <p>IT 资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.hiapk.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="安卓网图标">
+                    <div>
+                        <h3>安卓网</h3>
+                        <p>安卓应用下载</p>
+                    </div>
+                </a>
+                <a href="http://android.tgbus.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="安卓中文网图标">
+                    <div>
+                        <h3>安卓中文网</h3>
+                        <p>安卓资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.adbyby.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="AdByby图标">
+                    <div>
+                        <h3>adbyby</h3>
+                        <p>应用软件</p>
+                    </div>
+                </a>
+                <a href="https://openwrt.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="OpenWrt图标">
+                    <div>
+                        <h3>openwrt</h3>
+                        <p>网络技术</p>
+                    </div>
+                </a>
+                <a href="https://vcb-s.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Vcb-S图标">
+                    <div>
+                        <h3>vcb-s</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="https://www.cnblogs.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="博客园图标">
+                    <div>
+                        <h3>博客园</h3>
+                        <p>技术博客</p>
+                    </div>
+                </a>
+                <a href="http://www.right.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="恩山无线论坛图标">
+                    <div>
+                        <h3>恩山论坛</h3>
+                        <p>网络技术</p>
+                    </div>
+                </a>
+                <a href="http://www.tuigirl.co/" class="link-card" target="_blank">
+                    <img class="favicon" alt="推女郎图标">
+                    <div>
+                        <h3>推女郎</h3>
+                        <p>图片分享</p>
+                    </div>
+                </a>
+                <a href="http://www.zhuamei.net" class="link-card" target="_blank">
+                    <img class="favicon" alt="抓美网图标">
+                    <div>
+                        <h3>抓美网</h3>
+                        <p>图片分享</p>
+                    </div>
+                </a>
+                <a href="https://www.jdbbs.com" class="link-card" target="_blank">
+                    <img class="favicon" alt="家电论坛图标">
+                    <div>
+                        <h3>家电论坛</h3>
+                        <p>家电资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.znds.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="智能电视网图标">
+                    <div>
+                        <h3>智能电视网</h3>
+                        <p>家电资讯</p>
+                    </div>
+                </a>
+                <a href="https://www.videolan.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Videolan图标">
+                    <div>
+                        <h3>Videolan</h3>
+                        <p>媒体软件</p>
+                    </div>
+                </a>
+                <a href="https://bbs.himedia.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="海美迪论坛图标">
+                    <div>
+                        <h3>海美迪</h3>
+                        <p>多媒体设备</p>
+                    </div>
+                </a>
+                <a href="http://www.hdplive.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="HDP直播图标">
+                    <div>
+                        <h3>HDP直播</h3>
+                        <p>影视资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.vidonme.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="威动科技图标">
+                    <div>
+                        <h3>威动科技</h3>
+                        <p>媒体软件</p>
+                    </div>
+                </a>
+                <a href="http://www.hdpfans.com" class="link-card" target="_blank">
+                    <img class="favicon" alt="HDPfans图标">
+                    <div>
+                        <h3>HDPFANS</h3>
+                        <p>影视资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.shafa.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="沙发网图标">
+                    <div>
+                        <h3>沙发网</h3>
+                        <p>影视资讯</p>
+                    </div>
+                </a>
+                <a href="http://www.7po.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="奇珀网图标">
+                    <div>
+                        <h3>奇珀网</h3>
+                        <p>影视资讯</p>
+                    </div>
+                </a>
+                <a href="https://chrome.google.com/webstore" class="link-card" target="_blank">
+                    <img class="favicon" alt="铬商店图标">
+                    <div>
+                        <h3>铬商店</h3>
+                        <p>浏览器插件</p>
+                    </div>
+                </a>
+                <a href="http://chromecj.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Chrome插件之家图标">
+                    <div>
+                        <h3>铬插件之家</h3>
+                        <p>浏览器插件</p>
+                    </div>
+                </a>
+                <a href="https://notepad-plus-plus.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Notepad++图标">
+                    <div>
+                        <h3>Notepad++</h3>
+                        <p>文本编辑器</p>
+                    </div>
+                </a>
+                <a href="http://mediacoder.com.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="MediaCoder图标">
+                    <div>
+                        <h3>MediaCoder</h3>
+                        <p>媒体编码器</p>
+                    </div>
+                </a>
+                <a href="http://www.btjson.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="BTJSON图标">
+                    <div>
+                        <h3>BTJSON</h3>
+                        <p>信息查询</p>
+                    </div>
+                </a>
+                <a href="https://www.allavsoft.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Allavsoft图标">
+                    <div>
+                        <h3>Allavsoft</h3>
+                        <p>多媒体工具</p>
+                    </div>
+                </a>
+                <a href="https://www.chuyu.me/" class="link-card" target="_blank">
+                    <img class="favicon" alt="大禹图标">
+                    <div>
+                        <h3>Dism++</h3>
+                        <p>系统工具</p>
+                    </div>
+                </a>
+                <a href="http://www.ilovext.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小小系统图标">
+                    <div>
+                        <h3>小小系统</h3>
+                        <p>系统资源</p>
+                    </div>
+                </a>
+                <a href="http://www.cnscg.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="圣城家园图标">
+                    <div>
+                        <h3>圣城家园</h3>
+                        <p>资源论坛</p>
+                    </div>
+                </a>
+                <a href="https://cmct.tv/" class="link-card" target="_blank">
+                    <img class="favicon" alt="CMCT图标">
+                    <div>
+                        <h3>CMCT</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="http://rom.7to.cn/" class="link-card" target="_blank">
+                    <img class="favicon" alt="奇兔图标">
+                    <div>
+                        <h3>奇兔</h3>
+                        <p>手机刷机</p>
+                    </div>
+                </a>
+                <a href="http://tool.chinaz.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="站长工具图标">
+                    <div>
+                        <h3>站长工具</h3>
+                        <p>网站工具</p>
+                    </div>
+                </a>
+                <a href="http://www.kuaibu.org/" class="link-card" target="_blank">
+                    <img class="favicon" alt="小说快捕图标">
+                    <div>
+                        <h3>小说快捕</h3>
+                        <p>小说资源</p>
+                    </div>
+                </a>
+                <a href="https://www.hongen.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="洪恩教育图标">
+                    <div>
+                        <h3>洪恩教育</h3>
+                        <p>教育学习</p>
+                    </div>
+                </a>
+                <a href="https://www.3glasses.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="3glasses图标">
+                    <div>
+                        <h3>3glasses</h3>
+                        <p>虚拟现实</p>
+                    </div>
+                </a>
+                <a href="https://memuplay.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="MEmu 模拟器图标">
+                    <div>
+                        <h3>MEmu</h3>
+                        <p>Android模拟器</p>
+                    </div>
+                </a>
+                <a href="https://tw.bignox.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="夜神模拟器图标">
+                    <div>
+                        <h3>夜神模拟器</h3>
+                        <p>Android模拟器</p>
+                    </div>
+                </a>
+                <a href="http://bbs.icpcw.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="电脑报图标">
+                    <div>
+                        <h3>电脑报</h3>
+                        <p>IT资讯</p>
+                    </div>
+                </a>
+                <a href="http://bbs.gfan.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="机锋论坛图标">
+                    <div>
+                        <h3>机锋论坛</h3>
+                        <p>移动设备论坛</p>
+                    </div>
+                </a>
+                <a href="http://bbs.feng.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="威锋网图标">
+                    <div>
+                        <h3>威锋网</h3>
+                        <p>苹果设备论坛</p>
+                    </div>
+                </a>
+                <a href="http://www.tomatolei.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="番茄花园图标">
+                    <div>
+                        <h3>番茄花园</h3>
+                        <p>系统技术</p>
+                    </div>
+                </a>
+                <a href="http://www.fishlee.net/" class="link-card" target="_blank">
+                    <img class="favicon" alt="鱼后花园图标">
+                    <div>
+                        <h3>鱼后花园</h3>
+                        <p>系统技术</p>
+                    </div>
+                </a>
+                <a href="https://yandex.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Yandex图标">
+                    <div>
+                        <h3>Yandex</h3>
+                        <p>搜索引擎</p>
+                    </div>
+                </a>
+                <a href="https://www.ikanbot.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="IKanBot 生理助手图标">
+                    <div>
+                        <h3>IKanBot</h3>
+                        <p>生理助手</p>
+                    </div>
+                </a>
+                <a href="https://gaze.run/" class="link-card" target="_blank">
+                    <img class="favicon" alt="注视星球图标">
+                    <div>
+                        <h3>注视星球</h3>
+                        <p>AI 专注力</p>
+                    </div>
+                </a>
+                <a href="https://www.bdys.me/" class="link-card" target="_blank">
+                    <img class="favicon" alt="哔嘀影视图标">
+                    <div>
+                        <h3>哔嘀影视</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="https://www.czzy.site/" class="link-card" target="_blank">
+                    <img class="favicon" alt="厂商资源网图标">
+                    <div>
+                        <h3>厂长</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="https://u.duboku.io/" class="link-card" target="_blank">
+                    <img class="favicon" alt="独播库图标">
+                    <div>
+                        <h3>独播库</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="https://www.libvio.pro/" class="link-card" target="_blank">
+                    <img class="favicon" alt="Libvio Pro图标">
+                    <div>
+                        <h3>Libvio</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="https://ddys.pro/" class="link-card" target="_blank">
+                    <img class="favicon" alt="低端影视图标">
+                    <div>
+                        <h3>低端影视</h3>
+                        <p>影视资源</p>
+                    </div>
+                </a>
+                <a href="https://www.xinpianchang.com/" class="link-card" target="_blank">
+                    <img class="favicon" alt="新片场图标">
+                    <div>
+                        <h3>新片场</h3>
+                        <p>影视制作</p>
+                    </div>
+                </a>
+            </div>
+        </section>
     </div>
-    </td>
-  </tr>
-  <tr>
-    <td width="80%" height="20" align="center" valign="middle">
-      <div align="center" class="STYLE35">
-	<a href="https://fanyi.baidu.com/#en/zh/" target="_blank" class="STYLE34">百度翻译</a>
-	<a href="https://translate.google.com/?source=gtx" target="_blank" class="STYLE34">谷歌翻译</a>
-	<a href="https://www.amap.com/" target="_blank" class="STYLE34">高德地图</a>
-	<a href="https://map.baidu.com/" target="_blank" class="STYLE34">百度地图</a>
-	<a href="http://map.sz.bendibao.com/" target="_blank" class="STYLE34">本地宝</a>
-	<a href="http://sz.91160.com/" target="_blank" class="STYLE34">医院挂号</a>
-	<a href="http://service.szgas.com.cn/" target="_blank" class="STYLE34">深燃煤气</a> 
-	<a href="http://gd.189.cn/" target="_blank" class="STYLE34">深圳电信</a>
-      </div>
-    </td>
-  </tr>
-</table>
-
-<div align="center">
-
-  <hr width="80%" size="1" color="#16524F" />
-  <table width="80%" border="0" align="center" cellspacing="0" cellpadding="0">
-    <tr>
-      <td width="80%" height="15" align="center" bgcolor="#113F3D">
-      <div align="center" class="STYLE45"><span class="STYLE52">
-      <marquee behavior="alternate" scrolldelay="100">
-      谨以此纪念那些上网的日子
-      <font size=1>孟</font>
-      </marquee>
-      </span></div></td>
-    </tr>
-  </table>
-  <hr width="80%" size="1" color="#16524F" />
-</div>
-
-<table width="80%" height="30" border="1" align="center" bordercolor="#16524F">
-  <tr bgcolor="#113F3D">
-    <td width="16%" height="30"><div align="center" class="STYLE19"><a href="https://www.baidu.com/" target="_blank" class="STYLE20">Baidu</a></div></td>
-    <td width="16%" height="30"><div align="center" class="STYLE19"><a href="https://www.bing.com/" target="_blank" class="STYLE19">Bing</a></div></td>
-    <td width="16%" height="30"><div align="center" class="STYLE19"><a href="https://www.google.com/" target="_blank" class="STYLE20">Google</a></div></td>
-    <td width="16%" height="30"><div align="center" class="STYLE19"><a href="https://youtube.com" target="_blank" class="STYLE20">You Tube</a></div></td>
-    <td width="16%" height="30"><div align="center" class="STYLE19"><a href="https://chat.deepseek.com/" target="_blank" class="STYLE19">Deepseek</a></div></td>
-    <td width="16%" height="30"><div align="center" class="STYLE19"><a href="http://www.10jqka.com.cn/" target="_blank" class="STYLE20">同花顺</a></div></td>
-  </tr>
-</table>
-</table>
-<table width="80%" height="10" border="0" cellpadding="0" cellspacing="0">
-</table>
-<div align="center">
-	<table width="80%" height="30" border="0" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td height="30" colspan="7" bgcolor="#113F3D"><div align="center" class="STYLE45"><span class="STYLE52">AI工具</span></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="1" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://gemini.google.com/" target="_blank" class="fei">Gemini</a></div></td>
-	<td width="10%" height="30"><div align="center"><a href="https://chatgpt.com/" target="_blank" class="fei">ChatGPT</a></div></td>
-	<td width="10%" height="30"><div align="center"><a href="https://grok.com/" target="_blank" class="fei">Grok</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://tongyi.aliyun.com/qianwen/" target="_blank" class="fei">通义</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://kimi.moonshot.cn/" target="_blank" class="fei">Kimi</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://xiaoyi.huawei.com/" target="_blank" class="fei">小艺</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://yuanbao.tencent.com/" target="_blank" class="fei">元宝</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.doubao.com/chat/" target="_blank" class="fei">豆包</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://www.deepseek.com/" target="_blank" class="fei">Deepseek AI</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://siliconflow.cn/zh-cn/" target="_blank" class="fei">硅基流动</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://ai-bot.cn/" target="_blank" class="fei">ai工具集</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/CherryHQ/cherry-studio" target="_blank" class="fei">CherryStudio</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.volcengine.com/" target="_blank" class="fei">火山引擎</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://jimeng.jianying.com/ai-tool/home" target="_blank" class="fei">即梦</a></div></td>
-	<td width="10%" height="30"><div align="center"><a href="https://so.n.cn/" target="_blank" class="fei">纳米搜索</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://metaso.cn/" target="_blank" class="fei">秘塔搜索</a></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="0" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td height="30" colspan="7" bgcolor="#113F3D"><div align="center" class="STYLE45"><span class="STYLE52">影音娱乐</span></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="1" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://tv.cctv.com/" target="_blank" class="fei">CCTV</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.ximalaya.com/" target="_blank" class="fei">喜马拉雅</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.migu.cn/" target="_blank" class="fei">咪咕</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://live.yj1211.work/" target="_blank" class="fei">JustLive</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://v.qq.com/" target="_blank" class="fei">QQ视频</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.qiyi.com/" target="_blank" class="fei">奇艺</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.disneyplus.com/" target="_blank" class="fei">Disney+</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.netflix.com/" target="_blank" class="fei">Netflix</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.huya.com/" target="_blank" class="fei">虎牙直播</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.douyu.com/" target="_blank" class="fei">斗鱼</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.bilibili.com/" target="_blank" class="fei">Bilibili</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.twitch.tv/" target="_blank" class="fei">Twitch</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.afreecatv.com/" target="_blank" class="fei">Afreeca</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.douyin.com/" target="_blank" class="fei">抖音</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.tiktok.com/foryou" target="_blank" class="fei">TikTok</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://mynoise.net/" target="_blank" class="fei">Mynoise</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://www.yinfans.me/" target="_blank" class="fei">音范丝</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.1lou.me/" target="_blank" class="fei">BT之家</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.BBQDDQ.com" target="_blank" class="fei">蓝光影音</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.btnull.org/" target="_blank" class="fei">片库</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://rarbg.so/" target="_blank" class="fei">Rarbg</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.bdys.me/" target="_blank" class="fei">哔嘀影视</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://wogg.xyz/" target="_blank" class="fei">WoGG</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.4khdr.cn/" target="_blank" class="fei">4khdr</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://zmk.pw/" target="_blank" class="fei">字幕库</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://115.com" target="_blank" class="fei">115</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://pan.baidu.com/" target="_blank" class="fei">百度网盘</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.aliyundrive.com/" target="_blank" class="fei">阿里云盘</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://mypikpak.com/" target="_blank" class="fei">Pikpak</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://app.koofr.net/" target="_blank" class="fei">Koofr</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.jianguoyun.com/" target="_blank" class="fei">坚果云</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="file:///D:/Program%20Files/aria2/index.html#!/downloading" target="_blank" class="fei">Aria2</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://www.miaoaaa.com/" target="_blank" class="fei">喵导航</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.lzpanx.com/" target="_blank" class="fei">懒盘搜索</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://zh.z-lib.gs/" target="_blank" class="fei">Z-lib</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.kadaza.com/" target="_blank" class="fei">Kadaza</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.shuziyimin.org/" target="_blank" class="fei">移民导航</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://tophub.today/" target="_blank" class="fei">今日热榜</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.xiachufang.com/" target="_blank" class="fei">下厨房</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.meishij.net/" target="_blank" class="fei">美食网</a></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="0" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td height="30" colspan="7" bgcolor="#113F3D"><div align="center" class="STYLE45"><span class="STYLE52">数软科技</span></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="1" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://www.423down.com/" target="_blank" class="fei">423down</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.52pojie.cn/" target="_blank" class="fei">吾爱破解</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.yxssp.com/" target="_blank" class="fei">异星空间</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.luochenzhimu.com/" target="_blank" class="fei">落尘之木</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.kafan.cn/" target="_blank" class="fei">卡饭论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.appinn.com/" target="_blank" class="fei">小众软件</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://iao.su/" target="_blank" class="fei">不死鸟分享</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.applnn.cc/daohang.html" target="_blank" class="fei">Applnn</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://juejin.cn/" target="_blank" class="fei">稀土掘金</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.v2ex.com/" target="_blank" class="fei">V2EX</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.reddit.com/" target="_blank" class="fei">Reddit</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.kafan.cn/" target="_blank" class="fei">卡饭论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.chiphell.com/" target="_blank" class="fei">chiphell</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.newsmth.net/" target="_blank" class="fei">水木社区</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.ithome.com/" target="_blank" class="fei">IT之家</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.mydrivers.com/" target="_blank" class="fei">驱动之家</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://alist.nn.ci/zh/" target="_blank" class="fei">AList</a></div></td>
-	<td width="10%" height="30"><div align="center"><a href="https://greasyfork.org/zh-CN" target="_blank" class="fei">Greasyfork</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/cjx82630/cjxlist" target="_blank" class="fei">Cjxlist</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/ACL4SSR/ACL4SSR" target="_blank" class="fei">ACL4SSR</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.yckceo.com/" target="_blank" class="fei">源仓库</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://xn--sss604efuw.top/" target="_blank" class="fei">饭太硬</a></div></td>	      
-        <td width="10%" height="30"><div align="center"><a href="https://apkpure.com/cn/" target="_blank" class="fei">Apkpure</a></div></td>	
-        <td width="10%" height="30"><div align="center"><a href="https://www.chongbuluo.com/" target="_blank" class="fei">虫部落</a></div></td>	
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://www.amysecure.com/" target="_blank" class="fei">Amy</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://flowercloud.net/" target="_blank" class="fei">花云</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://maying.co/" target="_blank" class="fei">魅影</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://atomlantis.cloud/" target="_blank" class="fei">Atom</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.itdog.cn/" target="_blank" class="fei">itdog</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.evan888.top/" target="_blank" class="fei">爱分享</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://clash.razord.top/" target="_blank" class="fei">clash外控</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/tindy2013" target="_blank" class="fei">Sub本地</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/getsurfboard" target="_blank" class="fei">Surfboard</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/MatsuriDayo" target="_blank" class="fei">Nekobox</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/FQrabbit/SSTap-Rule" target="_blank" class="fei">SSTap-Rule</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/xxf098/shadowsocksr-v2ray-trojan-android/releases" target="_blank" class="fei">SSR-V2</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/v2ray/v2ray-core" target="_blank" class="fei">v2ray-core</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/2dust" target="_blank" class="fei">v2rayNG</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://github.com/zzzgydi/clash-verge" target="_blank" class="fei">Clash_V</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://api.nameless13.com/" target="_blank" class="fei">Clash转换</a></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="0" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td height="30" colspan="7" bgcolor="#113F3D"><div align="center" class="STYLE45"><span class="STYLE52">商城网购</span></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="1" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.apple.com.cn/" target="_blank" class="fei">Apple中国</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.dangdang.com/" target="_blank" class="fei">当当网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.suning.com/" target="_blank" class="fei">苏宁易购</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.1688.com/" target="_blank" class="fei">1688</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.vip.com/" target="_blank" class="fei">唯品会</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.yhd.com/" target="_blank" class="fei">1号店</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://yangkeduo.com/" target="_blank" class="fei">拼多多</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.jd.com/" target="_blank" class="fei">京东商城</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.samsclub.cn/" target="_blank" class="fei">山姆会员</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.mi.com/" target="_blank" class="fei">小米</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.hihonor.com/" target="_blank" class="fei">荣耀</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.vmall.com/" target="_blank" class="fei">华为商城</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.amazon.cn/" target="_blank" class="fei">卓越亚马逊</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.gmarket.co.kr/" target="_blank" class="fei">Gmarket</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.taobao.com/" target="_blank" class="fei">淘宝网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.tmall.com/" target="_blank" class="fei">天猫</a></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="0" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td height="30" colspan="7" bgcolor="#113F3D"><div align="center" class="STYLE45"><span class="STYLE52">成长教育</span></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="1" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://www.liepin.com/" target="_blank" class="fei">猎聘网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.cjol.com/" target="_blank" class="fei">人才热线</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.chinahr.com/" target="_blank" class="fei">中华英才网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.51job.com/" target="_blank" class="fei">前程无忧</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.zhaopin.com/" target="_blank" class="fei">智联招聘</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://cn.linkedin.com/" target="_blank" class="fei">领英</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.eastmoney.com/" target="_blank" class="fei">东方财富</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://mail.163.com/" target="_blank" class="fei">163邮箱</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://exp.newsmth.net/" target="_blank" class="fei">水木社区</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.kidsbox365.com/" target="_blank" class="fei">kidsbox</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://lexile.com/" target="_blank" class="fei">蓝思网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.ixfc.net/" target="_blank" class="fei">小帆船字体</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.xxttq.com/" target="_blank" class="fei">甜甜圈</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.ebama.net/" target="_blank" class="fei">爸妈网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.kidsa-z.com" target="_blank" class="fei">RAZ</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.leleketang.com/cr/" target="_blank" class="fei">天天练</a></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="0" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td height="30" colspan="7" bgcolor="#113F3D"><div align="center" class="STYLE45"><span class="STYLE52">游戏动漫</span></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="1" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://patch.ali213.net/" target="_blank" class="fei">游侠补丁网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.gamersky.com/" target="_blank" class="fei">游民星空</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.3dmgame.com/" target="_blank" class="fei">3DMGAME</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.9dmsgame.com/" target="_blank" class="fei">9DM</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://war3.uuu9.com/" target="_blank" class="fei">悠久</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://bbs.nga.cn/" target="_blank" class="fei">NGA</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.ou99.com/" target="_blank" class="fei">ou99</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://bbs.hupu.com/" target="_blank" class="fei">虎扑</a></div></td>
-
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://gjqt.gamebar.com/" target="_blank" class="fei">古剑奇谭</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://pal5.baiyou100.com/" target="_blank" class="fei">仙剑奇侠</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.3dmgame.com" target="_blank" class="fei">3DM论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://gbtgame.ysepan.com/" target="_blank" class="fei">GBT小组</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.gog.com/" target="_blank" class="fei">GOG</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://fitgirl-repacks.site/" target="_blank" class="fei">fitgirl</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.sonkwo.com/" target="_blank" class="fei">杉果</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://store.steampowered.com/" target="_blank" class="fei">steam</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://zodgame.xyz/" target="_blank" class="fei">ZOD论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://bbs.sumisora.net/" target="_blank" class="fei">澄空学园</a></div></td> 
-        <td width="10%" height="30"><div align="center"><a href="http://manhuabudang.com/" target="_blank" class="fei">漫画补档</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.opfans.org/" target="_blank" class="fei">枫雪动漫</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.ytd2.com/" target="_blank" class="fei">YT暗黑</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.xiaohulu.com/" target="_blank" class="fei">小葫芦</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.pubg8x.com/" target="_blank" class="fei">八倍镜</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.nexusmods.com/" target="_blank" class="fei">nexusmods</a></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="0" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td height="30" colspan="7" bgcolor="#113F3D"><div align="center" class="STYLE45"><span class="STYLE52">门户综合</span></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="1" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-          <td width="10%" height="30"><div align="center"><a href="http://www.sina.com.cn/" target="_blank" class="fei">新浪</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.qq.com/" target="_blank" class="fei">腾讯</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.sohu.com/" target="_blank" class="fei">搜狐</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.163.com/" target="_blank" class="fei">网易</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.xinhuanet.com/" target="_blank" class="fei">新华网</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.people.com.cn/" target="_blank" class="fei">人民网</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://cn.yahoo.com/" target="_blank" class="fei">雅虎</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://cn.msn.com/" target="_blank" class="fei">MSN中文网</a></div></td>
-      </tr>
-      <tr>
-          <td width="10%" height="30"><div align="center"><a href="http://www.tom.com/" target="_blank" class="fei">TOM</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.hexun.com/" target="_blank" class="fei">和讯</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.cctv.com/" target="_blank" class="fei">CCTV</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.ifeng.com/" target="_blank" class="fei">凤凰网</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.chinaren.com/" target="_blank" class="fei">Chinaren</a></div></td>
-          <td width="10%" height="30"><div align="center"><a href="http://www.sz.net.cn/" target="_blank" class="fei">深圳之窗</a></div></td>
-          <td width="10%">&nbsp;</td>
-          <td width="10%" height="30"><div align="center"><a href="https://yandex.com/" target="_blank" class="fei">Yandex</a></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="0" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td height="30" colspan="7" bgcolor="#113F3D"><div align="center" class="STYLE45"><span class="STYLE52">其他收藏</span></div></td>
-      </tr>
-	</table>
-	<table width="80%" height="30" border="1" align="center" bgcolor="#113F3D" bordercolor="#16524F">
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://login.live.com/" target="_blank" class="fei">Win Live</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.amd.com/cn/pages/amdhomepage.aspx" target="_blank" class="fei">AMD</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.meizu.com/" target="_blank" class="fei">魅族科技</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.chinameizu.com/" target="_blank" class="fei">ChinaMeizu</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.smartdevice.com.cn/" target="_blank" class="fei">智器首页</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.zhiqifans.com/" target="_blank" class="fei">智器粉丝团</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://75bt.info/" target="_blank" class="fei">龙BT</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://184.154.128.246/" target="_blank" class="fei">草榴社区</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.familydoctor.com.cn/" target="_blank" class="fei">家庭医生</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://community.39.net/" target="_blank" class="fei">39健康网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.uuniao.com/" target="_blank" class="fei">二两笑话</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://sz.ganji.com/" target="_blank" class="fei">赶集网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://sz.58.com/" target="_blank" class="fei">58同城</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.dianping.com/" target="_blank" class="fei">大众点评</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.koubei.com/" target="_blank" class="fei">口碑网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.rayli.com.cn/" target="_blank" class="fei">瑞丽论坛</a></div></td>
-      </tr>
-      <tr>
-
-        <td width="10%" height="30"><div align="center"><a href="http://www.shenzhentour.com/" target="_blank" class="fei">深圳旅游</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.forbeschina.com/" target="_blank" class="fei">福布斯中文</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://gb.cri.cn/radio/" target="_blank" class="fei">国际在线</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.fangxin365.com/" target="_blank" class="fei">放心365</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://chrome.360.cn/" target="_blank" class="fei">360急速</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.360totalsecurity.com/" target="_blank" class="fei">360国际版</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://sd.baidu.com/zh/" target="_blank" class="fei">百度国际版</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.ijinshan.com/" target="_blank" class="fei">金山安全</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.zhulong.com/" target="_blank" class="fei">筑龙论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.eshuhome.com/" target="_blank" class="fei">E书之家</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bucee.net/" target="_blank" class="fei">杂志馆</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.52souluo.com/" target="_blank" class="fei">我爱搜罗</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://select.yeeyan.org/" target="_blank" class="fei">译言网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.91zazhi.com/" target="_blank" class="fei">91杂志</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.smzdm.com/" target="_blank" class="fei">什么值得买</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.cnbeta.com/" target="_blank" class="fei">中文资讯站</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://mapeimapei.blog.163.com/" target="_blank" class="fei">小猪贝贝</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://blog.sina.com.cn/szdkt" target="_blank" class="fei">农妇三拳</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://tt-rss.org/" target="_blank" class="fei">tt-rss</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://sparanoid.com/lab/7z/" target="_blank" class="fei">7Z中文网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://sunbox.cc/" target="_blank" class="fei">阳光盒子</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.99ut.com/" target="_blank" class="fei">大师之路</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.avgsafe.com/" target="_blank" class="fei">AVG中文站</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.getgreenjsq.me" target="_blank" class="fei">Greenvpn</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.56pan.com/" target="_blank" class="fei">我乐盘</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.in189.com/" target="_blank" class="fei">添翼圈</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.muzhiwan.com/" target="_blank" class="fei">拇指玩</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://potplayer.5d6d.com/" target="_blank" class="fei">Potplayer</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://html5test.com/" target="_blank" class="fei">html5test</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://hi.baidu.com/officecm/" target="_blank" class="fei">ExcelFans</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.xunleihd.com/" target="_blank" class="fei">TSearch</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://cjx82630.ys168.com/" target="_blank" class="fei">AdMuncher</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.elecfans.com/" target="_blank" class="fei">电子发烧友</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.todex.cn/" target="_blank" class="fei">华强资讯</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.dbank.com/" target="_blank" class="fei">华为网盘</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://lixian.vip.xunlei.com/" target="_blank" class="fei">迅雷离线</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.shhuu.com/" target="_blank" class="fei">华强北报价</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://xiaojun911.com/" target="_blank" class="fei">小俊博客</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.jinhu.me/" target="_blank" class="fei">金狐电脑</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://xinanzhenfu.blog.163.com/" target="_blank" class="fei">星空不寂寞</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.besgold.com/" target="_blank" class="fei">百事高</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.deepms.net/" target="_blank" class="fei">深度音乐</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://1234567i.org/" target="_blank" class="fei">小众音乐</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.musicool.cn/" target="_blank" class="fei">炫音论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://blog.sina.com.cn/liuysen" target="_blank" class="fei">沧海一声笑</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.1ting.com/" target="_blank" class="fei">一听音乐</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.tingchina.com/" target="_blank" class="fei">TingChina</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://shop.lovehifi.com/" target="_blank" class="fei">音响论坛</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.xingk.cc/" target="_blank" class="fei">星空家园</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.yueing.org/" target="_blank" class="fei">悦影天下</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.4k123.com/" target="_blank" class="fei">4K中国</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.suppig.net/" target="_blank" class="fei">猪猪乐园</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.seehd.co/" target="_blank" class="fei">SeeHD高清</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.shinybbs.com/" target="_blank" class="fei">深影论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://sub.eastgame.org/" target="_blank" class="fei">TLF字幕组</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.gaoqingkong.com/" target="_blank" class="fei">高清控联盟</a></div></td>
-      </tr>
-      <tr>
-        	<td width="10%" height="30"><div align="center"><a href="http://www.txzqw.me/" target="_blank" class="fei">天下足球</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.y4dg.cc/" target="_blank" class="fei">影视帝国</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.languang.co/" target="_blank" class="fei">蓝光网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://yyets.com/" target="_blank" class="fei">人人影视</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.jpseek.com/" target="_blank" class="fei">日搜日饭</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://henbt.com/" target="_blank" class="fei">BT中国</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.tiantangbbs.com/" target="_blank" class="fei">电影天堂</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://tv.cctv.com/" target="_blank" class="fei">央视网</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.51gho.net/" target="_blank" class="fei">电脑疯子</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.91os.com/" target="_blank" class="fei">91系统</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.xitong8.com/" target="_blank" class="fei">系统吧</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.shenduwin7.com/" target="_blank" class="fei">深度技术</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.ylmf123.com/" target="_blank" class="fei">雨林木风</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.mumayi.net/" target="_blank" class="fei">木蚂蚁社区</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.vc52.cn/" target="_blank" class="fei">精睿网络</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.w3school.com.cn/" target="_blank" class="fei">W3School</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://wx.qq.com/" target="_blank" class="fei">微信网页版</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.pcbeta.com/" target="_blank" class="fei">远景</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.pchome.net/" target="_blank" class="fei">PChome</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.pconline.com.cn/" target="_blank" class="fei">Pconline</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.zol.com.cn/" target="_blank" class="fei">中关村在线</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.enet.com.cn/" target="_blank" class="fei">硅谷动力</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.hiapk.com/" target="_blank" class="fei">安卓网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://android.tgbus.com/" target="_blank" class="fei">安卓中文网</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.adbyby.com/" target="_blank" class="fei">adbyby</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://openwrt.org/" target="_blank" class="fei">openwrt</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://vcb-s.com/" target="_blank" class="fei">vcb-s</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.cnblogs.com/" target="_blank" class="fei">博客园</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.right.com.cn/" target="_blank" class="fei">恩山论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.tuigirl.co/" target="_blank" class="fei">推女郎</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.zhuamei.net" target="_blank" class="fei">抓美网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.jdbbs.com" target="_blank" class="fei">家电论坛</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="http://www.znds.com/" target="_blank" class="fei">智能电视网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.videolan.org/" target="_blank" class="fei">VLC播放器</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://bbs.himedia.cn/" target="_blank" class="fei">海美迪</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.hdplive.net/" target="_blank" class="fei">HDP直播</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.vidonme.cn/" target="_blank" class="fei">威动科技</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.hdpfans.com" target="_blank" class="fei">HDPFANS</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.shafa.com/" target="_blank" class="fei">沙发网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.7po.com/" target="_blank" class="fei">奇珀网</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://chrome.google.com/webstore" target="_blank" class="fei">chrome应用</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://chromecj.com/" target="_blank" class="fei">chrome三方插件</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://notepad-plus-plus.org/" target="_blank" class="fei">notepad</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://mediacoder.com.cn/" target="_blank" class="fei">mediacoder</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.btjson.com/" target="_blank" class="fei">btjson</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.allavsoft.com/" target="_blank" class="fei">allavsoft</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.chuyu.me/" target="_blank" class="fei">Dism ++</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.ilovext.com/" target="_blank" class="fei">小小系统</a></div></td>
-      </tr>
-      <tr>
-       	<td width="10%" height="30"><div align="center"><a href="http://www.cnscg.com/" target="_blank" class="fei">圣城家园</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://cmct.tv/" target="_blank" class="fei">CMCT</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://rom.7to.cn/" target="_blank" class="fei">奇兔</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://tool.chinaz.com/" target="_blank" class="fei">站长工具</a></div></td>
-       	<td width="10%" height="30"><div align="center"><a href="http://www.kuaibu.org/" target="_blank" class="fei">小说快捕</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.qs5.org/csdn/" target="_blank" class="fei">CSDN下载</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.hongen.com/" target="_blank" class="fei">洪恩教育</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.3glasses.com/" target="_blank" class="fei">3glasses</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://memuplay.com/" target="_blank" class="fei">MEmu</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://tw.bignox.com/" target="_blank" class="fei">夜神模拟器</a></div></td>
-       	<td width="10%" height="30"><div align="center"><a href="http://bbs.icpcw.com/" target="_blank" class="fei">电脑报</a></div></td>
-       	<td width="10%" height="30"><div align="center"><a href="http://bbs.gfan.com/" target="_blank" class="fei">机锋论坛</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://bbs.feng.com/" target="_blank" class="fei">威锋网</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.tomatolei.com/" target="_blank" class="fei">番茄花园</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.fishlee.net/" target="_blank" class="fei">鱼后花园</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://yandex.com/" target="_blank" class="fei">yandex</a></div></td>
-      </tr>
-      <tr>
-        <td width="10%" height="30"><div align="center"><a href="https://www.ikanbot.com/" target="_blank" class="fei">ikanbot</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://gaze.run/" target="_blank" class="fei">注视星球</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.bdys.me/" target="_blank" class="fei">哔嘀影视</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.czzy.site/" target="_blank" class="fei">厂长</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://u.duboku.io/" target="_blank" class="fei">独播库</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.libvio.pro/" target="_blank" class="fei">Libvio</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://ddys.pro/" target="_blank" class="fei">低端影视</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.xinpianchang.com/" target="_blank" class="fei">新片场</a></div></td>
-      </tr>
-      <tr>
-       	<td width="10%" height="30"><div align="center"><a href="https://subs.kamigami.org/" target="_blank" class="fei">诸神字幕组</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://www.textnow.com/" target="_blank" class="fei">textnow</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.zyt8.com/" target="_blank" class="fei">自由听吧</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="http://www.xiami.com/" target="_blank" class="fei">虾米音乐</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://plugin.qrcdn.com/" target="_blank" class="fei">维棠插件</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://apkpure.com/cn/" target="_blank" class="fei">apkpure</a></div></td>
-        <td width="10%" height="30"><div align="center"><a href="https://powerampapp.com/" target="_blank" class="fei">poweramp</a></div></td>
-        <td width="10%">&nbsp;</td>
-      </tr>
-  </table>
-</div>
-<hr width="80%" size="1" color="#16524F" />
-<p align="center" class="STYLE42">条山苍，河水黄&copy;</p>
-<p align="center" class="STYLE42"> 浪波沄沄去，松柏在高冈</p>
-<hr width="80%" size="1" color="#16524F" />
-<p align="center">&nbsp;</p>
+    <script>
+        function initCards() {
+            document.querySelectorAll('.link-card').forEach(card => {
+                const url = new URL(card.href);
+                const domain = url.hostname.replace('www.', '');
+                
+                // 加载图标
+                const favicon = card.querySelector('.favicon');
+                favicon.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+                
+                // 动态背景
+                const gradients = [
+                    'linear-gradient(135deg, #8EC5FC 0%, #E0C3FC 100%',
+                    'linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%',
+                    'linear-gradient(135deg, #A1C4FD 0%, #C2E9FB 100%'
+                ];
+                const hash = Array.from(domain).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                card.style.background = gradients[hash % gradients.length];
+            });
+        }
+        document.addEventListener('DOMContentLoaded', initCards);
+    </script>
 </body>
 </html>
