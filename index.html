@@ -13,6 +13,7 @@
             --gradient-1: linear-gradient(135deg, #8EC5FC 0%, #E0C3FC 100%);
             --gradient-2: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%);
             --gradient-3: linear-gradient(135deg, #A1C4FD 0%, #C2E9FB 100%);
+            --page-bg: linear-gradient(120deg, #e0f2fe 0%, #f3e8ff 100%); /* 页面背景渐变 */
         }
 
         * {
@@ -25,14 +26,14 @@
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             line-height: 1.6;
-            background: var(--bg-light);
+            background: var(--page-bg); /* 应用新背景 */
             color: var(--text-dark);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1600px; /* 适度宽屏 */
             margin: 0 auto;
-            padding: 0.5rem 1rem 2rem; /* 顶部间距减少为0.5rem */
+            padding: 0.5rem 1rem 2rem; /* 顶部间距 */
         }
 
         .category {
@@ -40,37 +41,38 @@
         }
 
         .category-title {
-            font-size: 1.4rem;
+            font-size: 1.4rem; /* 适中标题 */
             color: var(--primary-color);
-            border-left: 4px solid var(--accent-color);
+            border-left: 4px solid var(--accent-color); /* 装饰线 */
             padding-left: 1rem;
             margin-bottom: 1.2rem;
         }
 
         .links-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 卡片宽度 */
+            gap: 1rem; /* 加大间距 */
         }
 
         .link-card {
             display: flex;
             align-items: center;
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 1rem; /* 内边距 */
+            border-radius: 12px; /* 圆角 */
             text-decoration: none;
-            background: white;
-            min-height: 80px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.95); /* 半透明白色white */
+            min-height: 80px; /* 卡片高度 */
+            backdrop-filter: blur(6px); /* 毛玻璃效果 */
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
         }
 
         .link-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px); /* 悬停效果 */
             box-shadow: 0 8px 16px rgba(0,0,0,0.15);
         }
 
         .favicon {
-            width: 40px;
+            width: 40px; /* 图标尺寸 */
             height: 40px;
             border-radius: 8px;
             margin-right: 1rem;
@@ -79,18 +81,19 @@
         }
 
         .link-card div {
-            text-align: center;
+            text-align: left; /* 左对齐文本center */
             flex: 1;
         }
 
         .link-card h3 {
-            font-size: 1.1rem;
+            font-size: 1.1rem; /* 卡片标题 */
             margin-bottom: 0.3rem;
+            color: var(--primary-color); /* 标题颜色 */
         }
 
         .link-card p {
-            font-size: 0.9rem;
-            color: #666;
+            font-size: 0.9rem; /* 注释字体 */
+            color: #666; /* 注释颜色 */
             line-height: 1.4;
         }
 
