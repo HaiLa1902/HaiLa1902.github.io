@@ -528,18 +528,33 @@
             document.querySelectorAll('.link-card').forEach(card => {
                 const url = new URL(card.href);
                 const domain = url.hostname.replace('www.', '');
+				const favicon = card.querySelector('.favicon');
 
-                // 优先加载目标网站的高清 favicon
-                const favicon = card.querySelector('.favicon');
-                favicon.src = `https://${domain}/favicon.ico`; // 网址图标
-                
-                // 如果加载失败，回退到高清第三方服务
-                favicon.onerror = () => {
-					favicon.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`; // 128x128 高清图标
-                    favicon.onerror = () => { // 如果 Google 也失败，使用备用
-                        favicon.src = `https://api.faviconkit.com/${domain}/64`; // 64x64 备用
-                    };
-                };
+				// 自定义GitHub图标的网站列表
+				const customIcons = {
+					'amytele.net': 'https://raw.githubusercontent.com/HaiLa1902/live/main/QuantumultX/IconSet/Color/AmyTelecom.png',
+					'y-too.com': 'https://raw.githubusercontent.com/HaiLa1902/live/main/QuantumultX/IconSet/Dark/YTOO.png',
+					'ai-bot.cn': 'https://raw.githubusercontent.com/HaiLa1902/live/main/QuantumultX/IconSet/added/ai-bot.png',
+					'chiphell.com': 'https://raw.githubusercontent.com/HaiLa1902/live/main/QuantumultX/IconSet/added/chiphell.png'
+				};
+
+				// 如果在自定义列表中，优先使用GitHub图标
+				if (customIcons[domain]) {
+					favicon.src = customIcons[domain];
+					favicon.onerror = () => {
+						// 如果GitHub图标加载失败，回退到默认逻辑
+						favicon.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+					};
+				} else {
+					// 默认逻辑：加载Google favicon
+					favicon.src = `https://${domain}/favicon.ico`;
+					favicon.onerror = () => {
+						favicon.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+						favicon.onerror = () => {
+							favicon.src = `https://api.faviconkit.com/${domain}/64`;
+						};
+					};
+				}
                 
                 // 动态背景
                 const gradients = [
