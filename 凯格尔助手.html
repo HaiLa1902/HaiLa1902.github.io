@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>凯格尔运动每日训练</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .trainer-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 {
+            color: #0056b3;
+            margin-bottom: 15px;
+        }
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        #status, #timer-display {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 20px 0;
+            min-height: 50px; /* Prevent layout shifts */
+        }
+        #status {
+             color: #d9534f; /* Red for contract */
+        }
+        #timer-display {
+             color: #5cb85c; /* Green for timer */
+        }
+        #set-info {
+            font-size: 1.1em;
+            color: #777;
+            margin-bottom: 25px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .instructions {
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+         .instructions ul {
+             padding-left: 20px;
+             margin-top: 5px;
+         }
+    </style>
+</head>
+<body>
+
+<div class="trainer-container">
+    <h1>凯格尔运动助手</h1>
+
+    <div class="instructions">
+        <strong>训练前准备：</strong>
+        <ul>
+            <li>确保已排空膀胱。</li>
+            <li>找一个舒适的位置（建议初学者躺下）。</li>
+            <li>放松腹部、臀部和大腿肌肉。</li>
+            <li>记住在整个过程中保持正常呼吸。</li>
+        </ul>
+        <strong>今日计划：</strong> 3 组，每组 10 次。每次收紧 5 秒，放松 5 秒。
+    </div>
+
+    <div id="status">准备开始</div>
+    <div id="timer-display">--</div>
+    <div id="set-info">组别: 0 / 3 | 次数: 0 / 10</div>
+
+    <button id="start-button">开始训练</button>
+</div>
+
+<script>
+    const statusDisplay = document.getElementById('status');
+    const timerDisplay = document.getElementById('timer-display');
+    const setInfoDisplay = document.getElementById('set-info');
+    const startButton = document.getElementById('start-button');
+
+    // --- 可配置的训练参数 ---
+    const totalSets = 3;        // 总共组数
+    const repsPerSet = 10;       // 每组次数
+    const contractTime = 5;     // 收紧保持时间（秒）
+    const relaxTime = 5;        // 放松时间（秒）
+    const prepTime = 3;         // 每次动作前的准备时间（秒）
+    // ------------------------
+
+    let currentSet = 0;
+    let currentRep = 0;
+    let timerInterval = null;
+    let state = 'idle'; // idle, prepping, contracting, relaxing, finished
+    let countdown = 0;
+
+    // --- 语音合成功能 ---
+    const synth = window.speechSynthesis;
+    let voiceEnabled = true; // 可以设置为 false 来禁用语音
+
+    function speak(text) {
+        if (!voiceEnabled || !synth) {
+            console.log("语音已禁用或浏览器不支持。");
+            return;
+        }
+        // 检查是否正在说话，如果是，先取消
+        if (synth.speaking) {
+            console.log('SpeechSynthesisUtterance: 正在说话，取消之前的...');
+           // synth.cancel(); // 有时立即取消并说新的会导致问题，根据需要启用
+        }
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'zh-CN'; // 设置语言为中文
+        utterance.rate = 1.0;     // 语速
+        utterance.pitch = 1.0;    // 音调
+
+        utterance.onerror = function(event) {
+            console.error('SpeechSynthesisUtterance.onerror', event);
+             // 发生错误时尝试禁用语音，避免后续连续报错
+            // voiceEnabled = false;
+        };
+
+        // 使用 setTimeout 稍微延迟，有时可以解决快速连续调用问题
+        // setTimeout(() => {
+             synth.speak(utterance);
+        // }, 50); // 延迟 50ms
+    }
+    // --------------------
+
+    function updateDisplay() {
+        setInfoDisplay.textContent = `组别: ${currentSet} / ${totalSets} | 次数: ${currentRep} / ${repsPerSet}`;
+        timerDisplay.textContent = countdown > 0 ? countdown + ' 秒' : '--';
+
+        switch(state) {
+            case 'idle':
+                statusDisplay.textContent = '准备开始';
+                statusDisplay.style.color = '#555';
+                break;
+            case 'prepping':
+                 statusDisplay.textContent = '准备收紧...';
+                 statusDisplay.style.color = '#ffc107'; // Yellow
+                 break;
+            case 'contracting':
+                statusDisplay.textContent = '收 紧';
+                statusDisplay.style.color = '#d9534f'; // Red
+                break;
+            case 'relaxing':
+                statusDisplay.textContent = '放 松';
+                statusDisplay.style.color = '#5cb85c'; // Green
+                break;
+            case 'finished':
+                statusDisplay.textContent = '训练完成！🎉';
+                statusDisplay.style.color = '#007bff'; // Blue
+                timerDisplay.textContent = '--';
+                break;
+        }
+    }
+
+    function runTimer() {
+        clearInterval(timerInterval); // 清除之前的计时器
+
+        timerInterval = setInterval(() => {
+            countdown--;
+            updateDisplay();
+
+            if (countdown <= 0) {
+                clearInterval(timerInterval);
+                advanceState();
+            }
+        }, 1000);
+    }
+
+    function advanceState() {
+        if (state === 'prepping') {
+            state = 'contracting';
+            countdown = contractTime;
+            speak("收紧"); // 语音提示
+            updateDisplay();
+            runTimer();
+        } else if (state === 'contracting') {
+            state = 'relaxing';
+            countdown = relaxTime;
+            speak("放松"); // 语音提示
+            updateDisplay();
+            runTimer();
+        } else if (state === 'relaxing') {
+            currentRep++;
+            if (currentRep >= repsPerSet) {
+                currentSet++;
+                if (currentSet >= totalSets) {
+                    // 全部完成
+                    state = 'finished';
+                    speak("训练完成！很棒！");
+                    updateDisplay();
+                    startButton.disabled = false;
+                    startButton.textContent = '重新开始';
+                } else {
+                    // 进入下一组
+                    currentRep = 0;
+                    state = 'prepping'; // 准备下一组的第一次
+                    countdown = prepTime;
+                    speak(`第 ${currentSet + 1} 组，准备`);
+                    updateDisplay();
+                    runTimer();
+                }
+            } else {
+                // 进入下一次重复
+                state = 'prepping'; // 准备下一次收紧
+                countdown = prepTime;
+                speak("准备");
+                updateDisplay();
+                runTimer();
+            }
+        }
+    }
+
+    function startWorkout() {
+        // 尝试在用户交互后播放一个无声或简短的语音，以激活语音权限
+        // speak(""); // 有些浏览器需要这样
+
+        startButton.disabled = true;
+        startButton.textContent = '训练中...';
+        currentSet = 0;
+        currentRep = 0;
+        state = 'prepping'; // 从准备状态开始第一组第一次
+        countdown = prepTime;
+
+        speak(`训练开始，第 1 组，准备`);
+        updateDisplay();
+        runTimer();
+    }
+
+    // 初始化显示
+    updateDisplay();
+
+    startButton.addEventListener('click', startWorkout);
+
+    // 页面加载时尝试问候，也可能有助于激活语音
+    // window.addEventListener('load', () => speak("凯格尔运动助手已准备好"));
+
+</script>
+
+</body>
+</html>
