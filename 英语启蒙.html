@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优化版 V3.2 - 3岁起步英语启蒙加速方案 (响应式)</title>
+    <style>
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.75; /* Slightly increased line-height */
+            margin: 0; /* Reset body margin */
+            padding: 0; /* Reset body padding */
+            background-color: #f8f9fa;
+            color: #343a40; /* Slightly darker text */
+        }
+
+        .container {
+            max-width: 960px; /* Limit content width on large screens */
+            margin: 20px auto; /* Center container and add top/bottom margin */
+            padding: 15px 25px; /* Add padding inside container */
+            background-color: #ffffff; /* White background for content area */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* Subtle shadow */
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 15px;
+            margin-top: 10px; /* Reduced top margin */
+            margin-bottom: 40px; /* Increased bottom margin */
+            font-size: 2em; /* Adjusted size */
+        }
+
+        h2 {
+            color: #198754;
+            margin-top: 45px; /* Increased top margin */
+            margin-bottom: 25px; /* Added bottom margin */
+            border-left: 6px solid #198754;
+            padding: 10px 15px; /* Adjusted padding */
+            background-color: #e9f5ec; /* Slightly lighter green */
+            font-size: 1.7em; /* Adjusted size */
+            border-radius: 4px 0 0 4px; /* Slight rounding */
+        }
+
+        h3 {
+            color: #495057; /* Slightly darker grey */
+            margin-top: 35px;
+            margin-bottom: 15px; /* Added bottom margin */
+            font-weight: 600; /* Semibold */
+            border-bottom: 2px solid #dee2e6; /* Lighter border */
+            padding-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+             color: #0d6efd;
+             margin-top: 25px;
+             margin-bottom: 10px; /* Added bottom margin */
+             font-weight: 600; /* Semibold */
+             font-size: 1.15em;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 14px; /* Slightly increased spacing */
+            padding-left: 30px; /* Increased padding for icon */
+            position: relative;
+        }
+
+        li::before {
+            content: '✓';
+            color: #28a745;
+            font-weight: bold;
+            position: absolute;
+            left: 5px; /* Adjusted position */
+            top: 1px;
+            font-size: 1.1em; /* Slightly larger checkmark */
+        }
+
+        strong, b {
+            font-weight: 600; /* Semibold instead of bold */
+            color: #d63384; /* Changed highlight color to pink/magenta */
+        }
+
+        /* --- Box Styles --- */
+        .core-principles, .important-reminder, .deepening-focus, .stage-summary {
+            background-color: #fff9e6; /* Lighter yellow */
+            border: 1px solid #ffecb3; /* Corresponding border */
+            padding: 20px 25px; /* Adjusted padding */
+            margin-top: 20px; /* Added top margin */
+            margin-bottom: 35px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .core-principles h2, .important-reminder h2, .deepening-focus h2, .stage-summary h2 {
+             border-left: none;
+             background-color: transparent;
+             padding-left: 0;
+             padding-top: 0;
+             padding-bottom: 10px; /* Added bottom padding */
+             margin-top: 0;
+             margin-bottom: 15px; /* Added bottom margin */
+             font-size: 1.4em;
+             color: #805a00; /* Darker yellow text */
+             border-bottom: 1px solid #ffeeba; /* Separator line */
+        }
+         .deepening-focus {
+             background-color: #e6f7ff; /* Lighter blue */
+             border-color: #b3e0ff;
+         }
+         .deepening-focus h2 { color: #0056b3; border-bottom-color: #b3e0ff;}
+
+         .stage-summary {
+             background-color: #e0f7fa; /* Lighter cyan */
+             border-color: #b2ebf2;
+         }
+         .stage-summary h2 { color: #006064; border-bottom-color: #b2ebf2;}
+
+        .important-reminder {
+             background-color: #ffebee; /* Light pink/red */
+             border-color: #ffcdd2;
+         }
+         .important-reminder h2 { color: #c62828; border-bottom-color: #ffcdd2; }
+
+        /* --- Book List Styles --- */
+        .book-list, .resource-list {
+            background-color: #f8f9fa;
+            padding: 20px 25px;
+            border: 1px solid #e9ecef; /* Lighter border */
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+         .book-list ul, .resource-list ul {
+            margin-left: 0;
+            padding-left: 0;
+         }
+         .book-list li, .resource-list li {
+             padding-left: 28px; /* Adjusted padding */
+             margin-bottom: 10px; /* Adjusted spacing */
+         }
+         .book-list li::before, .resource-list li::before {
+             content: '📚';
+             color: inherit;
+             font-weight: normal;
+             position: absolute;
+             left: 0;
+             top: 1px; /* Adjusted alignment */
+             font-size: 1.1em;
+         }
+         .resource-list li::before { content: '💻'; }
+         .audio-video li::before { content: '🎧'; }
+         .phonics-list li::before { content: '🔤'; }
+         .graded-readers li::before { content: '📖'; }
+         .bridge-books li::before { content: '🌉'; }
+         .chapter-books li::before { content: '📕'; }
+         .non-fiction li::before { content: '🔬'; }
+         .tools-resources li::before { content: '🛠️'; }
+         .graphic-novels li::before { content: '🎨'; }
+         .poetry li::before { content: '✍️'; }
+         .classics li::before { content: '🏛️'; }
+
+         /* --- Other Styles --- */
+         .stage-intro {
+            font-style: italic;
+            color: #6c757d;
+            margin-bottom: 25px;
+            padding: 12px 18px;
+            background-color: #e9ecef;
+            border-left: 4px solid #adb5bd;
+            border-radius: 4px;
+          }
+          .level-info {
+            font-size: 0.8em; /* Slightly smaller */
+            color: #0056b3; /* Darker blue */
+            margin-left: 8px;
+            font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* Monospace stack */
+            background-color: #dfefff; /* Lighter blue background */
+            padding: 2px 5px;
+            border-radius: 4px;
+            border: 1px solid #cce5ff; /* Subtle border */
+            display: inline-block; /* Prevent breaking */
+            white-space: nowrap; /* Prevent wrapping */
+          }
+          .book-title {
+             font-weight: 500;
+             color: #212529; /* Darker title color */
+          }
+          .chinese-name {
+             font-style: normal;
+             color: #495057;
+             font-size: 0.9em;
+             margin-left: 5px;
+          }
+          .stage-5 h2 {
+            color: #6f42c1;
+            border-left-color: #6f42c1;
+            background-color: #f3e5f5; /* Lighter purple */
+          }
+          .stage-5 h3 {
+            color: #5e35b1; /* Adjusted purple */
+          }
+          .stage-5 .book-list li::before {
+              content: '🎓';
+          }
+          .stage-5 .non-fiction li::before {
+              content: '🌍';
+          }
+          .stage-5 .classics li::before {
+              content: '🏛️';
+          }
+
+          .execution-method {
+              font-size: 0.95em;
+              color: #555;
+              margin-left: 30px; /* Adjusted indent */
+              margin-bottom: 10px;
+              position: relative;
+              padding-left: 25px; /* Add padding for arrow */
+              border-left: 2px solid #a3cca5; /* Subtle left border */
+              background-color: #f0f9f1; /* Very light green background */
+              padding-top: 5px;
+              padding-bottom: 5px;
+              padding-right: 10px;
+              border-radius: 4px;
+          }
+          .execution-method::before {
+              content: '💡'; /* Lightbulb idea symbol */
+              color: #198754;
+              position: absolute;
+              left: 5px;
+              top: 6px;
+              font-size: 1em;
+          }
+
+          .book-category {
+              font-weight: 600; /* Semibold */
+              color: #198754;
+              margin-top: 20px;
+              margin-bottom: 10px;
+              display: block;
+              font-size: 1.05em; /* Slightly larger */
+              border-bottom: 1px dashed #b8d8be; /* Dashed separator */
+              padding-bottom: 5px;
+          }
+          .version-note {
+            text-align: center;
+            font-size: 0.85em;
+            color: #6c757d;
+            margin: -25px 0 25px 0; /* Adjust position */
+          }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px auto;
+                padding: 10px 15px; /* Reduced padding on mobile */
+                box-shadow: none; /* Remove shadow on mobile */
+                border-radius: 0; /* Remove border radius on mobile */
+            }
+
+            h1 {
+                font-size: 1.7em;
+                margin-bottom: 30px;
+                padding-bottom: 10px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+                padding: 8px 12px;
+                margin-top: 35px;
+                margin-bottom: 20px;
+                border-left-width: 5px;
+            }
+
+            h3 {
+                font-size: 1.25em;
+                margin-top: 30px;
+                padding-bottom: 8px;
+            }
+
+             h4 {
+                font-size: 1.1em;
+                margin-top: 20px;
+             }
+
+             li {
+                 padding-left: 25px; /* Slightly reduce padding */
+                 margin-bottom: 12px;
+             }
+             li::before {
+                 left: 3px; /* Adjust icon position */
+             }
+
+            .core-principles, .important-reminder, .deepening-focus, .stage-summary {
+                padding: 15px 20px; /* Reduced padding */
+                margin-bottom: 30px;
+            }
+            .core-principles h2, .important-reminder h2, .deepening-focus h2, .stage-summary h2 {
+                font-size: 1.3em;
+            }
+
+            .book-list, .resource-list {
+                padding: 15px 20px; /* Reduced padding */
+            }
+            .book-list li, .resource-list li {
+                 padding-left: 25px;
+             }
+            .execution-method {
+                 margin-left: 0; /* Remove left margin */
+                 padding-left: 28px; /* Adjust padding for icon */
+             }
+            .execution-method::before {
+                 left: 5px; /* Adjust icon position */
+             }
+
+            .level-info {
+                 display: inline; /* Allow wrapping if needed on very small screens */
+                 margin-left: 5px;
+             }
+        }
+
+         @media (max-width: 480px) {
+            body {
+                line-height: 1.7; /* Slightly reduce line-height */
+            }
+             h1 {
+                 font-size: 1.5em;
+             }
+             h2 {
+                 font-size: 1.35em;
+             }
+             h3 {
+                 font-size: 1.15em;
+             }
+             h4 {
+                 font-size: 1.05em;
+             }
+             .container {
+                 padding: 10px; /* Further reduce padding */
+             }
+             .book-category {
+                 font-size: 1em;
+             }
+             .execution-method {
+                 font-size: 0.9em;
+             }
+         }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>优化版 V3.2 - 3岁起步英语启蒙加速方案 (响应式)</h1>
+        <p class="version-note">基于V3.1修订，优化视觉效果与响应式布局。</p>
+
+        <div class="deepening-focus">
+            <h2>本方案深化重点</h2>
+            <ul>
+                <li>强化听说互动与早期输出引导</li>
+                <li>系统性引入Phonics与分级阅读 (4岁起)</li>
+                <li>加速分级阅读进程，尽早过渡桥梁书</li>
+                <li>全面、细化、按难度排序的书单 (含中英文名、参考分级)</li>
+                <li>增加非虚构阅读比重</li>
+                <li>明确各阶段执行方法与拓展活动</li>
+                <li>细化高阶阅读与批判性思维培养</li>
+                <li>融入文化体验与词汇策略</li>
+            </ul>
+        </div>
+
+        <div class="core-principles">
+            <h2>核心原则</h2>
+            <ul>
+                <li><b>听力先行，大量输入:</b> 保证每日足量、可理解的听力输入是基石。利用好碎片时间进行“磨耳朵”。</li>
+                <li><b>兴趣驱动，快乐启蒙:</b> 保护和激发孩子对英语的兴趣至关重要。选择孩子喜欢的主题和形式。</li>
+                <li><b>循序渐进，科学规划:</b> 遵循语言学习规律，从易到难，系统进阶 (Phonics -> 分级 -> 桥梁 -> 章节)。</li>
+                <li><b>亲子互动，营造环境:</b> 家长的参与和陪伴，创造轻松的家庭英语氛围。鼓励但不强迫。</li>
+                <li><b>规律坚持，量变质变:</b> 每日固定时间接触英语，保证持续性和稳定性。</li>
+                <li><b>个性调整，因材施教:</b> 根据孩子的兴趣、接受度和进度灵活调整计划和书单。</li>
+            </ul>
+        </div>
+
+        <h2>阶段一：萌芽期 (3-4岁) - 沉浸听说，播种兴趣与表达萌芽</h2>
+        <p class="stage-intro">此阶段核心目标是培养语感和兴趣，积累基础听力词汇 (约200-500)，让孩子觉得英语“好玩”。不强求输出，但鼓励模仿。阅读分级意义不大，以互动和趣味为主。</p>
+
+        <h3>核心活动</h3>
+        <ul>
+            <li><strong>听力输入 (每日累计30-60分钟+):</strong>
+                <div class="execution-method">选择节奏明快、旋律优美的儿歌 (如 SSS)，语速慢、画面简单、重复性高的动画片 (如 Maisy)。</div>
+                <div class="execution-method">利用玩耍、吃饭、睡前等碎片时间播放，营造“背景音”式的“磨耳朵”环境，不必强求孩子时刻专注。</div>
+            </li>
+            <li><strong>亲子阅读 (每日10-20分钟):</strong>
+                <div class="execution-method">选择色彩鲜艳、互动性强（翻翻、触摸、洞洞）的纸板书和情节非常简单的绘本。</div>
+                <div class="execution-method">家长用夸张的语音语调朗读，配合丰富的表情和肢体语言帮助理解。</div>
+                <div class="execution-method">指读图片中的关键事物，重复核心词汇。允许并鼓励孩子反复阅读同一本书。</div>
+            </li>
+        </ul>
+
+        <h3>拓展深化活动</h3>
+        <ul>
+            <li><strong>口语萌芽 (鼓励模仿):</strong>
+                <div class="execution-method">家长在互动中重复简单的词语（物品、颜色、打招呼），鼓励孩子模仿发音，不怕错。</div>
+                <div class="execution-method">玩简单的指令游戏 (Simon Says: "Touch your nose!" / "Clap your hands!")，鼓励孩子用动作回应。</div>
+                <div class="execution-method">对孩子的任何英语发音尝试给予积极、正面的反馈和鼓励。</div>
+            </li>
+             <li><strong>书写前奏 (精细动作):</strong>
+                <div class="execution-method">提供粗蜡笔、手指画颜料等，让孩子自由涂鸦，锻炼手眼协调。</div>
+                <div class="execution-method">玩穿珠子、撕纸、捏橡皮泥、搭积木等锻炼手部小肌肉的游戏，为握笔做准备。</div>
+             </li>
+             <li><strong>文化初体验:</strong>
+                <div class="execution-method">听不同文化背景的英文儿歌。观看一些关于简单节日（圣诞节、万圣节等）的图片或动画短片，初步感知文化元素。</div>
+             </li>
+        </ul>
+
+        <h3>详细书单/资源 (以兴趣为主，顺序非严格难度)</h3>
+        <div class="book-list">
+            <ul class="audio-video">
+                <span class="book-category">音频/视频 (磨耳朵 & 观看):</span>
+                 <li><span class="book-title">Super Simple Songs</span> <span class="chinese-name">(SSS儿歌)</span></li>
+                 <li><span class="book-title">Mother Goose Club</span> <span class="chinese-name">(鹅妈妈俱乐部)</span></li>
+                 <li><span class="book-title">Pinkfong Kids' Songs & Stories</span> <span class="chinese-name">(碰碰狐儿歌故事)</span></li>
+                 <li><span class="book-title">Cocomelon</span></li>
+                 <li><span class="book-title">Little Baby Bum</span></li>
+                 <li><span class="book-title">Dave and Ava</span></li>
+                 <li><span class="book-title">清华语感启蒙</span> 系列音频</li>
+                 <li>动画片: <span class="book-title">《Maisy》</span> <span class="chinese-name">(小鼠波波)</span>, <span class="book-title">《Penelope》</span> <span class="chinese-name">(蓝色小考拉)</span>, <span class="book-title">《Yakka Dee》</span>, <span class="book-title">《Pocoyo》</span> <span class="chinese-name">(小P优优 英文版)</span>, <span class="book-title">《Kipper the Dog》</span> <span class="chinese-name">(小狗卡皮)</span>, <span class="book-title">《Big Muzzy》</span> <span class="chinese-name">(玛泽的故事)</span> - 经典启蒙动画</li>
+            </ul>
+            <ul>
+                <span class="book-category">触摸/纸板/互动书:</span>
+                 <li><span class="book-title">《Pat the Bunny》</span> (Dorothy Kunhardt)</li>
+                 <li><span class="book-title">Karen Katz 翻翻书</span>系列 (如《Where Is Baby's Belly Button?》<span class="chinese-name">(宝宝的肚脐在哪里？)</span>)</li>
+                 <li><span class="book-title">《Dear Zoo》</span> <span class="chinese-name">(亲爱的动物园)</span> (Rod Campbell)</li>
+                 <li><span class="book-title">《Press Here》</span> <span class="chinese-name">(点点点)</span> (Hervé Tullet)</li>
+                 <li>Usborne <span class="book-title">《That's Not My...》</span> 系列</li>
+            </ul>
+            <ul>
+                <span class="book-category">经典绘本 (亲子共读):</span>
+                 <li>Eric Carle 系列: <span class="book-title">《Brown Bear, Brown Bear, What Do You See?》</span> <span class="chinese-name">(棕熊，棕熊，你看到了什么？)</span>, <span class="book-title">《The Very Hungry Caterpillar》</span> <span class="chinese-name">(好饿的毛毛虫)</span>, <span class="book-title">《Papa, Please Get the Moon for Me》</span> <span class="chinese-name">(爸爸，请为我摘月亮)</span></li>
+                 <li><span class="book-title">《Go Away, Big Green Monster!》</span> <span class="chinese-name">(走开，绿色大怪物！)</span> (Ed Emberley)</li>
+                 <li><span class="book-title">《Goodnight Gorilla》</span> (Peggy Rathmann)</li>
+                 <li><span class="book-title">《Don't Let the Pigeon Drive the Bus!》</span> <span class="chinese-name">(别让鸽子开巴士！)</span> (Mo Willems)</li>
+                 <li><span class="book-title">《Good Night Moon》</span> <span class="chinese-name">(晚安，月亮)</span> (Margaret Wise Brown)</li>
+                 <li><span class="book-title">《Guess How Much I Love You》</span> <span class="chinese-name">(猜猜我有多爱你)</span> (Sam McBratney)</li>
+                 <li><span class="book-title">《Sheep in a Jeep》</span> (Nancy E. Shaw) - 韵律感强</li>
+                 <li>Dr. Seuss <span class="chinese-name">(苏斯博士)</span> 韵律绘本: <span class="book-title">《Hop on Pop》</span>, <span class="book-title">《One Fish Two Fish Red Fish Blue Fish》</span></li>
+                 <li>Spot 系列 <span class="chinese-name">(小狗点点)</span> (Eric Hill)</li>
+            </ul>
+        </div>
+        <div class="stage-summary">
+            <h2>阶段一小结</h2>
+            <p>目标达成标志：孩子对英文儿歌/动画有明显兴趣和反应，能听懂简单的日常指令 (如 "come here", "give me", "sit down")，认识约50-100个常见物品/动作的英文名，不排斥并愿意参与英文阅读活动。</p>
+        </div>
+
+        <h2>阶段二：发展期 (4-5岁) - Phonics与分级起步，鼓励简单输出</h2>
+         <p class="stage-intro">此阶段是“加速”的关键期。系统引入自然拼读 (Phonics) 和分级阅读，目标是掌握字母音，认识常见高频词 (Sight Words)，开始尝试阅读最简单的读物。听力词汇目标 500-1000+。同时，有意识地引导孩子进行简单的口语输出和书写尝试。</p>
+
+        <h3>核心活动</h3>
+        <ul>
+            <li><strong>听力输入 (每日1小时+):</strong>
+                <div class="execution-method">增加稍有情节、对话稍多的动画片，如 Peppa Pig。大量听接下来要读的分级读物配套音频，先混个耳熟，降低阅读难度。</div>
+                <div class="execution-method">可以开始听一些简单的英文故事音频 (如喜马拉雅、App上的资源)。</div>
+            </li>
+            <li><strong>系统学习Phonics (每日10-15分钟):</strong>
+                <div class="execution-method">选择一套系统的Phonics教材或App (如 Jolly Phonics, Oxford Phonics World, Starfall)，通过歌曲、游戏、动作等有趣方式学习字母名称 (Letter Name) 和字母发音 (Letter Sound)。</div>
+                <div class="execution-method">学习后，及时结合对应练习册、闪卡或App巩固，练习 CVC (辅音-元音-辅音) 单词的拼读 (blending - 看到单词读出来) 和拆分 (segmenting - 听到单词能想到字母)。</div>
+            </li>
+            <li><strong>高频词 (Sight Words) 学习 (每日5-10分钟):</strong>
+                <div class="execution-method">使用 Dolch Sight Words 或 Fry Sight Words 列表前50-100个词，通过闪卡、游戏 (Bingo, Matching, 寻宝游戏)、儿歌等方式学习，重点是“看到即认”。</div>
+                <div class="execution-method">在阅读分级读物时，有意识地指认和强调遇到的高频词。</div>
+            </li>
+            <li><strong>分级阅读起步 (每日3-5本，每本可重复):</strong>
+                <div class="execution-method">从配合Phonics学习的读物 (如 Bob Books Set 1) 和主流分级读物的最低级别开始 (如 RAZ AA-C, ORT 1-2)。</div>
+                <div class="execution-method">家长先示范朗读，然后指着单词慢速读，鼓励孩子跟读或认读已认识的字母/单词/高频词。</div>
+                <div class="execution-method">初期重点是建立阅读信心和兴趣，允许孩子结合图片猜测意思，不必苛求每个词都认识。可配合点读笔辅助。</div>
+            </li>
+        </ul>
+
+        <h3>拓展深化活动</h3>
+        <ul>
+            <li><strong>口语输出 (引导表达):</strong>
+                <div class="execution-method">在阅读或日常互动中，用简单的 Wh- 问题提问 ("What's this?", "What color is it?", "Is it big or small?")，鼓励孩子用单词或短语回答。</div>
+                <div class="execution-method">鼓励孩子看图说话，描述图片中的基本元素 ("A cat.", "The pig is jumping.")。</div>
+                <div class="execution-method">进行简单的角色扮演，模仿绘本或动画中的经典对话片段。</div>
+                <div class="execution-method">家长在日常生活中坚持使用简单英文短语 ("Good morning", "Thank you", "Let's go", "Time for dinner")。</div>
+            </li>
+             <li><strong>写作启蒙 (字母与单词):</strong>
+                <div class="execution-method">练习描摹和书写26个英文字母的大小写，注意规范笔顺。</div>
+                <div class="execution-method">尝试书写自己的英文名字。</div>
+                <div class="execution-method">画一幅画，并在旁边写上（或家长协助写上）画中核心元素的英文单词 (如 "sun", "flower", "car")。</div>
+             </li>
+             <li><strong>词汇策略 (视觉关联):</strong>
+                <div class="execution-method">制作实物/图片与对应英文单词的卡片，玩配对游戏。</div>
+                <div class="execution-method">玩按颜色、形状、类别（动物、食物、交通工具）分类的英语游戏。</div>
+             </li>
+             <li><strong>文化融入:</strong>
+                <div class="execution-method">阅读或观看关于常见西方节日（圣诞、复活节、感恩节、万圣节）的简单绘本或动画片段，了解基本习俗。</div>
+                <div class="execution-method">学唱简单的节日主题歌曲。</div>
+             </li>
+        </ul>
+
+        <h3>详细书单/资源 (排序参考 GRL/Lexile/AR，从低到高)</h3>
+         <div class="book-list">
+            <ul class="audio-video">
+                <span class="book-category">音频/视频:</span>
+                 <li>动画片: <span class="book-title">《Peppa Pig》</span> <span class="chinese-name">(小猪佩奇)</span> - 重点推荐, <span class="book-title">《Alphablocks》</span> <span class="chinese-name">(字母积木)</span> - Phonics学习, <span class="book-title">《Numberblocks》</span> <span class="chinese-name">(数字积木)</span>, <span class="book-title">《Ben and Holly's Little Kingdom》</span> <span class="chinese-name">(本和霍利的小王国)</span>, <span class="book-title">《Little Fox》</span> (Level 1-3) - 动画故事网站/App</li>
+                 <li>分级读物配套音频 (务必配合使用！)</li>
+            </ul>
+            <ul class="phonics-list">
+                <span class="book-category">Phonics 教材/读物:</span>
+                 <li><span class="book-title">Jolly Phonics</span> (教材/App/歌曲)</li>
+                 <li><span class="book-title">《丽声拼读故事会》</span> / <span class="book-title">Oxford Phonics World</span> (教材+配套读物)</li>
+                 <li><span class="book-title">《Bob Books》</span> Set 1: Beginning Readers <span class="level-info">(GRL A-B)</span>, Set 2: Advancing Beginners <span class="level-info">(GRL C)</span></li>
+                 <li><span class="book-title">《Usborne Phonics Readers》</span>系列 (如《Fat Cat on a Mat》)</li>
+                 <li><span class="book-title">《Hooked on Phonics》</span> (App/教材+配套读物)</li>
+                 <li><span class="book-title">Starfall.com</span> (网站/App 字母和Phonics部分 - 免费内容已足够入门)</li>
+            </ul>
+            <ul class="graded-readers">
+                <span class="book-category">核心分级读物 (建议选择1-2套系统刷，其他辅助):</span>
+                 <li><span class="book-title">RAZ (Reading A-Z)</span> / Kids A-Z App: Level AA, A, B, C <span class="level-info">(GRL aa-C)</span> - 主线推荐1，体系庞大，非虚构比例高</li>
+                 <li><span class="book-title">《Oxford Reading Tree》</span> <span class="chinese-name">(牛津阅读树)</span> (ORT): Stage 1, 1+, 2 (含Floppy's Phonics) <span class="level-info">(GRL A-C)</span> - 主线推荐2，故事性强</li>
+                 <li><span class="book-title">《Heinemann》</span> <span class="chinese-name">(海尼曼)</span> GK <span class="level-info">(GRL A-C)</span> - 图像清晰，句子简短重复</li>
+                 <li><span class="book-title">《Red Rocket Readers》</span> <span class="chinese-name">(红火箭)</span> Emergent Level (Magenta, Red, Yellow) <span class="level-info">(GRL A-C)</span> - 实拍图，贴近生活</li>
+                 <li><span class="book-title">《Collins Big Cat Phonics for Letters and Sounds》</span> <span class="chinese-name">(大猫)</span> Lilac, Pink, Red, Yellow <span class="level-info">(GRL A-C)</span> - 画面精美</li>
+                 <li><span class="book-title">RAZ</span> D, E, F, G <span class="level-info">(GRL D-G)</span></li>
+                 <li><span class="book-title">ORT</span> Stage 3, 4, 5 <span class="level-info">(GRL C-I)</span></li>
+                 <li><span class="book-title">《Red Rocket Readers》</span> Early Level 1 & 2 (Blue, Green) <span class="level-info">(GRL D-G)</span></li>
+                 <li><span class="book-title">《Big Cat Phonics》</span> Blue, Green, Orange <span class="level-info">(GRL D-G)</span></li>
+                 <li><span class="book-title">《Pearson Kids Readers》</span> <span class="chinese-name">(培生儿童英语分级阅读)</span> Pre-level 1, Level 1 <span class="level-info">(GRL A-G approx.)</span></li>
+            </ul>
+            <ul class="bridge-books">
+                 <span class="book-category">简单绘本/桥梁书试水 (兴趣拓展，与分级穿插):</span>
+                 <li><span class="book-title">《Elephant & Piggie》</span>系列 <span class="chinese-name">(小猪小象)</span> (Mo Willems) <span class="level-info">(Lexile BR-270L, GRL F-H, AR 0.5-1.0)</span> - 对话为主，幽默</li>
+                 <li><span class="book-title">《Biscuit》</span>系列 <span class="chinese-name">(饼干狗)</span> (Alyssa Satin Capucilli) <span class="level-info">(Lexile 80L-260L, GRL F-G, AR 0.7-1.4)</span> - 温馨简单，重复句式</li>
+                 <li><span class="book-title">《Pete the Cat: I Can Read》</span>系列 (My First / Level 1) <span class="chinese-name">(皮特猫)</span> (James Dean) <span class="level-info">(Lexile 210L-470L, GRL G-J, AR 1.3-2.2)</span> - 歌曲韵律感强</li>
+                 <li><span class="book-title">《Fly Guy》</span>系列 <span class="chinese-name">(苍蝇小子)</span> (Tedd Arnold) <span class="level-info">(Lexile 270L-470L, GRL H-I, AR 1.3-2.1)</span> - 幽默有趣，图大字少</li>
+            </ul>
+            <ul class="tools-resources">
+                <span class="book-category">工具/App:</span>
+                 <li>Sight Word 闪卡/App (如 Sight Word Kids, Starfall Sight Words)</li>
+                 <li>点读笔 (如小达人, 卡米, 毛毛虫等，配合相应点读版书籍)</li>
+            </ul>
+        </div>
+         <div class="stage-summary">
+            <h2>阶段二小结</h2>
+            <p>目标达成标志：掌握26个字母的主要发音 (Letter Sounds)，认识约100个高频词 (Sight Words)，能在引导下拼读简单的CVC单词，能独立阅读或在少量帮助下阅读RAZ C/D级或ORT L3/4级水平的分级读物，能用简单的单词和短句进行基本的回应和描述。</p>
+        </div>
+
+        <h2>阶段三：提升期 (5-6岁) - 流畅阅读，拓展表达与思考</h2>
+        <p class="stage-intro">此阶段目标是实现初级分级读物的流利阅读 (RAZ J/K, ORT 6/7左右)，并开始<b>大量接触桥梁书 (Early Chapter Books)</b>，为阅读章节书做充分准备。词汇量目标 1500-2500+。口语表达更连贯，写作从句子走向简单段落，开始培养初步的阅读理解策略和思维能力。</p>
+
+        <h3>核心活动</h3>
+        <ul>
+            <li><strong>听力输入 (每日1-1.5小时):</strong>
+                <div class="execution-method">重点听接下来要阅读或正在阅读的桥梁书和初级章节书的有声版 (如 Frog and Toad, Magic Tree House)，听力先行，降低阅读难度，同时可略高于自主阅读水平。</div>
+                <div class="execution-method">观看情节更丰富、语速稍快的动画片或科普节目 (如 Arthur, Wild Kratts, Magic School Bus)。</div>
+                <div class="execution-method">鼓励“裸听”已经熟悉或难度适中的音频，培养听力理解能力。</div>
+            </li>
+            <li><strong>阅读加速 (每日保证阅读量，如5-10本分级/桥梁书 或 1-2章初章):</strong>
+                <div class="execution-method">继续提升主线分级读物难度 (如 ORT L6-9, RAZ G-P级)，但不必强求刷完所有级别，达到GRL L/M/N (对应ORT 9, RAZ L/M/N) 左右即可将重心转向桥梁书。</div>
+                <div class="execution-method"><b>大量阅读桥梁书</b>，这是从分级到章节的关键过渡阶段，奠定自主阅读基础。选择不同系列，保持新鲜感和阅读动力。</div>
+                <div class="execution-method">听读结合，开始尝试独立阅读初级章节书 (如 Magic Tree House 前几本)。</div>
+                <div class="execution-method">引入简单的非虚构类分级读物 (如 NG Kids Readers L1/L2, Let's-Read-and-Find-Out Science L1)。</div>
+            </li>
+        </ul>
+
+        <h3>拓展深化活动</h3>
+        <ul>
+            <li><strong>口语输出 (强化流利度与组织):</strong>
+                <div class="execution-method">练习用2-3句简单的话复述读过的故事要点或描述图片 (Story Retelling)。</div>
+                <div class="execution-method">在阅读后，回答更复杂的 Wh- 问题 (Why...? How...? What happens next?)。</div>
+                <div class="execution-method">进行 Show & Tell 活动，用几句话介绍自己喜欢的玩具、书或画作。</div>
+                <div class="execution-method">鼓励用完整的句子表达想法和需求，而不是单个词语。</div>
+                <div class="execution-method">可以考虑引入少量线上外教口语课 (每周1-2次)，侧重于在真实互动中应用所学。</div>
+            </li>
+             <li><strong>写作发展 (句子到段落):</strong>
+                <div class="execution-method">仿写绘本或分级读物中的简单句型，进行替换词语练习。</div>
+                <div class="execution-method">看图写1-3句话，描述图片发生了什么。</div>
+                <div class="execution-method">尝试写简单的图画日记 (Journaling)，记录天气、活动或心情 (可以用画为主，配一两句英文)。</div>
+                <div class="execution-method">写简单的感谢卡或生日卡片。</div>
+             </li>
+             <li><strong>词汇策略 (语境与构词):</strong>
+                <div class="execution-method">阅读时遇到生词，鼓励先根据图片和上下文猜测意思，不要立即打断去查。</div>
+                <div class="execution-method">开始接触简单的词根词缀 (如 un-, re-, -ing, -ed, -s)。</div>
+                <div class="execution-method">用思维导图 (Mind Map) 方式整理相关主题词汇 (如 farm animals, food categories, colors and shapes)。</div>
+             </li>
+              <li><strong>深度理解与思考 (初步):</strong>
+                <div class="execution-method">阅读前看封面和标题，让孩子预测故事可能讲什么 (Prediction)。</div>
+                <div class="execution-method">阅读后和孩子讨论：故事里的人物怎么样？(Character) 为什么会发生这件事？(Cause & Effect) 你喜欢/不喜欢哪个部分？为什么？ (Opinion)</div>
+                <div class="execution-method">引导孩子将故事内容与自己的生活经验联系起来 ("Have you ever felt like that?", "Does this remind you of anything?") (Making Connections)。</div>
+             </li>
+             <li><strong>文化融入:</strong>
+                <div class="execution-method">阅读介绍不同国家儿童简单生活的书籍或故事。</div>
+                <div class="execution-method">通过绘本、歌曲、手工等方式了解更多节日的习俗和象征意义。</div>
+                <div class="execution-method">在家中设立一个“英语角”，展示孩子的英文作品、正在读的书籍、词汇卡片等，营造氛围。</div>
+             </li>
+        </ul>
+
+         <h3>详细书单/资源 (排序参考 Lexile/AR/GRL，从低到高)</h3>
+         <div class="book-list">
+            <ul class="audio-video">
+                <span class="book-category">音频/视频:</span>
+                 <li>动画片: <span class="book-title">《Arthur》</span> <span class="chinese-name">(亚瑟)</span>, <span class="book-title">《Curious George》</span> <span class="chinese-name">(好奇的乔治)</span>, <span class="book-title">《Wild Kratts》</span> <span class="chinese-name">(克拉特的动物世界)</span> - 科普, <span class="book-title">《Magic School Bus》</span> <span class="chinese-name">(神奇校车)</span> (旧版/Rides Again), <span class="book-title">《StoryBots》</span> - 科普问答</li>
+                 <li>音频: Little Fox (Level 4-6), 桥梁书/初章书有声版 (Audible, 喜马拉雅, App内资源等)</li>
+            </ul>
+            <ul class="graded-readers">
+                <span class="book-category">分级读物 (继续拔高 & 拓展非虚构):</span>
+                 <li><span class="book-title">《Step into Reading》</span> <span class="chinese-name">(兰登)</span> Level 2 <span class="level-info">(Lexile 200L-450L, GRL H-J, AR 1.5-2.5)</span></li>
+                 <li><span class="book-title">《I Can Read!》</span> Level 1 <span class="chinese-name">(我能读系列)</span> <span class="level-info">(Lexile BR-400L, GRL F-J, AR 1.0-2.5)</span> (如 Frog and Toad 部分早期作品, Amelia Bedelia 部分早期作品)</li>
+                 <li><span class="book-title">《Oxford Reading Tree》</span> (ORT) Stage 6, 7 <span class="level-info">(GRL I-K)</span></li>
+                 <li><span class="book-title">RAZ</span> Level H, I, J, K, L <span class="level-info">(GRL H-L)</span></li>
+                 <li><span class="book-title">《Heinemann》</span> <span class="chinese-name">(海尼曼)</span> G1 <span class="level-info">(GRL D-J)</span></li>
+                 <li><span class="book-title">《National Geographic Kids Readers》</span> Level 1 <span class="chinese-name">(国家地理儿童分级读物)</span> <span class="level-info">(Lexile ~250L-450L, GRL G-J, AR 0.7-2.0)</span> - 科普入门</li>
+                 <li><span class="book-title">《Step into Reading》</span> Level 3 <span class="level-info">(Lexile 400L-600L, GRL K-M, AR 2.0-3.5)</span></li>
+                 <li><span class="book-title">《I Can Read!》</span> Level 2 <span class="level-info">(Lexile 300L-500L, GRL K-M, AR 2.0-3.5)</span> (如 Amelia Bedelia, Nate the Great 部分早期作品)</li>
+                 <li><span class="book-title">《Oxford Reading Tree》</span> (ORT) Stage 8, 9 <span class="level-info">(GRL L-P)</span> - 作为分级阅读的终点目标</li>
+                 <li><span class="book-title">RAZ</span> Level M, N, O, P <span class="level-info">(GRL M-P)</span> - 作为分级阅读的终点目标</li>
+                 <li><span class="book-title">《Heinemann》</span> <span class="chinese-name">(海尼曼)</span> G2 <span class="level-info">(GRL J-L)</span></li>
+                 <li><span class="book-title">《Let's-Read-and-Find-Out Science》</span> Level 1 & 2 <span class="chinese-name">(初探科学)</span> <span class="level-info">(Lexile 300L-700L, GRL I-P, AR 2.0-3.8)</span> - 科普经典，重点推荐</li>
+                 <li><span class="book-title">《National Geographic Kids Readers》</span> Level 2 <span class="level-info">(Lexile ~400L-650L, GRL K-M, AR 2.0-3.5)</span></li>
+                 <li><span class="book-title">《Oxford Read and Discover / Explore》</span> Level 1-4 <span class="chinese-name">(牛津探索与发现)</span> <span class="level-info">(Lexile 300L-700L approx, GRL J-P approx)</span> - 科普分级体系</li>
+            </ul>
+            <ul class="bridge-books">
+                <span class="book-category">桥梁书 (Early Chapter Books - 大量阅读，兴趣为主):</span>
+                 <li><span class="book-title">《Poppleton》</span>系列 (Cynthia Rylant) <span class="level-info">(Lexile 270L-410L, GRL I-J, AR 2.3-2.7)</span></li>
+                 <li><span class="book-title">《Amelia Bedelia》</span> <span class="chinese-name">(糊涂女佣艾米莉亚)</span> (Peggy Parish - 早期I Can Read系列) <span class="level-info">(Lexile 140L-400L, GRL I-K, AR 1.9-3.1)</span> - 文字游戏，幽默</li>
+                 <li><span class="book-title">《Nate the Great》</span>系列 <span class="chinese-name">(大侦探奈特)</span> (Marjorie Weinman Sharmat) <span class="level-info">(Lexile 200L-450L, GRL J-M, AR 2.0-3.2)</span> - 经典侦探启蒙</li>
+                 <li><span class="book-title">《Young Cam Jansen》</span>系列 (David A. Adler) <span class="level-info">(Lexile 310L-460L, GRL K-M, AR 2.6-3.1)</span> - 记忆力侦探</li>
+                 <li><span class="book-title">《Henry and Mudge》</span>系列 (Cynthia Rylant) <span class="level-info">(Lexile 340L-490L, GRL J-K, AR 2.4-3.0)</span> - 温馨男孩与狗</li>
+                 <li><span class="book-title">《Mercy Watson》</span>系列 <span class="chinese-name">(小猪梅西)</span> (Kate DiCamillo) <span class="level-info">(Lexile 360L-450L, GRL L, AR 2.7-3.0)</span> - 幽默有趣，画风可爱</li>
+                 <li><span class="book-title">《Mr. Putter & Tabby》</span>系列 (Cynthia Rylant) <span class="level-info">(Lexile 450L-590L, GRL K-L, AR 2.8-3.4)</span> - 温馨老人与猫</li>
+                 <li><span class="book-title">《Frog and Toad》</span>系列 <span class="chinese-name">(青蛙和蟾蜍)</span> (Arnold Lobel) <span class="level-info">(Lexile 400L, GRL K, AR 2.9 - for Friends)</span> - 经典友谊故事</li>
+                 <li><span class="book-title">《Owl Diaries》</span>系列 <span class="chinese-name">(猫头鹰日记)</span> (Rebecca Elliott) <span class="level-info">(Lexile 440L-580L, GRL L-M, AR 2.7-3.1)</span> - 彩色插图日记体，女孩喜爱</li>
+                 <li><span class="book-title">《Ling & Ting》</span>系列 (Grace Lin) <span class="level-info">(Lexile 390L-430L, GRL K, AR 2.8)</span> - 双胞胎姐妹故事，作者为华裔</li>
+                 <li><span class="book-title">《Ricky Ricotta's Mighty Robot》</span>系列 (Dav Pilkey) <span class="level-info">(Lexile 440L-560L, GRL M, AR 2.8-3.4)</span> - 男孩喜爱，图多，早期章节形式</li>
+                 <li><span class="book-title">《Princess in Black》</span>系列 <span class="chinese-name">(黑衣公主)</span> (Shannon Hale) <span class="level-info">(Lexile 380L-480L, GRL L, AR 2.4-2.9)</span> - 公主+蒙面英雄</li>
+                 <li><span class="book-title">《Bink & Gollie》</span>系列 (Kate DiCamillo) <span class="level-info">(Lexile 380L-440L, GRL L, AR 2.8-3.0)</span> - 两个好朋友的故事</li>
+                 <li><span class="book-title">《Katie Woo》</span>系列 (Fran Manushkin) <span class="level-info">(Lexile 300L-450L, GRL I-K, AR 2.0-2.8)</span> - 华裔女孩生活故事</li>
+                 <li><span class="book-title">《Yasmin》</span>系列 (Saadia Faruqi) <span class="level-info">(Lexile 400L-500L, GRL K-L, AR 2.5-3.0)</span> - 巴基斯坦裔女孩，多元文化</li>
+            </ul>
+            <ul class="chapter-books">
+                 <span class="book-category">初级章节书 (听读结合，逐步尝试自读):</span>
+                 <li><span class="book-title">《Magic Tree House》</span>系列 (#1-28) <span class="chinese-name">(神奇树屋)</span> (Mary Pope Osborne) <span class="level-info">(Lexile 380L-590L, GRL M, AR 2.6-3.5)</span> - 经典必读，冒险+科普结合</li>
+                 <li><span class="book-title">《Junie B. Jones》</span>系列 (JBJ) (Barbara Park) <span class="level-info">(Lexile 330L-560L, GRL M-P, AR 2.6-3.1)</span> - 语言口语化，幽默（注意部分用词和语法可能不规范，选择性阅读）</li>
+                 <li><span class="book-title">《A to Z Mysteries》</span>系列 <span class="chinese-name">(A to Z 神秘案件)</span> (Ron Roy) <span class="level-info">(Lexile 490L-660L, GRL M-O, AR 3.2-4.0)</span> - 推理入门</li>
+                 <li><span class="book-title">《Horrid Henry: Early Reader》</span>系列 <span class="chinese-name">(淘气包亨利)</span> (Francesca Simon) <span class="level-info">(Lexile 450L-600L approx, AR 3.0-3.8 approx)</span> - 捣蛋鬼故事，英式幽默</li>
+                 <li><span class="book-title">《My Weird School》</span>系列 <span class="chinese-name">(疯狂学校)</span> (Dan Gutman) <span class="level-info">(Lexile 540L-700L approx, GRL O-P, AR 3.3-4.3 approx)</span> - 夸张幽默，男孩喜爱</li>
+                 <li><span class="book-title">《Dragon Masters》</span>系列 <span class="chinese-name">(驯龙大师)</span> (Tracey West) <span class="level-info">(Lexile 510L-600L, GRL M-O, AR 3.1-3.7)</span> - 彩色插图，奇幻入门</li>
+                 <li><span class="book-title">《Eerie Elementary》</span>系列 <span class="chinese-name">(怪诞小学)</span> (Jack Chabert) <span class="level-info">(Lexile 490L-570L, GRL M-O, AR 3.0-3.4)</span> - 惊险刺激</li>
+                 <li><span class="book-title">《The Notebook of Doom》</span>系列 (Troy Cummings) <span class="level-info">(Lexile 480L-580L, GRL M-O, AR 3.0-3.5)</span> - 怪物主题，插图有趣</li>
+                 <li><span class="book-title">《Press Start!》</span>系列 (Thomas Flintham) <span class="level-info">(Lexile 450L-550L, GRL L-M, AR 2.8-3.2)</span> - 游戏主题，彩色插图</li>
+                 <li><span class="book-title">《Galaxy Zack》</span>系列 (Ray O'Ryan) <span class="level-info">(Lexile 470L-580L, GRL L-M, AR 3.0-3.5)</span> - 太空主题</li>
+            </ul>
+            <ul class="non-fiction">
+                 <span class="book-category">科普 (Non-Fiction):</span>
+                 <li><span class="book-title">《Let's-Read-and-Find-Out Science》</span> Level 2 <span class="chinese-name">(初探科学)</span> <span class="level-info">(Lexile 400L-700L, GRL K-P, AR 2.5-3.8)</span></li>
+                 <li><span class="book-title">《National Geographic Kids Readers》</span> Level 2 & 3 <span class="level-info">(Lexile ~400L-750L, GRL K-P, AR 2.0-4.5)</span></li>
+                 <li>Scholastic <span class="book-title">《True or False》</span> 系列</li>
+                 <li><span class="book-title">《Fly Guy Presents》</span>系列 <span class="chinese-name">(苍蝇小子科普系列)</span> (Tedd Arnold) <span class="level-info">(Lexile 500L-700L, GRL L-N, AR 2.5-3.5)</span></li>
+            </ul>
+            <ul class="tools-resources">
+                <span class="book-category">工具/App:</span>
+                 <li>在线阅读平台: RAZ-Kids, Epic! (付费, 资源丰富), Reading Eggs (游戏化学习, 付费)</li>
+                 <li>词汇/Phonics App: Starfall.com (部分免费), Khan Kids App (免费), Quizlet (自制词卡)</li>
+                 <li>AR Quiz (查询书籍AR值及Quiz number，需了解学校或机构是否使用)</li>
+            </ul>
+        </div>
+         <div class="stage-summary">
+            <h2>阶段三小结</h2>
+            <p>目标达成标志：能比较流利地阅读ORT L6/7或RAZ J/K/L级分级读物，基本掌握常见Phonics规则和200-300个高频词，能独立阅读大部分常见桥梁书 (如Nate the Great, Henry and Mudge)，开始尝试听读初级章节书 (如Magic Tree House)，能进行简单的故事复述和几句话的看图写作，具备初步的阅读理解能力 (找细节、简单预测)。</p>
+        </div>
+
+        <h2>阶段四：进阶期 (6-8岁) - 自主拓展，综合提升</h2>
+        <p class="stage-intro">孩子基本具备独立阅读能力，此阶段重点是<b>大量阅读中级章节书</b>，拓展阅读的广度（小说、科普、历史、传记）和深度，提升阅读速度和耐力。词汇量目标 2500-4000+ (约AR 3.0-5.0 / Lexile 500-800L)。听说读写能力全面发展，开始注重批判性思维的萌芽。</p>
+
+        <h3>核心活动</h3>
+        <ul>
+            <li><strong>听力输入 (每日1小时+):</strong>
+                <div class="execution-method">听中高阶章节书的有声书 (如 Roald Dahl 作品, Percy Jackson)，可以挑战略高于自主阅读水平的书籍，拓宽理解力。</div>
+                <div class="execution-method">收听适合儿童的英文播客 (如 Wow in the World, Brains On!, Story Pirates)，观看科普纪录片片段、无字幕动画或简单电影片段。</div>
+                <div class="execution-method">有意识地接触不同口音的英语 (英音、美音)。</div>
+            </li>
+            <li><strong>自主阅读 (每日30-60分钟+，鼓励自主选择):</strong>
+                <div class="execution-method"><b>主攻中级章节书</b>，根据孩子兴趣选择不同系列和题材（奇幻、冒险、校园、侦探、历史、科幻等）。鼓励孩子在图书馆或书店自主选择感兴趣的书籍。</div>
+                <div class="execution-method"><b>显著增加非虚构阅读比例</b>，如科普 (NG Kids Chapter Books)、传记 (Who Was系列)、历史故事 (I Survived系列)。</div>
+                <div class="execution-method">开始阅读儿童杂志 (如 Highlights, National Geographic Kids, Ask) 或儿童新闻网站 (如 Time for Kids, DOGO News)。</div>
+                <div class="execution-method">培养默读习惯，逐步提高阅读速度和理解效率。</div>
+            </li>
+        </ul>
+
+        <h3>拓展深化活动</h3>
+        <ul>
+            <li><strong>口语输出 (流利与深度):</strong>
+                <div class="execution-method">就阅读内容进行更深入的讨论，不仅复述情节，还要讨论人物动机、行为后果、主题思想等。</div>
+                <div class="execution-method">练习有条理地表达自己的观点和理由 ("I think... because...")。</div>
+                <div class="execution-method">参与简单的课堂或家庭辩论，就某个话题陈述正反方观点。</div>
+                <div class="execution-method">继续线上外教课 (如果选择)，可以侧重于特定话题讨论或项目式学习 (PBL)，提升语言应用的复杂度和流利度。</div>
+            </li>
+             <li><strong>写作进阶 (段落与结构):</strong>
+                <div class="execution-method">练习撰写结构稍完整的段落 (包含主题句 Topic Sentence + 支撑句 Supporting Sentences + 结尾句 Concluding Sentence)。</div>
+                <div class="execution-method">写简单的读书报告 (Book Report - 可以从模板开始) 或故事概要 (Summary)。</div>
+                <div class="execution-method">尝试不同体裁的写作，如根据绘本续写故事、写简单的说明文介绍一个事物。</div>
+                <div class="execution-method">开始关注基本的语法、标点和拼写，学习使用工具 (如Word检查) 或家长引导进行自我修改。可以使用简单的语法练习册辅助。</div>
+             </li>
+             <li><strong>词汇策略 (系统积累):</strong>
+                <div class="execution-method">鼓励主动查阅生词，开始尝试使用儿童英英词典 (如 Longman Children's Picture Dictionary, Merriam-Webster Elementary Dictionary) 或在线词典 (如 Google Dictionary, Merriam-Webster Learner's Dictionary)。</div>
+                <div class="execution-method">系统学习常见的词根词缀 (Prefixes & Suffixes)，扩大词汇推断能力。</div>
+                <div class="execution-method">使用工具 (如 Quizlet, Anki) 或笔记本/便签积累生词和好句。可以开始关注 KET/PET 考试的核心词汇。</div>
+             </li>
+              <li><strong>深度理解与批判性思维 (萌芽):</strong>
+                <div class="execution-method">阅读非虚构内容时，学习区分事实 (Fact) 和观点 (Opinion)。</div>
+                <div class="execution-method">思考作者写这篇文章/书的目的是什么 (Author's Purpose - to inform, persuade, entertain?)。</div>
+                <div class="execution-method">比较不同书籍或文章中关于同一主题的信息或观点，寻找异同。</div>
+                <div class="execution-method">鼓励孩子在阅读和讨论中提出自己的问题和质疑 ("Why did the character do that?", "Is this always true?")。</div>
+             </li>
+             <li><strong>文化融入与视野拓展:</strong>
+                <div class="execution-method">阅读更多反映多元文化背景的书籍 (如描写不同国家、不同族裔生活的作品)。</div>
+                <div class="execution-method">观看介绍世界各地风土人情的纪录片或教育视频 (如 BBC Earth Kids, National Geographic Kids YouTube频道)。</div>
+                <div class="execution-method">结合阅读，了解一些英语国家的地理、简史、社会常识。</div>
+             </li>
+        </ul>
+
+         <h3>详细书单/资源 (排序参考 Lexile/AR，从低到高)</h3>
+         <div class="book-list">
+            <ul class="audio-video">
+                <span class="book-category">听力资源:</span>
+                 <li>章节书有声书 (重点，如 Roald Dahl, EB White, Kate DiCamillo 作品，Audible, Librivox, 喜马拉雅英文频道等)</li>
+                 <li>播客: <span class="book-title">Wow in the World</span> (科普), <span class="book-title">Brains On!</span> (科普问答), <span class="book-title">Story Pirates</span> (儿童故事创作), <span class="book-title">Circle Round</span> (世界民间故事), <span class="book-title">Greeking Out</span> (希腊神话 by NG Kids), <span class="book-title">But Why</span> (儿童提问回答)</li>
+                 <li>科普视频: <span class="book-title">SciShow Kids</span>, <span class="book-title">TED-Ed Riddles/Talks</span> (选择适合年龄的), <span class="book-title">Peekaboo Kidz / Aumsum Time</span> (动画科普)</li>
+            </ul>
+
+            <ul class="chapter-books">
+                 <span class="book-category">章节书 (虚构类 - 中级 Fiction - 核心):</span>
+                 <li><span class="book-title">《Ivy + Bean》</span>系列 (Annie Barrows) <span class="level-info">(Lexile 440L-520L, AR 3.1–3.9, GRL M)</span> - 两个女孩的捣蛋友情</li>
+                 <li><span class="book-title">《Stink》</span>系列 (Megan McDonald) <span class="level-info">(Lexile 470L-620L, AR 3.2-3.9, GRL M-O)</span> - Judy Moody 的弟弟</li>
+                 <li><span class="book-title">《Alvin Ho》</span>系列 (Lenore Look) <span class="level-info">(Lexile 600L-700L, AR 3.8-4.2, GRL O-P)</span> - 幽默校园，亚裔男孩视角</li>
+                 <li><span class="book-title">《Clementine》</span>系列 (Sara Pennypacker) <span class="level-info">(Lexile 790L-870L, AR 4.3-4.8, GRL P-R)</span> - 古灵精怪的女孩</li>
+                 <li><span class="book-title">《Judy Moody》</span>系列 (Megan McDonald) <span class="level-info">(Lexile 440L-600L, AR 3.3-4.1, GRL N-P)</span> - 情绪多变的女孩</li>
+                 <li><span class="book-title">《The Bad Guys》</span>系列 <span class="chinese-name">(坏蛋联盟)</span> (Aaron Blabey) <span class="level-info">(Lexile GN450L-550L approx, AR 2.5-3.0 approx)</span> - 图像小说形式，幽默</li>
+                 <li><span class="book-title">《Captain Underpants》</span>系列 <span class="chinese-name">(内裤超人)</span> (Dav Pilkey) <span class="level-info">(Lexile GN640L-890L approx, AR 4.3-5.2 approx)</span> - 男孩喜爱，无厘头</li>
+                 <li><span class="book-title">《The Last Kids on Earth》</span>系列 (Max Brallier) <span class="level-info">(Lexile 570L-730L, AR 4.0-5.0)</span> - 末日打怪，幽默</li>
+                 <li><span class="book-title">《Diary of a Wimpy Kid》</span>系列 <span class="chinese-name">(小屁孩日记)</span> (Jeff Kinney) <span class="level-info">(Lexile 910L-1060L, AR 5.2-6.1)</span> - 日记体，校园生活 (Lexile较高但易读性强)</li>
+                 <li>Roald Dahl <span class="chinese-name">(罗尔德·达尔)</span> 作品: <span class="book-title">《The Magic Finger》</span> <span class="level-info">(Lexile 590L, AR 3.1)</span>, <span class="book-title">《Fantastic Mr. Fox》</span><span class="chinese-name">(了不起的狐狸爸爸)</span> <span class="level-info">(Lexile 600L, AR 4.1)</span>, <span class="book-title">《The Enormous Crocodile》</span> <span class="level-info">(Lexile 710L, AR 3.7)</span>, <span class="book-title">《Esio Trot》</span><span class="chinese-name">(爱心小乌龟)</span> <span class="level-info">(Lexile 750L, AR 4.4)</span>, <span class="book-title">《Charlie and the Chocolate Factory》</span><span class="chinese-name">(查理和巧克力工厂)</span> <span class="level-info">(Lexile 810L, AR 4.8)</span>, <span class="book-title">《Matilda》</span><span class="chinese-name">(玛蒂尔达)</span> <span class="level-info">(Lexile 840L, AR 5.0)</span>, <span class="book-title">《The BFG》</span><span class="chinese-name">(好心眼巨人)</span> <span class="level-info">(Lexile 720L, AR 4.8)</span></li>
+                 <li>E.B. White <span class="chinese-name">(E.B.怀特)</span> 作品: <span class="book-title">《Charlotte's Web》</span> <span class="chinese-name">(夏洛的网)</span> <span class="level-info">(Lexile 680L, AR 4.4)</span>, <span class="book-title">《Stuart Little》</span><span class="chinese-name">(精灵鼠小弟)</span> <span class="level-info">(Lexile 920L, AR 6.0)</span>, <span class="book-title">《The Trumpet of the Swan》</span> <span class="chinese-name">(天鹅的喇叭)</span> <span class="level-info">(Lexile 780L, AR 4.9)</span></li>
+                 <li>Kate DiCamillo 作品: <span class="book-title">《Because of Winn-Dixie》</span> <span class="level-info">(Lexile 610L, AR 3.9)</span>, <span class="book-title">《The Tale of Despereaux》</span> <span class="chinese-name">(浪漫鼠德佩罗)</span> <span class="level-info">(Lexile 670L, AR 4.7)</span> - Newbery奖</li>
+                 <li><span class="book-title">《Sarah, Plain and Tall》</span> <span class="chinese-name">(朴素又高大的莎拉)</span> (Patricia MacLachlan) <span class="level-info">(Lexile 560L, AR 3.4)</span> - Newbery奖，历史小说</li>
+                 <li><span class="book-title">《Shiloh》</span> <span class="chinese-name">(小狗夏伊洛)</span> (Phyllis Reynolds Naylor) <span class="level-info">(Lexile 800L, AR 4.4)</span> - Newbery奖，动物与道德</li>
+                 <li><span class="book-title">《Where the Mountain Meets the Moon》</span> <span class="chinese-name">(月夜仙踪)</span> (Grace Lin) <span class="level-info">(Lexile 820L, AR 5.5)</span> - Newbery Honor，中国元素奇幻</li>
+                 <li><span class="book-title">《Wonderstruck》</span> (Brian Selznick) <span class="level-info">(Lexile 840L, AR 5.5)</span> - 图文结合，独特形式</li>
+                 <li><span class="book-title">《Merci Suárez Changes Gears》</span> (Meg Medina) <span class="level-info">(Lexile 740L, AR 4.6)</span> - Newbery奖，古巴裔女孩成长</li>
+                 <li><span class="book-title">《Toys Go Out》</span>系列 (Emily Jenkins) <span class="level-info">(Lexile 700L-800L, AR 4.4-4.8)</span> - 玩具视角的故事</li>
+                 <li><span class="book-title">《The Vanderbeekers of 141st Street》</span>系列 (Karina Yan Glaser) <span class="level-info">(Lexile 730L, AR 4.8)</span> - 现代温馨家庭</li>
+                 <li><span class="book-title">《Ways to Make Sunshine》</span> (Renée Watson) <span class="level-info">(Lexile 750L, AR 4.5)</span> - 非裔女孩生活</li>
+            </ul>
+
+            <ul class="graphic-novels">
+                <span class="book-category">图像小说 (Graphic Novels - 拓展阅读兴趣):</span>
+                <li><span class="book-title">《Smile》</span>, <span class="book-title">《Sisters》</span>, <span class="book-title">《Guts》</span> (Raina Telgemeier) <span class="level-info">(Lexile GN290L-GN410L, AR 2.4-2.8)</span> - 极受欢迎，女孩成长烦恼</li>
+                <li><span class="book-title">《El Deafo》</span> (Cece Bell) <span class="level-info">(Lexile GN450L, AR 3.0)</span> - Newbery Honor，听障女孩经历</li>
+                <li><span class="book-title">《New Kid》</span> & <span class="book-title">《Class Act》</span> (Jerry Craft) <span class="level-info">(Lexile GN550L-GN650L, AR 3.5-3.8)</span> - Newbery奖，种族与身份认同</li>
+                <li><span class="book-title">《Amulet》</span>系列 (Kazu Kibuishi) <span class="level-info">(Lexile GN310L-GN410L, AR 2.6-3.2)</span> - 奇幻冒险</li>
+                <li><span class="book-title">《Bone》</span>系列 (Jeff Smith) <span class="level-info">(Lexile GN300L-GN500L approx, AR 2.5-3.5 approx)</span> - 经典奇幻史诗</li>
+                <li><span class="book-title">《Hilo》</span>系列 (Judd Winick) <span class="level-info">(Lexile GN300L-GN450L, AR 2.5-3.0)</span> - 科幻幽默</li>
+                <li><span class="book-title">《Phoebe and Her Unicorn》</span>系列 (Dana Simpson) <span class="level-info">(Lexile GN400L-GN600L approx)</span> - 幽默，女孩与独角兽</li>
+                <li><span class="book-title">《Zita the Spacegirl》</span>系列 (Ben Hatke) <span class="level-info">(Lexile GN300L-GN400L, AR 2.5-3.0)</span> - 太空冒险</li>
+            </ul>
+
+            <ul class="poetry">
+                <span class="book-category">诗歌 (Poetry - 培养韵律感和想象力):</span>
+                <li>Shel Silverstein: <span class="book-title">《Where the Sidewalk Ends》</span>, <span class="book-title">《A Light in the Attic》</span>, <span class="book-title">《Falling Up》</span> - 经典有趣，想象力丰富</li>
+                <li>Jack Prelutsky: <span class="book-title">《The New Kid on the Block》</span>, <span class="book-title">《Something Big Has Been Here》</span> - 幽默搞怪</li>
+                <li><span class="book-title">《Poetry for Young People》</span>系列 (不同诗人合集，如 Langston Hughes, Emily Dickinson)</li>
+            </ul>
+
+            <ul class="non-fiction">
+                 <span class="book-category">章节书 (非虚构类 - Non-Fiction - 增加比例):</span>
+                 <li><span class="book-title">《Magic Tree House Fact Tracker》</span>系列 <span class="chinese-name">(神奇树屋科普版)</span> (Will Osborne & Mary Pope Osborne) <span class="level-info">(Lexile 550L-900L, GRL N-S, AR 4.2-5.6)</span> - 与主线故事配套</li>
+                 <li><span class="book-title">《Who Was...? / Who Is...?》</span>系列 <span class="chinese-name">(名人传记系列)</span> <span class="level-info">(Lexile 620L-900L approx, GRL N-S, AR 4.0-6.0 approx)</span> - 人物传记入门，覆盖面广</li>
+                 <li><span class="book-title">《What Was...?》</span>系列 (历史事件/地点)</li>
+                 <li><span class="book-title">《Where Is...?》</span>系列 (地标建筑)</li>
+                 <li><span class="book-title">《I Survived》</span>系列 <span class="chinese-name">(我幸存了下来)</span> (Lauren Tarshis) <span class="level-info">(Lexile 560L-700L approx, GRL R-U, AR 4.0-5.0 approx)</span> - 历史灾难事件中的儿童视角</li>
+                 <li><span class="book-title">《National Geographic Kids Chapters》</span>系列 <span class="level-info">(Lexile 600L-800L approx)</span> - NG出品的章节科普</li>
+                 <li><span class="book-title">《Ordinary People Change the World》</span>系列 (Brad Meltzer) <span class="level-info">(Lexile 500L-700L approx, AR 3.0-4.0)</span> - 图文并茂名人传记，风格独特</li>
+                 <li><span class="book-title">《DK Eyewitness Books》</span>系列 (部分适合此年龄段的主题，如 Dinosaurs, Ancient Egypt) <span class="level-info">(Lexile 900L-1100L+ approx)</span> - 图文百科，信息量大 (可选择性阅读或亲子共读)</li>
+                 <li><span class="book-title">《Basher Science》</span>系列 <span class="level-info">(Lexile 700L-900L approx)</span> - 拟人化趣味科普</li>
+                 <li><span class="book-title">《If You Lived...》</span>系列 (Scholastic) - 历史生活场景介绍，问答形式</li>
+                 <li><span class="book-title">《TIME for Kids Explains》</span>系列</li>
+            </ul>
+
+            <ul class="chapter-books">
+                <span class="book-category">向上衔接书目 (适合该年龄段高水平读者 或 7-8岁末期):</span>
+                <li><span class="book-title">《The Phantom Tollbooth》</span> <span class="chinese-name">(神奇的收费亭)</span> (Norton Juster) <span class="level-info">(Lexile 1000L, AR 6.7)</span> - 经典文字游戏与想象力</li>
+                <li><span class="book-title">《From the Mixed-Up Files of Mrs. Basil E. Frankweiler》</span> <span class="chinese-name">(天使雕像)</span> (E.L. Konigsburg) <span class="level-info">(Lexile 700L, AR 4.7)</span> - Newbery奖，博物馆奇遇</li>
+                <li><span class="book-title">《Esperanza Rising》</span> <span class="chinese-name">(雅 Esperanza)</span> (Pam Muñoz Ryan) <span class="level-info">(Lexile 750L, AR 5.3)</span> - 历史小说，移民经历</li>
+                <li><span class="book-title">《Pax》</span> (Sara Pennypacker) <span class="level-info">(Lexile 760L, AR 5.0)</span> - 战争背景下人与狐狸</li>
+                <li><span class="book-title">《Mrs. Frisby and the Rats of NIMH》</span> <span class="chinese-name">(尼姆的老鼠)</span> (Robert C. O'Brien) <span class="level-info">(Lexile 790L, AR 5.1)</span> - Newbery奖，经典动物奇幻</li>
+                <li><span class="book-title">《Harry Potter and the Sorcerer's Stone》</span> <span class="chinese-name">(哈利波特与魔法石)</span> (J.K. Rowling) <span class="level-info">(Lexile 880L, AR 5.5)</span> - 作为进入高阶阅读的起点</li>
+                <li><span class="book-title">《The Birchbark House》</span> (Louise Erdrich) <span class="level-info">(Lexile 980L, AR 6.2)</span> - 美国原住民历史小说 (偏高阶)</li>
+                <li><span class="book-title">《The Penderwicks》</span>系列 (Jeanne Birdsall) <span class="level-info">(Lexile 940L, AR 6.1)</span> - 温馨家庭故事 (偏高阶)</li>
+            </ul>
+
+            <ul class="tools-resources">
+                 <span class="book-category">杂志/教材/练习册/工具 (按需选用):</span>
+                 <li>杂志: <span class="book-title">Highlights</span> (综合), <span class="book-title">National Geographic Kids</span> (科普), <span class="book-title">Ranger Rick</span> (自然), <span class="book-title">Ask</span> (科学艺术), <span class="book-title">Cricket</span> (文学)</li>
+                 <li>教材 (参考/选用): <span class="book-title">《Wonders》/《Reach Higher》</span>, <span class="book-title">《Journeys》</span>, <span class="book-title">《Think》</span> (美国/国际学校常用教材)</li>
+                 <li>练习册 (补充短板): <span class="book-title">Spectrum</span> (分项练习), <span class="book-title">Evan-Moor</span> (阅读理解/写作), <span class="book-title">Skill Sharpeners</span> (综合技能), <span class="book-title">《哈佛时文阅读》(国内常见)</span> (时事阅读理解)</li>
+                 <li>工具: 儿童英英词典, Quizlet/Anki (词汇), 思维导图工具 (XMind, MindNode)</li>
+            </ul>
+        </div>
+         <div class="stage-summary">
+            <h2>阶段四小结</h2>
+            <p>目标达成标志：能独立阅读并基本理解中级章节书 (如 Roald Dahl 大部分作品, MTH Fact Tracker, Who Was 系列)，具备较好的阅读速度和耐力，词汇量达到3000-4000 (约AR 4.5-5.0 / Lexile 800L左右)，能进行有条理的口语讨论和主题段落写作，开始运用基本的阅读策略 (如预测、提问、总结) 和批判性思维 (区分事实观点)。</p>
+        </div>
+
+        <div class="stage-5">
+            <h2>阶段五：高级阅读与批判性思维 (约8/9岁+ 或 Lexile 900L+)</h2>
+            <p class="stage-intro">此阶段目标是实现高阶章节书（YA青少年文学、部分成人书籍、经典文学）和深度非虚构读物的<b>自由阅读与批判性理解</b>。重点培养分析、评估、综合信息的能力，能够进行有逻辑、有深度的口语交流和初步的学术性写作。词汇量目标 6000-10000+ (AR 5.0-7.0+ / Lexile 900L-1200L+)。此阶段更侧重阅读的<b>质量、深度和广度</b>，而非单纯追求数量和速度。</p>
+
+            <h3>核心活动 (听+读+思+写)</h3>
+             <ul>
+                <li><strong>深度阅读 (每日45-60分钟+):</strong>
+                    <div class="execution-method">广泛阅读高阶小说 (YA佳作)、经典文学入门 (可选青少年版或原著)、深度非虚构作品 (科普、历史、传记、社会议题)。</div>
+                    <div class="execution-method">进行主题阅读 (如同一历史时期的不同角度作品) 或作者研究 (如阅读同一作者的多部作品)，深入探索感兴趣的领域。</div>
+                    <div class="execution-method">精读与泛读结合：选择部分作品进行细致分析 (如人物塑造、情节结构、语言特色)，同时保持广泛涉猎以拓展视野。</div>
+                </li>
+                <li><strong>高级听力 (每日1小时+):</strong>
+                    <div class="execution-method">听难度更高、语速更快的有声书 (YA小说、经典文学)、播客 (如 This American Life, Radiolab 精选片段)、新闻报道 (NPR, BBC)、纪录片原声、TED演讲等。</div>
+                    <div class="execution-method">练习听懂不同口音和语域 (正式/非正式) 的英语。</div>
+                    <div class="execution-method">尝试听懂无字幕或仅有英文字幕的影视剧/纪录片。</div>
+                </li>
+                <li><strong>批判性思维与讨论:</strong>
+                    <div class="execution-method">深入分析文本：包括结构 (对比、因果、时间顺序)、论证方式 (举例、数据、引用)、修辞手法 (比喻、象征)、作者意图和潜在偏见。</div>
+                    <div class="execution-method">进行比较阅读：就同一话题，对比不同来源 (如新闻报道、百科、个人记述) 的信息，评估其可靠性、侧重点和潜在偏见。</div>
+                    <div class="execution-method">参与有深度的讨论或小型辩论：清晰表达和有力论证自己的观点，学会倾听、理解和回应不同意见。</div>
+                </li>
+                 <li><strong>高级写作:</strong>
+                    <div class="execution-method">练习撰写结构更复杂的多段落文章，如议论文 (提出观点、提供论据、反驳对立观点)、说明文 (清晰解释一个概念或过程)、叙事文 (运用描写、对话推动情节)。</div>
+                    <div class="execution-method">学习进行简单的文献检索和信息整理，并撰写简短的研究报告 (Research Report)，注明信息来源。</div>
+                    <div class="execution-method">注重文章的逻辑连贯性 (使用过渡词句)、论据的有效性和语言的准确性、规范性、丰富性。</div>
+                    <div class="execution-method">学习基本的引用格式 (如 MLA 或 APA 的简化形式)。</div>
+                </li>
+            </ul>
+
+            <h3>拓展深化策略</h3>
+             <ul>
+                <li><strong>阅读策略强化:</strong>
+                    <div class="execution-method">熟练运用 SQ3R (Survey, Question, Read, Recite, Review), KWL (Know, Want to know, Learned) 等深度阅读方法。</div>
+                    <div class="execution-method">学习并实践做笔记 (Annotation)，在阅读时直接在文本旁标记关键信息、提出问题、记录联想、总结段落大意。</div>
+                </li>
+                <li><strong>词汇与语言:</strong>
+                    <div class="execution-method">系统学习 Academic Word List (AWL)，掌握学术常用词汇。</div>
+                    <div class="execution-method">深入学习词根词缀和构词法，高效扩大词汇量。</div>
+                    <div class="execution-method">注意习语 (Idioms)、固定搭配 (Collocations) 和语域 (Register - 正式/非正式) 的恰当运用。</div>
+                    <div class="execution-method">鼓励使用 Thesaurus (同义词词典) 查找替换词，丰富书面和口头表达。</div>
+                </li>
+                <li><strong>研究与信息综合:</strong>
+                    <div class="execution-method">学习使用图书馆数据库、可信赖的在线资源 (如 Google Scholar, .gov/.edu 网站) 进行信息检索和筛选。</div>
+                    <div class="execution-method">练习从多个来源综合信息，识别不同观点，形成自己的理解和结论，并能清晰地阐述。</div>
+                </li>
+                <li><strong>持续文化探索:</strong>
+                    <div class="execution-method">阅读不同文化背景的文学作品 (经典及当代) 和非虚构著作，理解多元视角。</div>
+                    <div class="execution-method">关注全球性议题 (环境、科技、社会公平等) 的英文报道和讨论，了解不同文化背景下的观点。</div>
+                    <div class="execution-method">通过观看优质英文电影、戏剧、艺术展览介绍等多种形式体验文化。</div>
+                </li>
+            </ul>
+
+             <h3>推荐书单与资源 (高级阶段 - 排序参考 Lexile/AR，仅为示例，需根据兴趣选择)</h3>
+             <div class="book-list">
+                <ul class="chapter-books">
+                    <span class="book-category">高阶小说 (Fiction - YA/Advanced Middle Grade/Contemporary):</span>
+                    <li><span class="book-title">《The Giver》</span> <span class="chinese-name">(记忆传授人/授者)</span> (Lois Lowry) <span class="level-info">(Lexile 760L, AR 5.0)</span> - 反乌托邦入门经典</li>
+                    <li><span class="book-title">《Bridge to Terabithia》</span> <span class="chinese-name">(仙境之桥)</span> (Katherine Paterson) <span class="level-info">(Lexile 810L, AR 4.6)</span> - Newbery奖，友谊与失去</li>
+                    <li><span class="book-title">《Holes》</span> <span class="chinese-name">(别有洞天/洞)</span> (Louis Sachar) <span class="level-info">(Lexile 660L, AR 4.6)</span> - Newbery奖，结构巧妙，宿命与救赎</li>
+                    <li><span class="book-title">《Roll of Thunder, Hear My Cry》</span> (Mildred D. Taylor) <span class="level-info">(Lexile 920L, AR 5.7)</span> - Newbery奖，美国南方种族议题</li>
+                    <li><span class="book-title">《Percy Jackson & The Olympians》</span>系列 <span class="chinese-name">(波西·杰克逊)</span> (Rick Riordan) <span class="level-info">(Lexile 590L-740L+, AR 4.1-5.6+)</span> - 流行奇幻冒险，希腊神话</li>
+                    <li><span class="book-title">《A Wrinkle in Time》</span> <span class="chinese-name">(时间的皱折)</span> (Madeleine L'Engle) <span class="level-info">(Lexile 740L, AR 4.7)</span> - Newbery奖，经典科幻</li>
+                    <li><span class="book-title">《Wonder》</span> <span class="chinese-name">(奇迹男孩)</span> (R.J. Palacio) <span class="level-info">(Lexile 790L, AR 4.8)</span> - 成长、善良与接纳</li>
+                    <li><span class="book-title">《The Hunger Games》</span>系列 <span class="chinese-name">(饥饿游戏)</span> (Suzanne Collins) <span class="level-info">(Lexile 810L, AR 5.3)</span> - YA反乌托邦代表作</li>
+                    <li><span class="book-title">《The Maze Runner》</span>系列 <span class="chinese-name">(移动迷宫)</span> (James Dashner) <span class="level-info">(Lexile HL770L, AR 5.3)</span> - YA科幻冒险</li>
+                    <li><span class="book-title">《Divergent》</span>系列 <span class="chinese-name">(分歧者)</span> (Veronica Roth) <span class="level-info">(Lexile HL700L, AR 4.8)</span> - YA反乌托邦</li>
+                    <li><span class="book-title">《The Hate U Give》</span> <span class="chinese-name">(你给的仇恨)</span> (Angie Thomas) <span class="level-info">(Lexile HL620L, AR 4.6)</span> - 现实主义，社会议题，#BlackLivesMatter</li>
+                    <li><span class="book-title">《The Book Thief》</span> <span class="chinese-name">(偷书贼)</span> (Markus Zusak) <span class="level-info">(Lexile 730L, AR 5.1)</span> - 二战背景，独特叙事视角 (死神)</li>
+                    <li><span class="book-title">《Ender's Game》</span> <span class="chinese-name">(安德的游戏)</span> (Orson Scott Card) <span class="level-info">(Lexile 780L, AR 5.5)</span> - 经典科幻，战略与人性</li>
+                    <li><span class="book-title">《Miss Peregrine's Home for Peculiar Children》</span>系列 <span class="chinese-name">(怪屋女孩)</span> (Ransom Riggs) <span class="level-info">(Lexile 890L, AR 5.7)</span> - 奇幻，结合老照片，氛围独特</li>
+                    <li><span class="book-title">《The Selection》</span>系列 <span class="chinese-name">(决战王妃)</span> (Kiera Cass) <span class="level-info">(Lexile HL680L, AR 5.0)</span> - YA反乌托邦背景下的浪漫故事</li>
+                    <li><span class="book-title">《Harry Potter》</span>系列 (后几部) <span class="chinese-name">(哈利·波特)</span> (J.K. Rowling) <span class="level-info">(Lexile 900L-1030L+, AR 6.0-7.2+)</span> - 奇幻经典，难度与深度递增</li>
+                    <li>更多获奖作品 (Newbery Medal <span class="chinese-name">(纽伯瑞奖)</span>, Printz Award <span class="chinese-name">(普林兹奖)</span>, National Book Award <span class="chinese-name">(美国国家图书奖)</span> 等)。</li>
+                </ul>
+
+                <ul class="classics">
+                    <span class="book-category">经典文学 (Classics - 可选读简化版或原版):</span>
+                    <li><span class="book-title">《The Little Prince》</span> <span class="chinese-name">(小王子)</span> (Antoine de Saint-Exupéry) <span class="level-info">(Lexile 710L, AR 5.0)</span> - 哲理童话</li>
+                    <li><span class="book-title">《Anne of Green Gables》</span> <span class="chinese-name">(绿山墙的安妮)</span> (L.M. Montgomery) <span class="level-info">(Lexile 990L, AR 7.3)</span> - 少女成长</li>
+                    <li><span class="book-title">《The Adventures of Tom Sawyer》</span> <span class="chinese-name">(汤姆·索亚历险记)</span> (Mark Twain) <span class="level-info">(Lexile 950L, AR 5.9)</span> - 美国文学经典</li>
+                    <li><span class="book-title">《To Kill a Mockingbird》</span> <span class="chinese-name">(杀死一只知更鸟)</span> (Harper Lee) <span class="level-info">(Lexile 790L, AR 5.6)</span> - 种族、公正与成长</li>
+                    <li><span class="book-title">《The Hobbit》</span> <span class="chinese-name">(霍比特人)</span> (J.R.R. Tolkien) <span class="level-info">(Lexile 1000L, AR 6.6)</span> - 经典奇幻开端</li>
+                    <li><span class="book-title">《Island of the Blue Dolphins》</span> <span class="chinese-name">(蓝色海豚岛)</span> (Scott O'Dell) <span class="level-info">(Lexile 1000L, AR 5.5)</span> - Newbery奖，生存故事</li>
+                    <li><span class="book-title">《Hatchet》</span> <span class="chinese-name">(手斧男孩)</span> (Gary Paulsen) <span class="level-info">(Lexile 1020L, AR 5.7)</span> - 生存冒险经典</li>
+                    <li><span class="book-title">《Animal Farm》</span> <span class="chinese-name">(动物农场)</span> (George Orwell) <span class="level-info">(Lexile 1170L, AR 7.3)</span> - 政治寓言</li>
+                    <li><span class="book-title">《Lord of the Flies》</span> <span class="chinese-name">(蝇王)</span> (William Golding) <span class="level-info">(Lexile 770L, AR 5.0)</span> - 人性探讨</li>
+                    <li><span class="book-title">《Fahrenheit 451》</span> <span class="chinese-name">(华氏451)</span> (Ray Bradbury) <span class="level-info">(Lexile 890L, AR 5.2)</span> - 反乌托邦，思想自由</li>
+                    <li><span class="book-title">《The Call of the Wild》</span> <span class="chinese-name">(野性的呼唤)</span> (Jack London) <span class="level-info">(Lexile 1120L, AR 8.0)</span> - 动物与自然</li>
+                    <li><span class="book-title">《The Old Man and the Sea》</span> <span class="chinese-name">(老人与海)</span> (Ernest Hemingway) <span class="level-info">(Lexile 1370L, AR 8.3)</span> - 简洁文字，硬汉精神</li>
+                 </ul>
+
+                <ul class="non-fiction">
+                    <span class="book-category">深度非虚构 (Non-Fiction - 广泛拓展):</span>
+                     <li><strong>科学与技术 (Science & Technology):</strong>
+                         <ul>
+                             <li><span class="book-title">《Bomb: The Race to Build—and Steal—the World's Most Dangerous Weapon》</span> (Steve Sheinkin) <span class="level-info">(Lexile 910L, AR 6.2)</span> - 叙事性强</li>
+                             <li><span class="book-title">《Hidden Figures (Young Readers' Edition)》</span> <span class="chinese-name">(隐藏人物 青少版)</span> <span class="level-info">(Lexile 1080L)</span></li>
+                             <li><span class="book-title">《The Way Things Work Now》</span> (David Macaulay) <span class="level-info">(Lexile 1000L+)</span> - 图文并茂的科普百科</li>
+                             <li><span class="book-title">《Cosmos (Young Readers Edition)》</span> (Carl Sagan, Ann Druyan)</li>
+                             <li><span class="book-title">《A Short History of Nearly Everything (Young Readers Edition)》</span><span class="chinese-name">(万物简史 青少版)</span> (Bill Bryson) <span class="level-info">(Lexile 1000L+)</span></li>
+                             <li><span class="book-title">《Astrophysics for Young People in a Hurry》</span> (Neil deGrasse Tyson) <span class="level-info">(Lexile 980L)</span></li>
+                             <li><span class="book-title">《Sapiens: A Graphic History》</span> <span class="chinese-name">(人类简史 漫画版)</span> (Yuval Noah Harari) - 图文形式，易于理解</li>
+                             <li>杂志: *National Geographic*, *Scientific American* (选择性阅读), *Popular Science*, *Science News Explores*, *Muse Magazine*, *Odyssey Magazine*</li>
+                             <li>网站/频道: NASA website, HowStuffWorks, Khan Academy (科学部分), MinuteEarth (YouTube), Kurzgesagt – In a Nutshell (YouTube)</li>
+                         </ul>
+                     </li>
+                     <li><strong>历史、传记与社会 (History, Biography & Social Studies):</strong>
+                         <ul>
+                             <li><span class="book-title">《The Port Chicago 50》</span> (Steve Sheinkin) <span class="level-info">(Lexile 980L, AR 6.4)</span> - 二战时期种族歧视事件</li>
+                             <li><span class="book-title">《Claudette Colvin: Twice Toward Justice》</span> (Phillip Hoose) <span class="level-info">(Lexile 1000L, AR 6.4)</span> - National Book Award，民权运动先驱</li>
+                             <li><span class="book-title">《Brown Girl Dreaming》</span> (Jacqueline Woodson) <span class="level-info">(Lexile 990L, AR 5.4)</span> - National Book Award, Newbery Honor (诗歌体回忆录)</li>
+                             <li><span class="book-title">《I Am Malala (Young Readers Edition)》</span> <span class="chinese-name">(我是马拉拉 青少版)</span> <span class="level-info">(Lexile 830L, AR 5.9)</span> - 女性教育倡导者</li>
+                             <li><span class="book-title">《The Boys in the Boat (Young Readers Adaptation)》</span> <span class="level-info">(Lexile 1000L)</span> - 奥运赛艇队励志故事</li>
+                             <li><span class="book-title">《Undefeated: Jim Thorpe and the Carlisle Indian School Football Team》</span> (Steve Sheinkin) <span class="level-info">(Lexile 1040L, AR 7.2)</span></li>
+                             <li><span class="book-title">《An Indigenous Peoples' History of the United States for Young People》</span> (Roxanne Dunbar-Ortiz, adapted) - 美国原住民历史视角</li>
+                             <li>DK / Smithsonian / National Geographic 出版的深度历史/百科书籍 (如 History Year by Year)。</li>
+                             <li><span class="book-title">《Horrible Histories》</span> <span class="chinese-name">(可怕的历史)</span> 系列 (知识性与趣味性结合，英式幽默)</li>
+                         </ul>
+                     </li>
+                      <li><strong>文化、艺术与哲学 (Culture, Arts & Philosophy):</strong>
+                         <ul>
+                             <li>DK <span class="book-title">《Art That Changed the World》</span>, <span class="book-title">《History of the World Map by Map》</span> 等视觉百科</li>
+                             <li><span class="book-title">《Philosophy for Kids: 40 Fun Questions That Help You Wonder About Everything!》</span> (David White) - 哲学思维启蒙</li>
+                             <li><span class="book-title">《Sophie's World》</span> <span class="chinese-name">(苏菲的世界)</span> (Jostein Gaarder) <span class="level-info">(Lexile 910L)</span> - 哲学史入门小说 (较长)</li>
+                             <li>探索特定兴趣领域的非虚构读物（如音乐史、电影制作、建筑风格、世界神话比较等）。</li>
+                         </ul>
+                     </li>
+                      <li><strong>时事与评论 (Current Events & Commentary):</strong>
+                         <ul>
+                             <li>网站/平台: Newsela (按 Lexile 分级提供新闻), The Learning Network (New York Times 学生版), PBS NewsHour Extra, BBC News School Report / BBC Newsround, The Week Junior (US/UK 儿童新闻周刊), TIME for Kids, DOGO News, Smithsonian Tween Tribune。</li>
+                             <li><span class="book-title">《The Omnivore's Dilemma (Young Readers Edition)》</span> <span class="chinese-name">(杂食者的困境 青少版)</span> (Michael Pollan) <span class="level-info">(Lexile 930L, AR 6.2)</span> - 食物来源与选择</li>
+                             <li>关注社会议题、环境问题的青少年非虚构读物 (如有关气候变化、社交媒体影响等)。</li>
+                         </ul>
+                     </li>
+                 </ul>
+                <ul class="tools-resources">
+                    <span class="book-category">在线资源与工具 (Online Resources & Tools):</span>
+                    <li><strong>词汇:</strong> Merriam-Webster Learner's Dictionary / Main Dictionary, Vocabulary.com (个性化词汇学习), Quizlet/Anki (词卡), Academic Word List (AWL) 相关资源, Etymonline (在线词源词典)</li>
+                    <li><strong>阅读平台:</strong> CommonLit (免费，含非虚构和文学选段), ReadWorks (免费，大量分级文章), Actively Learn (互动式阅读平台), Epic! (提供高阶内容)</li>
+                    <li><strong>写作辅助:</strong> Purdue Online Writing Lab (OWL) (写作指导、语法规则、引用格式), Grammarly (语法拼写检查工具), Hemingway Editor (写作风格简化检查)</li>
+                    <li><strong>研究数据库:</strong> 学校或公共图书馆提供的在线数据库 (如 JSTOR for Schools, Gale In Context: Middle School/High School, ProQuest - 需要机构订阅)</li>
+                    <li><strong>新闻:</strong> (见上文时事与评论部分)</li>
+                    <li><strong>纪录片/讲座:</strong> Netflix, Hulu, Amazon Prime Video (纪录片频道), TED Talks / TED-Ed, Coursera / edX (部分大学水平免费公开课), CrashCourse (YouTube 各学科速览), Khan Academy (各学科深入学习)</li>
+                 </ul>
+            </div>
+        </div>
+
+        <div class="important-reminder">
+            <h2>重要提醒 (高级阶段特别注意)</h2>
+            <ul>
+                <li><strong>深度优于速度:</strong> 对复杂文本的深入理解、分析和批判性思考比单纯追求阅读速度和数量更为重要。鼓励精读。</li>
+                <li><strong>兴趣驱动依然关键:</strong> 即使阅读难度和深度增加，也要尽量结合孩子的兴趣选择非虚构主题和文学作品，保持阅读的内在动力。</li>
+                <li><strong>允许“挣扎”与思考:</strong> 阅读复杂文本必然会遇到困难、引发思考甚至困惑，这是思维成长的必经之路。鼓励孩子运用策略克服困难 (重读、查资料、讨论)，享受思考和解决问题的过程。</li>
+                <li><strong>平衡虚构与非虚构:</strong> 根据孩子兴趣和学习需求，合理安排虚构与非虚构阅读比例，鼓励广泛涉猎不同题材和体裁，培养全面的知识结构和思维方式。</li>
+                <li><strong>为未来学业做准备:</strong> 此阶段的深度阅读、批判性思维和学术写作练习，将为更高层次的学术学习（如国际课程、托福/雅思/SAT/ACT备考、大学学习）打下坚实的基础。</li>
+                <li><strong>保持交流与讨论:</strong> 家长或老师与孩子持续讨论阅读内容、遇到的挑战、不同的观点和学习心得，是促进思维碰撞和深度理解的关键。</li>
+                <li><strong>关注视力健康:</strong> 在大量阅读的同时，务必提醒孩子注意用眼卫生，定时休息，远眺放松，保证充足的户外活动时间。</li>
+                <li><strong>鼓励独立与自主:</strong> 逐步培养孩子独立选择书籍、制定阅读计划、管理学习时间、评估信息来源的能力。</li>
+            </ul>
+        </div>
+
+        <div class="stage-summary">
+            <h2>最终目标</h2>
+            <p>通过以上阶段的系统学习和大量实践，孩子将不仅仅是掌握了英语这门语言技能，更能将其作为<b>获取信息、学习知识、深度思考、理解世界和自我表达</b>的有力工具，具备优秀的跨文化沟通能力和批判性思维素养，成为一个自信、独立、乐于探索的终身学习者。</p>
+        </div>
+
+    </div> </body>
+</html>
