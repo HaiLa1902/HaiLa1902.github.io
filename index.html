@@ -1,130 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>网址导航 v5.9 (7列布局调整)</title>
+    <title>网址导航 V8.0</title>
 
     <style>
-        /* --- CSS Variables (Based on v5.3/v5.5) --- */
-        /* 颜色、阴影、圆角等变量保持不变 */
+        /* --- CSS Variables V8.0 (Based on v5.3/v5.9) --- */
+        /* 使用 CSS 自定义属性 (变量) 方便管理和切换主题 */
         :root {
             /* Fonts */
+            /* 定义主要的 sans-serif 字体栈和等宽字体栈 */
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
             --font-monospace: 'SFMono-Regular', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-            /* Light Theme (Default) */
-            --bg-primary: #f7f8fa;
-            --bg-secondary: #ffffff;
-            --text-primary: #2a3341;
-            --text-secondary: #556171;
-            --text-muted: #8994a3;
-            --border-color: #e5e9f0;
-            --border-hover-color: #d8dde4;
-            --accent-base: #5b7a9a;             /* 主强调色 - 中性蓝灰 */
-            --link-bg: #f1f3f6;
-            --link-border: transparent;
-            --link-text: var(--text-primary);
-            --link-hover-bg: #ffffff;
-            --link-hover-border: var(--accent-base);
-            --link-hover-text: var(--accent-base);
-            --link-focus-shadow: 0 0 0 3px rgba(91, 122, 154, 0.5);
-            --top-link-bg: #e4eaf0;
-            --top-link-text: var(--accent-base);
-            --top-link-hover-bg: var(--accent-base);
-            --top-link-hover-text: #ffffff;
+            /* --- Light Theme (Default) --- */
+            /* 浅色主题下的颜色变量 */
+            --bg-primary: #f7f8fa;             /* 页面主背景色 */
+            --bg-secondary: #ffffff;            /* 卡片等次级背景色 */
+            --text-primary: #2a3341;            /* 主要文本颜色 (深灰蓝) */
+            --text-secondary: #556171;          /* 次要文本颜色 (中灰蓝) */
+            --text-muted: #8994a3;              /* 静音/辅助文本颜色 (浅灰蓝) */
+            --border-color: #e5e9f0;            /* 主要边框颜色 */
+            --border-hover-color: #d8dde4;      /* 卡片悬停时边框颜色 */
+            --accent-base: #5b7a9a;             /* 主强调色 (中性蓝灰) */
+
+            /* Link Styles - Light Theme */
+            --link-bg: #f1f3f6;                 /* 链接默认背景 */
+            --link-border: transparent;         /* 链接默认边框 */
+            --link-text: var(--text-primary);   /* 链接默认文字 (使用主文字色提高对比度) */
+            --link-hover-bg: #ffffff;           /* 链接悬停背景 */
+            --link-hover-border: var(--accent-base); /* 链接悬停边框 */
+            --link-hover-text: var(--accent-base); /* 链接悬停文字 */
+            --link-focus-shadow: 0 0 0 3px rgba(91, 122, 154, 0.5); /* 链接获取焦点时的光环 */
+
+            /* Top Common Link Styles - Light Theme */
+            --top-link-bg: #e4eaf0;              /* 顶部快捷链接背景 */
+            --top-link-text: var(--accent-base); /* 顶部快捷链接文字 */
+            --top-link-hover-bg: var(--accent-base);/* 顶部快捷链接悬停背景 */
+            --top-link-hover-text: #ffffff;       /* 顶部快捷链接悬停文字 */
+
+            /* Shadows (Softened) & Radius */
+            /* 定义不同级别的阴影效果 */
             --shadow-sm: 0 1px 2px 0 rgba(42, 51, 65, 0.05);
             --shadow-md: 0 3px 5px -1px rgba(42, 51, 65, 0.06), 0 2px 3px -1px rgba(42, 51, 65, 0.04);
             --shadow-lg: 0 8px 12px -3px rgba(42, 51, 65, 0.07), 0 3px 5px -2px rgba(42, 51, 65, 0.04);
+            /* 定义圆角大小 */
             --radius-md: 6px;
             --radius-lg: 10px;
+
+            /* Transitions */
+            /* 定义过渡动画时间曲线 */
             --transition-fast: 0.2s ease-in-out;
             --transition-smooth: 0.25s ease-in-out;
-            /* Switch button specific */
-            --switch-bg: #ffffff;
-            --switch-hover-bg: #f7f8fa;
-            --switch-border-color: var(--accent-base);
-            --switch-text-color: var(--text-secondary);
+
+             /* Switch button specific - Light Theme */
+            --switch-bg: #ffffff;               /* 切换按钮背景 */
+            --switch-hover-bg: #f7f8fa;         /* 切换按钮悬停背景 */
+            --switch-border-color: var(--accent-base); /* 切换按钮边框 */
+            --switch-text-color: var(--text-secondary); /* 切换按钮文字 */
         }
 
-        /* Dark Theme Override */
+        /* --- Dark Theme Override --- */
+        /* 当 body 元素拥有 .dark-mode 类时，以下变量将覆盖 :root 中的默认值 */
         body.dark-mode {
-            --bg-primary: #1a202c;
-            --bg-secondary: #2d3748;
-            --text-primary: #e2e8f0;
-            --text-secondary: #a0aec0;
-            --text-muted: #718096;
-            --border-color: #4a5568;
-            --border-hover-color: #5a6675;
-            --accent-base: #4fd1c5;             /* 主强调色 - 柔和青色 */
-            --link-bg: #354153;
-            --link-border: transparent;
-            --link-text: var(--text-secondary); /* 使用浅灰色 */
-            --link-hover-bg: var(--bg-secondary);
-            --link-hover-border: var(--accent-base);
-            --link-hover-text: var(--accent-base);
-            --link-focus-shadow: 0 0 0 3px rgba(79, 209, 197, 0.5);
+            --bg-primary: #1a202c;             /* 深色主背景 */
+            --bg-secondary: #2d3748;            /* 深色卡片背景 */
+            --text-primary: #e2e8f0;            /* 深色主文字 (灰白) */
+            --text-secondary: #a0aec0;          /* 深色次要文字 (浅灰) */
+            --text-muted: #718096;              /* 深色静音文字 (中灰) */
+            --border-color: #4a5568;            /* 深色边框 */
+            --border-hover-color: #5a6675;      /* 深色卡片悬停边框 */
+            --accent-base: #4fd1c5;             /* 深色主强调色 (柔和青色) */
+
+            /* Link Styles - Dark Theme */
+            --link-bg: #354153;                 /* 链接默认背景 */
+            --link-text: var(--text-secondary); /* 链接默认文字 (浅灰) */
+            --link-hover-bg: var(--bg-secondary);/* 链接悬停背景 */
+            --link-hover-border: var(--accent-base); /* 链接悬停边框 */
+            --link-hover-text: var(--accent-base); /* 链接悬停文字 */
+            --link-focus-shadow: 0 0 0 3px rgba(79, 209, 197, 0.5); /* 焦点光环 */
+
+            /* Top Common Link Styles - Dark Theme */
             --top-link-bg: #354153;
             --top-link-text: var(--accent-base);
             --top-link-hover-bg: var(--accent-base);
             --top-link-hover-text: var(--bg-primary);
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+
+            /* Shadows - Dark Theme */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.15); /* 暗模式阴影稍重 */
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-             /* Switch button specific */
-            --switch-bg: #4a5568;
-            --switch-hover-bg: #5a6675;
-            --switch-border-color: transparent;
-            --switch-text-color: var(--text-secondary);
+
+             /* Switch button specific - Dark Theme */
+            --switch-bg: #4a5568;               /* 切换按钮背景 */
+            --switch-hover-bg: #5a6675;         /* 切换按钮悬停背景 */
+            --switch-border-color: transparent; /* 切换按钮无边框 */
+            --switch-text-color: var(--text-secondary); /* 切换按钮文字 */
         }
 
         /* --- Base & Reset --- */
+        /* 重置默认样式，设置基础排版 */
         * { margin: 0; padding: 0; box-sizing: border-box; border-width: 0; border-style: solid; border-color: var(--border-color); }
-        html { scroll-behavior: smooth; color-scheme: light dark; }
+        html {
+            scroll-behavior: smooth; /* 启用页面内锚点平滑滚动 */
+            color-scheme: light dark; /* 告知浏览器支持浅色和深色模式，允许默认UI（如滚动条）自动适应 */
+        }
         body {
-            font-family: var(--font-sans);
-            line-height: 1.7;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 17px; /* 保持基础字体大小 */
-            font-weight: 400;
-            letter-spacing: 0.01em;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: var(--font-sans); /* 应用字体栈 */
+            line-height: 1.7; /* 设置基础行高 */
+            background-color: var(--bg-primary); /* 应用背景色 */
+            color: var(--text-primary); /* 应用文字颜色 */
+            font-size: 17px; /* 基础字体大小 */
+            font-weight: 400; /* 标准字重 */
+            letter-spacing: 0.01em; /* 轻微增加字间距 */
+            -webkit-font-smoothing: antialiased; /* 优化字体渲染 (WebKit/Blink) */
+            -moz-osx-font-smoothing: grayscale; /* 优化字体渲染 (Firefox) */
+            /* 为背景和文字颜色添加平滑过渡效果，用于主题切换 */
             transition: background-color var(--transition-smooth), color var(--transition-smooth);
         }
 
         /* --- Main Container --- */
+        /* 主要内容容器，限制宽度并居中 */
         .container {
-            max-width: 1600px; /* 保持页面最大宽度 */
-            margin: 30px auto 50px auto;
-            padding: 0 30px;
+            max-width: 1600px; /* 设置页面最大宽度 */
+            margin: 30px auto 50px auto; /* 上下外边距，左右自动居中 */
+            padding: 0 30px; /* 容器左右内边距 */
         }
 
         /* --- Theme Switch Button --- */
-        /* 保持 v5.5 的样式 */
+        /* 主题切换按钮样式 */
         .theme-switch {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            background-color: var(--switch-bg); border: 1px solid var(--switch-border-color);
-            border-radius: var(--radius-md); width: auto; height: auto;
-            padding: 6px 12px; font-size: 0.85em; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-            cursor: pointer; box-shadow: var(--shadow-sm);
+            position: fixed; /* 固定在视口位置 */
+            top: 20px; right: 20px; /* 定位到右上角 */
+            z-index: 1000; /* 确保在顶层 */
+            background-color: var(--switch-bg); /* 应用背景色变量 */
+            border: 1px solid var(--switch-border-color); /* 应用边框颜色变量 */
+            border-radius: var(--radius-md); /* 圆角 */
+            width: auto; height: auto; /* 尺寸自适应内容 */
+            padding: 6px 12px; /* 内边距 */
+            font-size: 0.85em; /* 按钮内字体大小 */
+            display: inline-flex; /* 使用 Flex 布局对齐内部图标和文字 */
+            align-items: center;
+            justify-content: center;
+            gap: 6px; /* 图标和文字间距 */
+            cursor: pointer; /* 鼠标指针样式 */
+            box-shadow: var(--shadow-sm); /* 应用阴影 */
+            /* 平滑过渡效果 */
             transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-smooth);
         }
-        .theme-switch:hover { background-color: var(--switch-hover-bg); transform: scale(1.05); box-shadow: var(--shadow-md); }
+        /* 切换按钮悬停效果 */
+        .theme-switch:hover {
+            background-color: var(--switch-hover-bg); /* 悬停背景色 */
+            transform: scale(1.05); /* 轻微放大 */
+             box-shadow: var(--shadow-md); /* 悬停阴影 */
+        }
+        /* 切换按钮图标容器 */
         .theme-switch .icon { display: inline-block; line-height: 1; }
-        .theme-switch .icon::before { display: inline-block; transition: color var(--transition-smooth); font-size: 1.2em; }
+        /* 使用伪元素显示图标 */
+        .theme-switch .icon::before {
+             display: inline-block; /* 确保伪元素尺寸有效 */
+             transition: color var(--transition-smooth); /* 颜色过渡 */
+             font-size: 1.2em; /* 图标大小 */
+        }
+        /* 浅色模式下显示月亮图标 */
         body:not(.dark-mode) .theme-switch .icon::before { content: '🌙'; color: #2a3341; }
+        /* 深色模式下显示太阳图标 */
         body.dark-mode .theme-switch .icon::before { content: '☀️'; color: #facc15; }
+        /* 切换按钮文字容器 */
         .theme-switch .text { display: inline-block; line-height: 1; color: var(--switch-text-color); transition: color var(--transition-smooth); font-weight: 500; }
+        /* 使用伪元素显示文字，根据主题切换 */
         body:not(.dark-mode) .theme-switch .text::before { content: '深色'; }
         body.dark-mode .theme-switch .text::before { content: '浅色'; }
 
+
         /* --- Top Common Links Section --- */
-        /* 保持 v5.5 的样式 */
+        /* 页面顶部快捷链接区域 */
         .top-common-links {
-            display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 10px; margin-top: 60px; margin-bottom: 30px; padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color); transition: border-color var(--transition-smooth);
+            display: flex; flex-wrap: wrap; justify-content: center; /* Flex 布局居中 */
+            gap: 10px; /* 链接间距 */
+            margin-top: 60px; /* 顶部留出空间给切换按钮 */
+            margin-bottom: 30px; /* 与下方分类间距 */
+            padding-bottom: 15px; /* 底部内边距 */
+            border-bottom: 1px solid var(--border-color); /* 分隔线 */
+            transition: border-color var(--transition-smooth); /* 边框颜色过渡 */
         }
+        /* 顶部快捷链接卡片样式 */
         .top-link-card {
             display: inline-block; padding: 4px 14px; font-size: 0.82em; font-weight: 500;
             color: var(--top-link-text); background-color: var(--top-link-bg);
@@ -132,73 +193,106 @@
             transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
             box-shadow: none; border: 1px solid transparent;
         }
+        /* 顶部快捷链接悬停效果 */
         .top-link-card:hover { background-color: var(--top-link-hover-bg); color: var(--top-link-hover-text); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 
         /* --- Animation Keyframes --- */
+        /* 卡片淡入动画 */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* --- Category Section Styles --- */
+        /* 分类卡片容器 */
         .category {
             background-color: var(--bg-secondary); border: 1px solid var(--border-color);
             border-radius: var(--radius-lg); margin-bottom: 30px; padding: 25px 30px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-sm); /* 默认柔和阴影 */
+            /* 为颜色、阴影、变换添加过渡效果 */
             transition: background-color var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth), transform var(--transition-smooth);
-            opacity: 0; animation: fadeIn 0.5s 0.1s ease-out forwards;
-            position: relative; overflow: visible;
+            opacity: 0; animation: fadeIn 0.5s 0.1s ease-out forwards; /* 应用淡入动画 */
+            position: relative; overflow: visible; /* 允许阴影溢出 */
         }
-        /* Removed Category Accent Top Border in v5.8 */
-        .category:hover { transform: scale(1.01); box-shadow: var(--shadow-md); border-color: var(--border-hover-color); }
+        /* Category Hover Effects */
+        /* 分类卡片悬停效果 */
+        .category:hover {
+             transform: scale(1.01); /* 轻微放大 */
+             box-shadow: var(--shadow-md); /* 阴影加深 */
+             border-color: var(--border-hover-color); /* 边框颜色变化 */
+        }
 
-        /* Category Title (h2) */
+        /* --- Category Title (h2) --- */
+        /* 分类标题 */
         .category h2 {
             font-size: 1.0em; /* ★ 保持标题字体大小为 1.0em */
-            color: var(--text-primary); margin: 0 0 12px 0;
-            padding-bottom: 6px; border-bottom: 1px solid var(--border-color);
-            display: flex; align-items: center; font-weight: 600;
-            transition: color var(--transition-smooth), border-color var(--transition-smooth);
+            color: var(--text-primary); margin: 0 0 12px 0; /* 底部外边距 */
+            padding-bottom: 6px; /* 底部内边距 */
+            border-bottom: 1px solid var(--border-color); /* 下边框 */
+            display: flex; align-items: center; font-weight: 600; /* 加粗以区分 */
+            transition: color var(--transition-smooth), border-color var(--transition-smooth); /* 颜色过渡 */
         }
         /* Category Title Icon */
-        .category h2 .icon { margin-right: 6px; font-size: 0.95em; color: var(--accent-base); transition: color var(--transition-smooth); }
+        .category h2 .icon {
+            margin-right: 6px; /* 图标右边距 */
+            font-size: 0.95em; /* 图标大小 */
+            color: var(--accent-base); /* 图标颜色使用强调色 */
+            transition: color var(--transition-smooth); /* 颜色过渡 */
+        }
 
-        /* --- ★ Link List Grid Layout - Fixed 7 Columns (Responsive) ★ --- */
+        /* --- Link List Grid Layout --- */
+        /* 分类内链接列表的网格布局 */
         .link-list {
             list-style: none; padding: 0; display: grid;
-            /* ★ 默认目标为7列，每列等宽 */
+            /* ★ 默认7列，等宽 */
             grid-template-columns: repeat(7, 1fr);
-            gap: 12px; margin-left: 0;
+            gap: 12px; /* 网格间距 */
+            margin-left: 0;
         }
 
         /* --- Link Item Anchor (a) Style --- */
+        /* 链接本身样式 */
         .link-list li a {
             display: block; padding: 9px 16px; text-decoration: none;
-            color: var(--link-text);
+            color: var(--link-text); /* 应用链接文字颜色 */
             font-size: 1.0em; /* ★ 保持链接字体大小为 1.0em */
-            font-weight: 500;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;
-            background-color: var(--link-bg); border-radius: var(--radius-md);
-            border: 1px solid var(--link-border); box-shadow: none;
+            font-weight: 500; /* 链接字重 */
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; /* 处理长文本 */
+            background-color: var(--link-bg); /* 应用链接背景色 */
+            border-radius: var(--radius-md); /* 圆角 */
+            border: 1px solid var(--link-border); /* 应用链接边框色 */
+            box-shadow: none; /* 默认无阴影 */
+            /* 添加所有会变化的属性的过渡效果 */
             transition: color var(--transition-fast), background-color var(--transition-fast),
                         box-shadow var(--transition-fast), border-color var(--transition-fast),
                         transform var(--transition-fast);
         }
+        /* Link Item Hover State */
+        /* 链接悬停效果 */
         .link-list li a:hover {
-            color: var(--link-hover-text); background-color: var(--link-hover-bg);
-            border: 1px solid var(--link-hover-border); box-shadow: var(--shadow-sm);
-            transform: translateY(-1px);
+            color: var(--link-hover-text); /* 应用悬停文字颜色 */
+            background-color: var(--link-hover-bg); /* 应用悬停背景色 */
+            border: 1px solid var(--link-hover-border); /* 应用悬停边框色 */
+            box-shadow: var(--shadow-sm); /* 添加轻微阴影 */
+            transform: translateY(-1px); /* 轻微上浮 */
         }
+        /* Link Item Focus State (Accessibility) */
+        /* 链接键盘焦点样式，提高可访问性 */
         .link-list li a:focus-visible {
-             outline: none; box-shadow: var(--shadow-sm), var(--link-focus-shadow);
-             border-color: var(--accent-base); color: var(--link-hover-text);
-             background-color: var(--link-hover-bg);
+             outline: none; /* 移除默认外框 */
+             box-shadow: var(--shadow-sm), var(--link-focus-shadow); /* 应用阴影和焦点光环 */
+             border-color: var(--accent-base); /* 应用焦点边框色 */
+             color: var(--link-hover-text); /* 同悬停 */
+             background-color: var(--link-hover-bg); /* 同悬停 */
         }
 
         /* --- Footer Styles --- */
+        /* 页脚样式 */
         footer {
             text-align: center; margin-top: 40px; padding: 20px 0;
             font-size: 0.9em; color: var(--text-muted);
             border-top: 1px solid var(--border-color);
             transition: color var(--transition-smooth), border-color var(--transition-smooth);
         }
+        /* Current Time Display */
+        /* 时间显示样式 */
         footer #current-time {
             display: block; margin-top: 6px; font-size: 0.98em;
             font-family: var(--font-monospace); color: var(--text-secondary);
@@ -208,7 +302,7 @@
         /* --- Responsive Adjustments for Fixed Columns --- */
         /* ★ 根据屏幕宽度调整固定列数 */
         @media (max-width: 1400px) { /* 在1600px和1200px之间加一个断点 */
-             .link-list { grid-template-columns: repeat(6, 1fr); }
+             .link-list { grid-template-columns: repeat(6, 1fr); } /* 1400px 及以下显示6列 */
         }
         @media (max-width: 1200px) {
              .link-list { grid-template-columns: repeat(6, 1fr); } /* 1200px 及以下显示6列 */
@@ -217,8 +311,8 @@
             .container { padding: 0 20px; }
             .link-list { grid-template-columns: repeat(5, 1fr); gap: 12px; } /* 992px 及以下显示5列 */
              .category { padding: 20px 25px; }
-             .category h2 { font-size: 0.9em; }
-             .link-list li a { padding: 8px 15px; font-size: 0.95em; } /* 调整 */
+             .category h2 { font-size: 0.9em; } /* 保持标题响应式大小 */
+             .link-list li a { padding: 8px 15px; font-size: 0.95em; }
              .top-common-links { gap: 8px; margin-bottom: 25px; padding-bottom: 12px;}
              .top-link-card { padding: 4px 12px; font-size: 0.8em;}
              footer { font-size: 0.88em; }
@@ -228,7 +322,7 @@
             .link-list { grid-template-columns: repeat(4, 1fr); gap: 10px; } /* 768px 及以下显示4列 */
              .category { padding: 18px 20px; margin-bottom: 25px; }
              .category h2 { font-size: 0.9em; margin-bottom: 12px; padding-bottom: 6px; }
-             .link-list li a { font-size: 0.92em; padding: 8px 12px;} /* 调整 */
+             .link-list li a { font-size: 0.92em; padding: 8px 12px;}
              .top-common-links { margin-top: 50px; margin-bottom: 20px; }
              .top-link-card { padding: 4px 10px; font-size: 0.78em;}
              footer { font-size: 0.85em; }
@@ -239,14 +333,14 @@
              .link-list { grid-template-columns: repeat(3, 1fr); gap: 8px;} /* 576px 及以下显示3列 */
              .category { padding: 15px 18px; }
              .category h2 { font-size: 0.9em; }
-             .link-list li a { font-size: 0.9em; padding: 7px 10px;} /* 调整 */
+             .link-list li a { font-size: 0.9em; padding: 7px 10px;}
              .top-common-links { gap: 6px; }
              .top-link-card { padding: 3px 8px; font-size: 0.75em;}
              .theme-switch { padding: 4px 8px; gap: 4px;}
         }
          @media (max-width: 420px) {
               .link-list { grid-template-columns: repeat(2, 1fr); gap: 8px;} /* 420px 及以下显示2列 */
-              .link-list li a { font-size: 0.88em; padding: 7px 8px;} /* 调整 */
+              .link-list li a { font-size: 0.88em; padding: 7px 8px;}
               .top-link-card { padding: 3px 7px; font-size: 0.72em;}
               .theme-switch { top: 10px; right: 10px; padding: 3px 6px; font-size: 0.75em;}
               .theme-switch .icon::before { font-size: 1em; }
@@ -675,15 +769,82 @@
         </main>
 
     </div> <footer>
-        <p>© 2025 我的网址导航 v5.9</p>
+        <p>© 2025 我的网址导航 V8.0</p>
         <p>当前时间 (北京时间): <span id="current-time">--:--:--</span></p>
     </footer>
 
     <script>
-        // Theme Switch Logic
-        const themeToggleButton=document.getElementById("theme-toggle-button"),bodyElement=document.body,prefersDarkScheme=window.matchMedia("(prefers-color-scheme: dark)"),currentTheme=localStorage.getItem("theme");function applyTheme(e){"dark"===e?bodyElement.classList.add("dark-mode"):bodyElement.classList.remove("dark-mode")}currentTheme?applyTheme(currentTheme):prefersDarkScheme.matches?applyTheme("dark"):applyTheme("light"),themeToggleButton.addEventListener("click",()=>{let e=bodyElement.classList.contains("dark-mode")?"light":"dark";applyTheme(e),localStorage.setItem("theme",e)}),prefersDarkScheme.addEventListener("change",e=>{localStorage.getItem("theme")||applyTheme(e.matches?"dark":"light")});
-        // Current Time Logic
-        function updateTime(){const e=new Date,t="Asia/Shanghai",o=e.toLocaleString("zh-CN",{timeZone:t,hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:!1,timeZoneName:"shortOffset"}),n=e.toLocaleDateString("zh-CN",{timeZone:t,year:"numeric",month:"long",day:"numeric"}),l=document.getElementById("current-time");l&&(l.textContent=`${n} ${o}`)}updateTime(),setInterval(updateTime,1e3);
+        // --- Theme Switch Logic ---
+        // 获取必要的元素
+        const themeToggleButton = document.getElementById('theme-toggle-button');
+        const bodyElement = document.body;
+        // 检查用户系统/浏览器是否偏好深色模式
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        // 从本地存储获取用户上次选择的主题
+        const currentTheme = localStorage.getItem("theme");
+
+        // 应用主题的函数
+        function applyTheme(theme) {
+            if (theme === "dark") {
+                bodyElement.classList.add("dark-mode"); // 添加 dark-mode 类
+            } else {
+                bodyElement.classList.remove("dark-mode"); // 移除 dark-mode 类
+            }
+        }
+
+        // 初始化主题：优先使用本地存储的设置，其次是系统偏好
+        if (currentTheme) {
+            applyTheme(currentTheme);
+        } else {
+            // 如果本地无设置，则根据系统偏好设置
+            if (prefersDarkScheme.matches) {
+                 applyTheme("dark");
+                 // localStorage.setItem("theme", "dark"); // 可以取消注释，将系统偏好保存为默认
+            } else {
+                 applyTheme("light");
+            }
+        }
+
+        // 监听切换按钮点击事件
+        themeToggleButton.addEventListener('click', () => {
+            // 判断当前主题并切换
+            let newTheme = bodyElement.classList.contains("dark-mode") ? "light" : "dark";
+            applyTheme(newTheme);
+            // 将新的主题偏好保存到本地存储
+            localStorage.setItem("theme", newTheme);
+        });
+
+        // (可选) 监听系统主题变化事件，但仅在用户未手动设置主题时才自动切换
+         prefersDarkScheme.addEventListener("change", (e) => {
+             if (!localStorage.getItem("theme")) { // 检查本地存储是否有用户设置
+                 applyTheme(e.matches ? "dark" : "light");
+             }
+         });
+
+
+        // --- Current Time Logic ---
+        // 更新时间的函数
+        function updateTime() {
+            const now = new Date();
+            const timeZone = 'Asia/Shanghai'; // 设置目标时区为北京时间
+            // 格式化时间字符串
+            const timeString = now.toLocaleString('zh-CN', {
+                timeZone: timeZone,
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZoneName: 'shortOffset'
+            });
+            // 格式化日期字符串
+            const dateString = now.toLocaleDateString('zh-CN', {
+                 timeZone: timeZone, year: 'numeric', month: 'long', day: 'numeric'
+            });
+            // 获取显示时间的元素
+            const timeElement = document.getElementById('current-time');
+             // 更新元素内容
+             if (timeElement) {
+                 timeElement.textContent = `${dateString} ${timeString}`;
+             }
+        }
+        updateTime(); // 页面加载后立即执行一次
+        setInterval(updateTime, 1000); // 设置定时器，每秒更新一次
     </script>
 
 </body>
