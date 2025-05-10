@@ -1,795 +1,774 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>网址导航 V12</title>
-
-    <style>
-        /* --- CSS 基础变量定义 --- */
-        :root {
-            /* ... (其他变量保持不变) ... */
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-            --font-monospace: 'SFMono-Regular', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            /* 浅色主题 */
-            --bg-primary: #f7f8fa;
-            --bg-secondary: #ffffff;
-            --text-primary: #2a3341;
-            --text-secondary: #556171;
-            --text-muted: #8994a3;
-            --border-color: #e5e9f0;
-            --accent-base: #5b7a9a;
-            --link-bg: #f1f3f6;
-            --link-border: transparent;
-            --link-text: var(--text-primary);
-            --link-hover-bg: #ffffff;
-            --link-hover-border: var(--accent-base);
-            --link-hover-text: var(--accent-base);
-            --link-focus-shadow: 0 0 0 3px rgba(91, 122, 154, 0.5);
-            --top-link-bg: #e4eaf0;
-            --top-link-text: var(--accent-base);
-            --top-link-hover-bg: var(--accent-base);
-            --top-link-hover-text: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgba(42, 51, 65, 0.05);
-            --shadow-md: 0 3px 5px -1px rgba(42, 51, 65, 0.06), 0 2px 3px -1px rgba(42, 51, 65, 0.04);
-            --shadow-lg: 0 8px 12px -3px rgba(42, 51, 65, 0.07), 0 3px 5px -2px rgba(42, 51, 65, 0.04);
-            --radius-md: 6px;
-            --radius-lg: 10px;
-            --transition-fast: 0.2s ease-in-out;
-            --transition-smooth: 0.25s ease-in-out;
-            /* 切换按钮变量 */
-            --switch-bg: #ffffff;
-            --switch-hover-bg: #f7f8fa;
-            --switch-border-color: var(--accent-base);
-            --switch-text-color: var(--text-secondary);
-        }
-
-        /* 深色主题变量覆盖 */
-        body.dark-mode {
-             /* ... (其他深色变量保持不变) ... */
-            --bg-primary: #1a202c;
-            --bg-secondary: #2d3748;
-            --text-primary: #e2e8f0;
-            --text-secondary: #a0aec0;
-            --text-muted: #718096;
-            --border-color: #4a5568;
-            --accent-base: #4fd1c5;
-            --link-bg: #354153;
-            --link-border: transparent;
-            --link-text: var(--text-secondary);
-            --link-hover-bg: var(--bg-secondary);
-            --link-hover-border: var(--accent-base);
-            --link-hover-text: var(--accent-base);
-            --link-focus-shadow: 0 0 0 3px rgba(79, 209, 197, 0.5);
-            --top-link-bg: #354153;
-            --top-link-text: var(--accent-base);
-            --top-link-hover-bg: var(--accent-base);
-            --top-link-hover-text: var(--bg-primary);
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-            /* 切换按钮深色变量 */
-            --switch-bg: #4a5568;
-            --switch-hover-bg: #5a6675;
-            --switch-border-color: transparent;
-            --switch-text-color: var(--text-secondary);
-        }
-
-        /* --- 基础与重置样式 --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; border-width: 0; border-style: solid; border-color: var(--border-color); }
-        html { scroll-behavior: smooth; color-scheme: light dark; }
-        body {
-            font-family: var(--font-sans); line-height: 1.7; background-color: var(--bg-primary);
-            color: var(--text-primary); font-size: 17px; font-weight: 400; letter-spacing: 0.01em;
-            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-            transition: background-color var(--transition-smooth), color var(--transition-smooth);
-        }
-
-        /* --- 主容器 --- */
-        .container {
-            max-width: 1600px; margin: 30px auto 50px auto; padding: 0 30px;
-        }
-
-        /* --- 主题切换按钮 --- */
-        .theme-switch { /* ... (样式保持不变) ... */
-            position: fixed; top: 20px; right: 20px; z-index: 1000; background-color: var(--switch-bg);
-            border: 1px solid var(--switch-border-color); border-radius: var(--radius-md); width: auto; height: auto;
-            padding: 6px 12px; font-size: 0.85em; display: inline-flex; align-items: center; justify-content: center;
-            gap: 6px; cursor: pointer; box-shadow: var(--shadow-sm);
-            transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-smooth);
-        }
-        .theme-switch:hover { background-color: var(--switch-hover-bg); transform: scale(1.05); box-shadow: var(--shadow-md); }
-        .theme-switch .icon { display: inline-block; line-height: 1; }
-        .theme-switch .icon::before { display: inline-block; transition: color var(--transition-smooth); font-size: 1.2em; }
-        body:not(.dark-mode) .theme-switch .icon::before { content: '🌙'; color: #2a3341; }
-        body.dark-mode .theme-switch .icon::before { content: '☀️'; color: #facc15; }
-        .theme-switch .text { display: inline-block; line-height: 1; color: var(--switch-text-color); transition: color var(--transition-smooth); font-weight: 500; }
-        body:not(.dark-mode) .theme-switch .text::before { content: '深色'; }
-        body.dark-mode .theme-switch .text::before { content: '浅色'; }
-
-        /* --- 顶部通用链接区域 --- */
-        .top-common-links { /* ... (样式保持不变) ... */
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 0; margin-bottom: 10px;
-            padding-bottom: 10px; border-bottom: 1px solid var(--border-color); transition: border-color var(--transition-smooth);
-        }
-        .top-link-card { /* ... (样式保持不变) ... */
-            display: inline-block; padding: 4px 14px; font-size: 0.82em; font-weight: 500; color: var(--top-link-text);
-            background-color: var(--top-link-bg); border-radius: 14px; text-decoration: none;
-            transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-            box-shadow: none; border: 1px solid transparent;
-        }
-        .top-link-card:hover { background-color: var(--top-link-hover-bg); color: var(--top-link-hover-text); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
-
-        /* --- 滚动文字区域 (.marquee-container) --- */
-        .marquee-container { /* ... (样式保持不变) ... */
-            background-color: #e9ecef; color: #e74c3c; padding: 4px 0; margin-bottom: 10px; border-radius: 4px;
-            font-size: 0.9em; overflow: hidden; border: 1px solid var(--border-color);
-            transition: background-color var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth);
-        }
-        .marquee-container marquee { display: block; width: 100%; }
-        .marquee-container font { font-size: smaller; vertical-align: middle; }
-        body.dark-mode .marquee-container { background-color: #343a40; color: #f0ad4e; }
-
-        /* --- ★★★ 通用链接区域 (.common-links) (字体大小调整) ★★★ --- */
-        .common-links {
-            display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
-            margin-bottom: 10px; padding: 15px; background-color: var(--bg-secondary);
-            border-radius: 6px; border: 1px solid var(--border-color);
-            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
-        }
-        /* 通用链接区域内的链接 (a 标签) */
-        .common-links a {
-            display: block; text-decoration: none; color: var(--link-text);
-            /* ★ 调整：字体大小设置为 1.50em (根据用户要求) */
-            font-size: 1.50em;
-            /* ★ 调整：增加内边距以适应更大的字体 */
-            padding: 8px 15px;
-            text-align: center; background-color: var(--link-bg); border-radius: var(--radius-md);
-            border: 1px solid var(--link-border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
-        }
-        /* 通用链接区域内链接的悬停效果 */
-        .common-links a:hover {
-            background-color: var(--link-hover-bg); color: var(--link-hover-text);
-            border: 1px solid var(--link-hover-border); transform: translateY(-2px);
-            box-shadow: var(--shadow-sm); text-decoration: none;
-        }
-        /* 深色模式下的样式由变量自动处理 */
-
-        /* --- 动画 Keyframes --- */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* --- 分类区域样式 (.category) --- */
-        .category { /* ... (样式保持不变) ... */
-            background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
-            margin-bottom: 10px; padding: 15px 20px; box-shadow: var(--shadow-sm);
-            transition: background-color var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
-            opacity: 0; animation: fadeIn 0.5s 0.1s ease-out forwards; position: relative; overflow: visible;
-        }
-        .category:hover { box-shadow: var(--shadow-md); }
-        .category h2 { /* ... (样式保持不变) ... */
-            font-size: 1.0em; color: var(--text-primary); margin: 0 0 12px 0; padding-bottom: 6px;
-            border-bottom: 1px solid var(--border-color); display: flex; align-items: center; font-weight: 600;
-            transition: color var(--transition-smooth), border-color var(--transition-smooth);
-        }
-        .category h2 .icon { margin-right: 6px; font-size: 0.95em; color: var(--accent-base); transition: color var(--transition-smooth); }
-
-        /* --- 链接列表网格布局 (.link-list) --- */
-        .link-list { /* ... (样式保持不变) ... */
-            list-style: none; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-left: 0;
-        }
-
-        /* --- 卡片内链接项样式 (li > a) --- */
-        .link-list li a { /* ... (样式保持不变) ... */
-            display: block; padding: 9px 16px; text-decoration: none; color: var(--link-text); font-size: 1.0em; font-weight: 500;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; background-color: var(--link-bg);
-            border-radius: var(--radius-md); border: 1px solid var(--link-border); box-shadow: none;
-            transition: color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
-        }
-        .link-list li a:hover { /* ... (样式保持不变) ... */
-            color: var(--link-hover-text); background-color: var(--link-hover-bg); border: 1px solid var(--link-hover-border);
-            box-shadow: var(--shadow-md); transform: translateY(-3px) scale(1.02);
-        }
-        .link-list li a:focus-visible { /* ... (样式保持不变) ... */
-             outline: none; box-shadow: var(--shadow-md), var(--link-focus-shadow); border-color: var(--accent-base);
-             color: var(--link-hover-text); background-color: var(--link-hover-bg); transform: translateY(-3px) scale(1.02);
-        }
-
-        /* --- 页脚样式 --- */
-        footer { /* ... (样式保持不变) ... */
-            text-align: center; margin-top: 40px; padding: 20px 0; font-size: 0.9em; color: var(--text-muted);
-            border-top: 1px solid var(--border-color); transition: color var(--transition-smooth), border-color var(--transition-smooth);
-        }
-        footer #current-time { /* ... (样式保持不变) ... */
-            display: block; margin-top: 6px; font-size: 0.98em; font-family: var(--font-monospace); color: var(--text-secondary);
-            transition: color var(--transition-smooth);
-        }
-
-        /* --- 响应式布局调整 --- */
-        /* ★ 移除了之前对 .common-links a 的字体大小和内边距的响应式调整，以强制应用 1.50em */
-
-        @media (max-width: 1400px) {
-            .link-list { grid-template-columns: repeat(6, 1fr); }
-        }
-        @media (max-width: 1200px) {
-            .common-links { grid-template-columns: repeat(5, 1fr); } /* 5列 */
-            .link-list { grid-template-columns: repeat(6, 1fr); }
-        }
-        @media (max-width: 992px) {
-            .container { padding: 0 20px; }
-            .common-links { grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px; } /* 4列 */
-            /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
-            .link-list { grid-template-columns: repeat(5, 1fr); gap: 12px; }
-             .category { padding: 20px 25px; margin-bottom: 18px;}
-             .category h2 { font-size: 0.9em; }
-             .link-list li a { padding: 8px 15px; font-size: 0.95em; }
-             .top-common-links { gap: 8px; margin-bottom: 20px; padding-bottom: 12px;}
-             .top-link-card { padding: 4px 12px; font-size: 0.8em;}
-             .marquee-container { padding: 6px 0; margin-bottom: 15px; font-size: 0.85em; }
-             footer { font-size: 0.88em; }
-        }
-        @media (max-width: 768px) {
-            .container { padding: 0 15px; margin-top: 25px; }
-            .common-links { grid-template-columns: repeat(3, 1fr); gap: 8px; } /* 3列 */
-             /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
-            .link-list { grid-template-columns: repeat(4, 1fr); gap: 10px; }
-             .category { padding: 18px 20px; margin-bottom: 15px;}
-             .category h2 { font-size: 0.9em; margin-bottom: 12px; padding-bottom: 6px; }
-             .link-list li a { font-size: 0.92em; padding: 8px 12px;}
-             .top-common-links { margin-top: 50px; margin-bottom: 15px; }
-             .top-link-card { padding: 4px 10px; font-size: 0.78em;}
-             .marquee-container { padding: 5px 0; margin-bottom: 12px; font-size: 0.8em; }
-             footer { font-size: 0.85em; }
-             .theme-switch { top: 15px; right: 15px; padding: 5px 10px; font-size: 0.8em;}
-             .theme-switch .icon::before { font-size: 1.1em; }
-        }
-        @media (max-width: 576px) {
-             .common-links { grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px; } /* 3列 */
-             /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
-             .link-list { grid-template-columns: repeat(3, 1fr); gap: 8px;}
-             .category { padding: 15px 18px; margin-bottom: 15px;}
-             .category h2 { font-size: 0.9em; }
-             .link-list li a { font-size: 0.9em; padding: 7px 10px;}
-             .top-common-links { gap: 6px; }
-             .top-link-card { padding: 3px 8px; font-size: 0.75em;}
-             .marquee-container { padding: 4px 0; margin-bottom: 10px; font-size: 0.78em; }
-             .theme-switch { padding: 4px 8px; gap: 4px;}
-        }
-         @media (max-width: 420px) {
-              .common-links { grid-template-columns: repeat(2, 1fr); gap: 6px; } /* 2列 */
-               /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
-              .link-list { grid-template-columns: repeat(2, 1fr); gap: 8px;}
-              .category { margin-bottom: 12px; }
-              .link-list li a { font-size: 0.88em; padding: 7px 8px;}
-              .top-link-card { padding: 3px 7px; font-size: 0.72em;}
-               .marquee-container { font-size: 0.75em; }
-              .theme-switch { top: 10px; right: 10px; padding: 3px 6px; font-size: 0.75em;}
-              .theme-switch .icon::before { font-size: 1em; }
-         }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>网址导航 V14</title>
+	<style>
+		/* --- CSS 基础变量定义 --- */
+		:root {
+		    /* ... (其他变量保持不变) ... */
+		    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+		    --font-monospace: 'SFMono-Regular', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+		    /* 浅色主题 */
+		    --bg-primary: #f7f8fa;
+		    --bg-secondary: #ffffff;
+		    --text-primary: #2a3341;
+		    --text-secondary: #556171;
+		    --text-muted: #8994a3;
+		    --border-color: #e5e9f0;
+		    --accent-base: #5b7a9a;
+		    --link-bg: #f1f3f6;
+		    --link-border: transparent;
+		    --link-text: var(--text-primary);
+		    --link-hover-bg: #ffffff;
+		    --link-hover-border: var(--accent-base);
+		    --link-hover-text: var(--accent-base);
+		    --link-focus-shadow: 0 0 0 3px rgba(91, 122, 154, 0.5);
+		    --top-link-bg: #e4eaf0;
+		    --top-link-text: var(--accent-base);
+		    --top-link-hover-bg: var(--accent-base);
+		    --top-link-hover-text: #ffffff;
+		    --shadow-sm: 0 1px 2px 0 rgba(42, 51, 65, 0.05);
+		    --shadow-md: 0 3px 5px -1px rgba(42, 51, 65, 0.06), 0 2px 3px -1px rgba(42, 51, 65, 0.04);
+		    --shadow-lg: 0 8px 12px -3px rgba(42, 51, 65, 0.07), 0 3px 5px -2px rgba(42, 51, 65, 0.04);
+		    --radius-md: 6px;
+		    --radius-lg: 10px;
+		    --transition-fast: 0.2s ease-in-out;
+		    --transition-smooth: 0.25s ease-in-out;
+		    /* 切换按钮变量 */
+		    --switch-bg: #ffffff;
+		    --switch-hover-bg: #f7f8fa;
+		    --switch-border-color: var(--accent-base);
+		    --switch-text-color: var(--text-secondary);
+		}
+		
+		/* 深色主题变量覆盖 */
+		body.dark-mode {
+		     /* ... (其他深色变量保持不变) ... */
+		    --bg-primary: #1a202c;
+		    --bg-secondary: #2d3748;
+		    --text-primary: #e2e8f0;
+		    --text-secondary: #a0aec0;
+		    --text-muted: #718096;
+		    --border-color: #4a5568;
+		    --accent-base: #4fd1c5;
+		    --link-bg: #354153;
+		    --link-border: transparent;
+		    --link-text: var(--text-secondary);
+		    --link-hover-bg: var(--bg-secondary);
+		    --link-hover-border: var(--accent-base);
+		    --link-hover-text: var(--accent-base);
+		    --link-focus-shadow: 0 0 0 3px rgba(79, 209, 197, 0.5);
+		    --top-link-bg: #354153;
+		    --top-link-text: var(--accent-base);
+		    --top-link-hover-bg: var(--accent-base);
+		    --top-link-hover-text: var(--bg-primary);
+		    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+		    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
+		    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+		    /* 切换按钮深色变量 */
+		    --switch-bg: #4a5568;
+		    --switch-hover-bg: #5a6675;
+		    --switch-border-color: transparent;
+		    --switch-text-color: var(--text-secondary);
+		}
+		
+		/* --- 基础与重置样式 --- */
+		* { margin: 0; padding: 0; box-sizing: border-box; border-width: 0; border-style: solid; border-color: var(--border-color); }
+		html { scroll-behavior: smooth; color-scheme: light dark; }
+		body {
+		    font-family: var(--font-sans); line-height: 1.7; background-color: var(--bg-primary);
+		    color: var(--text-primary); font-size: 17px; font-weight: 400; letter-spacing: 0.01em;
+		    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+		    transition: background-color var(--transition-smooth), color var(--transition-smooth);
+		}
+		
+		/* --- 主容器 --- */
+		.container {
+		    max-width: 1600px; margin: 30px auto 50px auto; padding: 0 30px;
+		}
+		
+		/* --- 主题切换按钮 --- */
+		.theme-switch { /* ... (样式保持不变) ... */
+		    position: fixed; top: 20px; right: 20px; z-index: 1000; background-color: var(--switch-bg);
+		    border: 1px solid var(--switch-border-color); border-radius: var(--radius-md); width: auto; height: auto;
+		    padding: 6px 12px; font-size: 0.85em; display: inline-flex; align-items: center; justify-content: center;
+		    gap: 6px; cursor: pointer; box-shadow: var(--shadow-sm);
+		    transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-smooth);
+		}
+		.theme-switch:hover { background-color: var(--switch-hover-bg); transform: scale(1.05); box-shadow: var(--shadow-md); }
+		.theme-switch .icon { display: inline-block; line-height: 1; }
+		.theme-switch .icon::before { display: inline-block; transition: color var(--transition-smooth); font-size: 1.2em; }
+		body:not(.dark-mode) .theme-switch .icon::before { content: '🌙'; color: #2a3341; }
+		body.dark-mode .theme-switch .icon::before { content: '☀️'; color: #facc15; }
+		.theme-switch .text { display: inline-block; line-height: 1; color: var(--switch-text-color); transition: color var(--transition-smooth); font-weight: 500; }
+		body:not(.dark-mode) .theme-switch .text::before { content: '深色'; }
+		body.dark-mode .theme-switch .text::before { content: '浅色'; }
+		
+		/* --- 顶部通用链接区域 --- */
+		.top-common-links { /* ... (样式保持不变) ... */
+		    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 0; margin-bottom: 10px;
+		    padding-bottom: 10px; border-bottom: 1px solid var(--border-color); transition: border-color var(--transition-smooth);
+		}
+		.top-link-card { /* ... (样式保持不变) ... */
+		    display: inline-block; padding: 4px 14px; font-size: 0.82em; font-weight: 500; color: var(--top-link-text);
+		    background-color: var(--top-link-bg); border-radius: 14px; text-decoration: none;
+		    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+		    box-shadow: none; border: 1px solid transparent;
+		}
+		.top-link-card:hover { background-color: var(--top-link-hover-bg); color: var(--top-link-hover-text); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+		
+		/* --- 滚动文字区域 (.marquee-container) --- */
+		.marquee-container { /* ... (样式保持不变) ... */
+		    background-color: #e9ecef; color: #e74c3c; padding: 4px 0; margin-bottom: 10px; border-radius: 4px;
+		    font-size: 0.9em; overflow: hidden; border: 1px solid var(--border-color);
+		    transition: background-color var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth);
+		}
+		.marquee-container marquee { display: block; width: 100%; }
+		.marquee-container font { font-size: smaller; vertical-align: middle; }
+		body.dark-mode .marquee-container { background-color: #343a40; color: #f0ad4e; }
+		
+		/* --- ★★★ 通用链接区域 (.common-links) (字体大小调整) ★★★ --- */
+		.common-links {
+		    display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+		    margin-bottom: 10px; padding: 15px; background-color: var(--bg-secondary);
+		    border-radius: 6px; border: 1px solid var(--border-color);
+		    transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+		}
+		/* 通用链接区域内的链接 (a 标签) */
+		.common-links a {
+		    display: block; text-decoration: none; color: var(--link-text);
+		    /* ★ 调整：字体大小设置为 1.50em (根据用户要求) */
+		    font-size: 1.50em;
+		    /* ★ 调整：增加内边距以适应更大的字体 */
+		    padding: 8px 15px;
+		    text-align: center; background-color: var(--link-bg); border-radius: var(--radius-md);
+		    border: 1px solid var(--link-border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+		    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+		}
+		/* 通用链接区域内链接的悬停效果 */
+		.common-links a:hover {
+		    background-color: var(--link-hover-bg); color: var(--link-hover-text);
+		    border: 1px solid var(--link-hover-border); transform: translateY(-2px);
+		    box-shadow: var(--shadow-sm); text-decoration: none;
+		}
+		/* 深色模式下的样式由变量自动处理 */
+		
+		/* --- 动画 Keyframes --- */
+		@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+		
+		/* --- 分类区域样式 (.category) --- */
+		.category { /* ... (样式保持不变) ... */
+		    background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+		    margin-bottom: 10px; padding: 15px 20px; box-shadow: var(--shadow-sm);
+		    transition: background-color var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+		    opacity: 0; animation: fadeIn 0.5s 0.1s ease-out forwards; position: relative; overflow: visible;
+		}
+		.category:hover { box-shadow: var(--shadow-md); }
+		.category h2 { /* ... (样式保持不变) ... */
+		    font-size: 1.0em; color: var(--text-primary); margin: 0 0 12px 0; padding-bottom: 6px;
+		    border-bottom: 1px solid var(--border-color); display: flex; align-items: center; font-weight: 600;
+		    transition: color var(--transition-smooth), border-color var(--transition-smooth);
+		}
+		.category h2 .icon { margin-right: 6px; font-size: 0.95em; color: var(--accent-base); transition: color var(--transition-smooth); }
+		
+		/* --- 链接列表网格布局 (.link-list) --- */
+		.link-list { /* ... (样式保持不变) ... */
+		    list-style: none; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-left: 0;
+		}
+		
+		/* --- 卡片内链接项样式 (li > a) --- */
+		.link-list li a { /* ... (样式保持不变) ... */
+		    display: block; padding: 9px 16px; text-decoration: none; color: var(--link-text); font-size: 1.0em; font-weight: 500;
+		    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; background-color: var(--link-bg);
+		    border-radius: var(--radius-md); border: 1px solid var(--link-border); box-shadow: none;
+		    transition: color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+		}
+		.link-list li a:hover { /* ... (样式保持不变) ... */
+		    color: var(--link-hover-text); background-color: var(--link-hover-bg); border: 1px solid var(--link-hover-border);
+		    box-shadow: var(--shadow-md); transform: translateY(-3px) scale(1.02);
+		}
+		.link-list li a:focus-visible { /* ... (样式保持不变) ... */
+		     outline: none; box-shadow: var(--shadow-md), var(--link-focus-shadow); border-color: var(--accent-base);
+		     color: var(--link-hover-text); background-color: var(--link-hover-bg); transform: translateY(-3px) scale(1.02);
+		}
+		
+		/* --- 页脚样式 --- */
+		footer { /* ... (样式保持不变) ... */
+		    text-align: center; margin-top: 40px; padding: 20px 0; font-size: 0.9em; color: var(--text-muted);
+		    border-top: 1px solid var(--border-color); transition: color var(--transition-smooth), border-color var(--transition-smooth);
+		}
+		footer #current-time { /* ... (样式保持不变) ... */
+		    display: block; margin-top: 6px; font-size: 0.98em; font-family: var(--font-monospace); color: var(--text-secondary);
+		    transition: color var(--transition-smooth);
+		}
+		
+		/* --- 响应式布局调整 --- */
+		/* ★ 移除了之前对 .common-links a 的字体大小和内边距的响应式调整，以强制应用 1.50em */
+		
+		@media (max-width: 1400px) {
+		    .link-list { grid-template-columns: repeat(6, 1fr); }
+		}
+		@media (max-width: 1200px) {
+		    .common-links { grid-template-columns: repeat(5, 1fr); } /* 5列 */
+		    .link-list { grid-template-columns: repeat(6, 1fr); }
+		}
+		@media (max-width: 992px) {
+		    .container { padding: 0 20px; }
+		    .common-links { grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px; } /* 4列 */
+		    /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
+		    .link-list { grid-template-columns: repeat(5, 1fr); gap: 12px; }
+		     .category { padding: 20px 25px; margin-bottom: 18px;}
+		     .category h2 { font-size: 0.9em; }
+		     .link-list li a { padding: 8px 15px; font-size: 0.95em; }
+		     .top-common-links { gap: 8px; margin-bottom: 20px; padding-bottom: 12px;}
+		     .top-link-card { padding: 4px 12px; font-size: 0.8em;}
+		     .marquee-container { padding: 6px 0; margin-bottom: 15px; font-size: 0.85em; }
+		     footer { font-size: 0.88em; }
+		}
+		@media (max-width: 768px) {
+		    .container { padding: 0 15px; margin-top: 25px; }
+		    .common-links { grid-template-columns: repeat(3, 1fr); gap: 8px; } /* 3列 */
+		     /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
+		    .link-list { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+		     .category { padding: 18px 20px; margin-bottom: 15px;}
+		     .category h2 { font-size: 0.9em; margin-bottom: 12px; padding-bottom: 6px; }
+		     .link-list li a { font-size: 0.92em; padding: 8px 12px;}
+		     .top-common-links { margin-top: 50px; margin-bottom: 15px; }
+		     .top-link-card { padding: 4px 10px; font-size: 0.78em;}
+		     .marquee-container { padding: 5px 0; margin-bottom: 12px; font-size: 0.8em; }
+		     footer { font-size: 0.85em; }
+		     .theme-switch { top: 15px; right: 15px; padding: 5px 10px; font-size: 0.8em;}
+		     .theme-switch .icon::before { font-size: 1.1em; }
+		}
+		@media (max-width: 576px) {
+		     .common-links { grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px; } /* 3列 */
+		     /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
+		     .link-list { grid-template-columns: repeat(3, 1fr); gap: 8px;}
+		     .category { padding: 15px 18px; margin-bottom: 15px;}
+		     .category h2 { font-size: 0.9em; }
+		     .link-list li a { font-size: 0.9em; padding: 7px 10px;}
+		     .top-common-links { gap: 6px; }
+		     .top-link-card { padding: 3px 8px; font-size: 0.75em;}
+		     .marquee-container { padding: 4px 0; margin-bottom: 10px; font-size: 0.78em; }
+		     .theme-switch { padding: 4px 8px; gap: 4px;}
+		}
+		 @media (max-width: 420px) {
+		      .common-links { grid-template-columns: repeat(2, 1fr); gap: 6px; } /* 2列 */
+		       /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
+		      .link-list { grid-template-columns: repeat(2, 1fr); gap: 8px;}
+		      .category { margin-bottom: 12px; }
+		      .link-list li a { font-size: 0.88em; padding: 7px 8px;}
+		      .top-link-card { padding: 3px 7px; font-size: 0.72em;}
+		       .marquee-container { font-size: 0.75em; }
+		      .theme-switch { top: 10px; right: 10px; padding: 3px 6px; font-size: 0.75em;}
+		      .theme-switch .icon::before { font-size: 1em; }
+		 }
+	</style>
 </head>
 <body> <button class="theme-switch" id="theme-toggle-button" title="切换主题"> <span class="icon"></span> <span class="text"></span> </button>
-
-    <div class="container">
-
-        <div class="top-common-links">
-            <a href="https://fanyi.baidu.com/#en/zh/" class="top-link-card" target="_blank" rel="noopener noreferrer">百度翻译</a>
-            <a href="https://translate.google.com/?source=gtx" class="top-link-card" target="_blank" rel="noopener noreferrer">Google翻译</a>
-            <a href="https://www.amap.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">高德地图</a>
-            <a href="https://map.baidu.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">百度地图</a>
-            <a href="https://maps.google.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">谷歌地图</a>
-            <a href="http://www.12306.cn/" class="top-link-card" target="_blank" rel="noopener noreferrer">12306</a>
-            <a href="http://www.xiachufang.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">下厨房</a>
-            <a href="https://www.speedtest.net/" class="top-link-card" target="_blank" rel="noopener noreferrer">Speedtest</a>
-            <a href="https://zoom.us/" class="top-link-card" target="_blank" rel="noopener noreferrer">Zoom</a>
-            <a href="https://github.com/HaiLa1902" class="top-link-card" target="_blank" rel="noopener noreferrer">GitHub(HaiLa)</a>
-            <a href="导航10.1.html" class="top-link-card" target="_blank" rel="noopener noreferrer">导航10.1</a>
-            <a href="凯格尔助手.html" class="top-link-card" target="_blank" rel="noopener noreferrer">凯格尔助手</a>
-            <a href="英语启蒙.html" class="top-link-card" target="_blank" rel="noopener noreferrer">英语启蒙</a>
-        </div>
-
-        <div class="marquee-container">
-            <marquee behavior="alternate" scrolldelay="100"> 谨以此纪念那些上网的日子 <font>孟</font> </marquee>
-        </div>
-
-        <nav class="common-links">
-            <a href="https://www.baidu.com/" target="_blank" rel="noopener noreferrer">Baidu</a>
-            <a href="https://www.bing.com/" target="_blank" rel="noopener noreferrer">Bing</a>
-            <a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">Google</a>
-            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Youtube</a>
-            <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">Gemini</a>
-            <a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">Deepseek</a>
-            <a href="http://www.bilibili.com/" target="_blank" rel="noopener noreferrer">Bilibili</a>
-            <a href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer">抖音</a>
-            <a href="https://www.52pojie.cn/" target="_blank" rel="noopener noreferrer">吾爱破解</a>
-            <a href="http://www.mydrivers.com/" target="_blank" rel="noopener noreferrer">驱动之家</a>
-            <a href="http://www.jd.com/" target="_blank" rel="noopener noreferrer">京东商城</a>
-            <a href="https://www.10jqka.com.cn/" target="_blank" rel="noopener noreferrer">同花顺</a>
-        </nav>
-
-        <main>
-
-        <section class="category">
-            <h2><i class="icon">🤖</i> AI工具</h2>
-            <ul class="link-list">
-				<li><a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">Deepseek</a></li>
-                <li><a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">Gemini</a></li>
-                <li><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT</a></li>
-                <li><a href="https://grok.com/" target="_blank" rel="noopener noreferrer">Grok</a></li>
-				<li><a href="https://yiyan.baidu.com/" target="_blank" rel="noopener noreferrer">文心一言</a></li>
-                <li><a href="https://yuanbao.tencent.com/" target="_blank" rel="noopener noreferrer">元宝</a></li>
-                <li><a href="https://www.doubao.com/" target="_blank" rel="noopener noreferrer">豆包</a></li>
-				
-                <li><a href="https://tongyi.aliyun.com/" target="_blank" rel="noopener noreferrer">通义千问</a></li>
-                <li><a href="https://kimi.moonshot.cn/" target="_blank" rel="noopener noreferrer">Kimi</a></li>
-                <li><a href="https://xiaoyi.huawei.com/" target="_blank" rel="noopener noreferrer">小艺</a></li>
-                <li><a href="https://hailuoai.com/" target="_blank" rel="noopener noreferrer">海螺</a></li>
-                <li><a href="https://jimeng.jianying.com/ai-tool/home" target="_blank" rel="noopener noreferrer">即梦</a></li>
-				<li><a href="https://www.coze.cn/" target="_blank" rel="noopener noreferrer">Coze</a></li>
-                <li><a href="https://www.volcengine.com/" target="_blank" rel="noopener noreferrer">火山引擎</a></li>
-
-				<li><a href="https://www.deepseek.com/" target="_blank" rel="noopener noreferrer">Deepseek API</a></li>
-				<li><a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer">Google AI Studio</a></li>
-                <li><a href="https://aigcpanel.com/" target="_blank" rel="noopener noreferrer">AIGCPanel</a></li>
-                <li><a href="https://www.lang123.top/" target="_blank" rel="noopener noreferrer">朗朗配音</a></li>
-                <li><a href="https://www.text-to-speech.cn/" target="_blank" rel="noopener noreferrer">To-Speech</a></li>
-                <li><a href="https://ttsmaker.cn/" target="_blank" rel="noopener noreferrer">TTSMaker</a></li>
-                <li><a href="https://siliconflow.cn/" target="_blank" rel="noopener noreferrer">硅基流动</a></li>
-                <li><a href="https://ai.seoml.com/" target="_blank" rel="noopener noreferrer">AIKey</a></li>
-                <li><a href="https://ai-bot.cn/" target="_blank" rel="noopener noreferrer">ai工具集</a></li>
-                <li><a href="https://so.n.cn/" target="_blank" rel="noopener noreferrer">纳米搜索</a></li>
-                <li><a href="https://metaso.cn/" target="_blank" rel="noopener noreferrer">秘塔搜索</a></li>
-                <li><a href="https://duckduckgo.com/" target="_blank" rel="noopener noreferrer">DuckDuckGo</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">💬</i> 社交资讯类</h2>
-            <ul class="link-list">
-                <li><a href="https://www.kadaza.com/" target="_blank" rel="noopener noreferrer">Kadaza</a></li>
-                <li><a href="https://www.shuziyimin.org/" target="_blank" rel="noopener noreferrer">移民导航</a></li>
-                <li><a href="https://tophub.today/" target="_blank" rel="noopener noreferrer">热榜导航</a></li>
-				<li><a href="https://www.bbc.com/news" target="_blank" rel="noopener noreferrer">BBC News</a></li>
-				<li><a href="https://www.cnn.com/" target="_blank" rel="noopener noreferrer">CNN</a></li>
-				<li><a href="https://www.reuters.com/" target="_blank" rel="noopener noreferrer">路透社</a></li>
-				<li><a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">美联社</a></li>
-				<li><a href="https://www.nytimes.com/" target="_blank" rel="noopener noreferrer">纽约时报</a></li>
-				<li><a href="https://www.wsj.com/" target="_blank" rel="noopener noreferrer">华尔街日报</a></li>
-				<li><a href="https://www.theguardian.com/international" target="_blank" rel="noopener noreferrer">卫报</a></li>
-				<li><a href="https://www.aljazeera.com/" target="_blank" rel="noopener noreferrer">半岛电视台</a></li>
-				<li><a href="https://news.google.com/" target="_blank" rel="noopener noreferrer">Google News</a></li>
-				<li><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
-				<li><a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">X / Twitter</a></li>
-				<li><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-				<li><a href="https://www.reddit.com/" target="_blank" rel="noopener noreferrer">Reddit</a></li>
-				<li><a href="https://www.quora.com/" target="_blank" rel="noopener noreferrer">Quora (美知乎)</a></li>
-                <li><a href="http://www.chiphell.com/" target="_blank" rel="noopener noreferrer">Chiphell</a></li>
-                <li><a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer">稀土掘金</a></li>
-                <li><a href="http://www.v2ex.com/" target="_blank" rel="noopener noreferrer">V2EX</a></li>
-                <li><a href="https://www.chongbuluo.com/" target="_blank" rel="noopener noreferrer">虫部落</a></li>
-                <li><a href="https://weibo.com" target="_blank" rel="noopener noreferrer">微博</a></li>
-                <li><a href="https://www.newsmth.net/" target="_blank" rel="noopener noreferrer">水木社区</a></li>
-                <li><a href="http://www.ithome.com/" target="_blank" rel="noopener noreferrer">IT 之家</a></li>
-				<li><a href="http://www.mydrivers.com/" target="_blank" rel="noopener noreferrer">驱动之家</a></li>
-                <li><a href="http://www.eastmoney.com/" target="_blank" rel="noopener noreferrer">东方财富</a></li>
-                <li><a href="https://www.10jqka.com.cn/" target="_blank" rel="noopener noreferrer">同花顺</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">🛒</i> 商城网购</h2>
-            <ul class="link-list">
-                <li><a href="http://www.jd.com/" target="_blank" rel="noopener noreferrer">京东商城</a></li>
-                <li><a href="http://www.apple.com.cn/" target="_blank" rel="noopener noreferrer">Apple中国</a></li>
-                <li><a href="http://www.dangdang.com/" target="_blank" rel="noopener noreferrer">当当网</a></li>
-                <li><a href="https://www.1688.com/" target="_blank" rel="noopener noreferrer">1688</a></li>
-                <li><a href="http://www.vip.com/" target="_blank" rel="noopener noreferrer">唯品会</a></li>
-                <li><a href="http://www.mi.com/" target="_blank" rel="noopener noreferrer">小米</a></li>
-                <li><a href="https://www.hihonor.com/" target="_blank" rel="noopener noreferrer">荣耀</a></li>
-                <li><a href="http://www.vmall.com/" target="_blank" rel="noopener noreferrer">华为商城</a></li>
-                <li><a href="https://www.gmarket.co.kr/" target="_blank" rel="noopener noreferrer">Gmarket</a></li>
-                <li><a href="http://www.taobao.com/" target="_blank" rel="noopener noreferrer">淘宝网</a></li>
-                <li><a href="https://www.tmall.com/" target="_blank" rel="noopener noreferrer">天猫</a></li>
-                <li><a href="http://www.smzdm.com/" target="_blank" rel="noopener noreferrer">什么值得买</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">🎓</i> 成长教育类</h2>
-            <ul class="link-list">
-                <li><a href="https://zh.z-lib.gs/" target="_blank" rel="noopener noreferrer">Z-Library</a></li>
-                <li><a href="http://www.xxttq.com/" target="_blank" rel="noopener noreferrer">甜甜圈</a></li>
-                <li><a href="https://www.ebama.net/" target="_blank" rel="noopener noreferrer">爸妈网</a></li>
-                <li><a href="https://www.kidsa-z.com" target="_blank" rel="noopener noreferrer">RAZ 孩子学</a></li>
-                <li><a href="https://www.leleketang.com/cr/" target="_blank" rel="noopener noreferrer">天天练</a></li>
-                <li><a href="https://www.liepin.com/" target="_blank" rel="noopener noreferrer">猎聘网</a></li>
-                <li><a href="http://www.cjol.com/" target="_blank" rel="noopener noreferrer">人才热线</a></li>
-                <li><a href="http://www.chinahr.com/" target="_blank" rel="noopener noreferrer">中华英才网</a></li>
-                <li><a href="http://www.51job.com/" target="_blank" rel="noopener noreferrer">前程无忧</a></li>
-                <li><a href="http://www.zhaopin.com/" target="_blank" rel="noopener noreferrer">智联招聘</a></li>
-                <li><a href="https://cn.linkedin.com/" target="_blank" rel="noopener noreferrer">领英</a></li>
-                <li><a href="http://mail.163.com/" target="_blank" rel="noopener noreferrer">网易邮箱</a></li>
-                <li><a href="http://www.kidsbox365.com/" target="_blank" rel="noopener noreferrer">Kidsbox</a></li>
-                <li><a href="https://lexile.com/" target="_blank" rel="noopener noreferrer">蓝思网</a></li>
-                <li><a href="http://www.ixfc.net/" target="_blank" rel="noopener noreferrer">小帆船字体</a></li>
-				<li><a href="https://www.wikipedia.org/" target="_blank" rel="noopener noreferrer">Wikipedia</a></li>
-				<li><a href="https://www.coursera.org/" target="_blank" rel="noopener noreferrer">Coursera</a></li>
-				<li><a href="https://www.edx.org/" target="_blank" rel="noopener noreferrer">edX (在线课程)</a></li>
-				<li><a href="https://www.khanacademy.org/" target="_blank" rel="noopener noreferrer">Khan Academy</a></li>
-				<li><a href="https://www.duolingo.com/" target="_blank" rel="noopener noreferrer">Duolingo</a></li>
-				<li><a href="https://archive.org/" target="_blank" rel="noopener noreferrer">互联网档案馆</a></li>
-				<li><a href="https://www.britannica.com/" target="_blank" rel="noopener noreferrer">大英百科全书</a></li>
-				<li><a href="https://www.merriam-webster.com/" target="_blank" rel="noopener noreferrer">韦氏词典</a></li>
-				<li><a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">谷歌学术</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">🎬</i> 影音娱乐</h2>
-            <ul class="link-list">
-                <li><a href="https://git.unlock-music.dev/um" target="_blank" rel="noopener noreferrer">Um React</a></li>
-                <li><a href="https://www.1lou.me/" target="_blank" rel="noopener noreferrer">BT 之家</a></li>
-                <li><a href="http://www.bilibili.com/" target="_blank" rel="noopener noreferrer">Bilibili</a></li>
-                <li><a href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer">抖音</a></li>
-                <li><a href="https://www.tiktok.com/foryou" target="_blank" rel="noopener noreferrer">TikTok</a></li>
-				<li><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-				<li><a href="https://music.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube Music</a></li>
-
-				<li><a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer">Spotify</a></li>
-				<li><a href="https://music.apple.com/" target="_blank" rel="noopener noreferrer">Apple Music</a></li>
-                <li><a href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer">Disney+</a></li>
-                <li><a href="https://www.netflix.com/" target="_blank" rel="noopener noreferrer">Netflix</a></li>
-				<li><a href="https://www.hulu.com/" target="_blank" rel="noopener noreferrer">Hulu</a></li>
-                <li><a href="https://www.twitch.tv/" target="_blank" rel="noopener noreferrer">Twitch</a></li>
-                <li><a href="http://www.afreecatv.com/" target="_blank" rel="noopener noreferrer">Afreeca</a></li>
-
-				<li><a href="https://tunein.com/" target="_blank" rel="noopener noreferrer">TuneIn</a></li>
-                <li><a href="https://www.miaoaaa.com/" target="_blank" rel="noopener noreferrer">喵导航</a></li>
-                <li><a href="https://www.yinfans.me/" target="_blank" rel="noopener noreferrer">音范丝</a></li>
-                <li><a href="https://www.btnull.org/" target="_blank" rel="noopener noreferrer">片库</a></li>
-                <li><a href="https://rarbg.so/" target="_blank" rel="noopener noreferrer">RARBG</a></li>
-                <li><a href="https://www.4khdr.cn/" target="_blank" rel="noopener noreferrer">4kHDR</a></li>
-                <li><a href="http://zmk.pw/" target="_blank" rel="noopener noreferrer">字幕库</a></li>
-
-                <li><a href="https://tv.cctv.com/" target="_blank" rel="noopener noreferrer">CCTV</a></li>
-                <li><a href="https://www.migu.cn/" target="_blank" rel="noopener noreferrer">咪咕</a></li>
-                <li><a href="https://www.ximalaya.com/" target="_blank" rel="noopener noreferrer">喜马拉雅</a></li>
-                <li><a href="http://v.qq.com/" target="_blank" rel="noopener noreferrer">QQ 视频</a></li>
-                <li><a href="http://www.qiyi.com/" target="_blank" rel="noopener noreferrer">奇艺</a></li>
-                <li><a href="http://www.huya.com/" target="_blank" rel="noopener noreferrer">虎牙直播</a></li>
-                <li><a href="https://www.douyu.com/" target="_blank" rel="noopener noreferrer">斗鱼</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">💻</i> 数软科技</h2>
-            <ul class="link-list">
-                <li><a href="https://www.52pojie.cn/" target="_blank" rel="noopener noreferrer">吾爱破解</a></li>
-                <li><a href="https://www.423down.com/" target="_blank" rel="noopener noreferrer">423down</a></li>
-                <li><a href="https://www.luochenzhimu.com/" target="_blank" rel="noopener noreferrer">落尘之木</a></li>
-                <li><a href="https://www.yxssp.com/" target="_blank" rel="noopener noreferrer">异星空间</a></li>
-                <li><a href="http://bbs.kafan.cn/" target="_blank" rel="noopener noreferrer">卡饭论坛</a></li>
-                <li><a href="http://www.appinn.com/" target="_blank" rel="noopener noreferrer">小众软件</a></li>
-                <li><a href="https://iao.su/" target="_blank" rel="noopener noreferrer">不死鸟</a></li>
-                <li><a href="http://bbs.kafan.cn/" target="_blank" rel="noopener noreferrer">卡饭论坛</a></li>
-                <li><a href="https://alist.nn.ci/zh/" target="_blank" rel="noopener noreferrer">AList</a></li>
-                <li><a href="https://greasyfork.org/zh-CN" target="_blank" rel="noopener noreferrer">Greasyfork</a></li>
-                <li><a href="https://apkpure.com/cn/" target="_blank" rel="noopener noreferrer">APKPure</a></li>
-                <li><a href="http://www.yckceo.com/" target="_blank" rel="noopener noreferrer">源仓库</a></li>
-                <li><a href="https://gedoor.github.io/" target="_blank" rel="noopener noreferrer">阅读</a></li>
-                <li><a href="https://anydesk.com/" target="_blank" rel="noopener noreferrer">Anydesk</a></li>
-                <li><a href="https://www.todesk.com/" target="_blank" rel="noopener noreferrer">Todesk</a></li>
-                <li><a href="https://sunlogin.oray.com/" target="_blank" rel="noopener noreferrer">向日葵</a></li>
-                <li><a href="https://rufus.ie/" target="_blank" rel="noopener noreferrer">Rufus</a></li>
-                <li><a href="https://www.wepe.com.cn/" target="_blank" rel="noopener noreferrer">微PE</a></li>
-                <li><a href="http://sparanoid.com/lab/7z/" target="_blank" rel="noopener noreferrer">7-Zip 中文网</a></li>
-                <li><a href="https://notepad-plus-plus.org/" target="_blank" rel="noopener noreferrer">Notepad++</a></li>
-                <li><a href="http://www.fishlee.net/" target="_blank" rel="noopener noreferrer">鱼后花园</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">🔗</i> GitHub集合</h2>
-            <ul class="link-list">
-                <li><a href="https://github.com/yaobiao131/downkyicore" target="_blank" rel="noopener noreferrer">哔哩下载姬</a></li>
-                <li><a href="https://github.com/lucinhu/bili_you" target="_blank" rel="noopener noreferrer">Bili You</a></li>
-                <li><a href="https://github.com/xiaoyaocz/dart_simple_live" target="_blank" rel="noopener noreferrer">Simple Live</a></li>
-                <li><a href="https://github.com/moriafly/SaltPlayerSource" target="_blank" rel="noopener noreferrer">椒盐</a></li>
-                <li><a href="https://github.com/lyswhut" target="_blank" rel="noopener noreferrer">洛雪音乐</a></li>
-                <li><a href="https://github.com/maotoumao" target="_blank" rel="noopener noreferrer">MusicFree</a></li>
-                <li><a href="https://github.com/BtbN/FFmpeg-Builds" target="_blank" rel="noopener noreferrer">FFmpeg</a></li>
-                <li><a href="https://github.com/1265578519/ShanaEncoder" target="_blank" rel="noopener noreferrer">ShanaEncoder</a></li>
-                <li><a href="https://github.com/Aleksoid1978/MPC-BE" target="_blank" rel="noopener noreferrer">MPC-BE</a></li>
-                <li><a href="https://github.com/KRTirtho/spotube" target="_blank" rel="noopener noreferrer">Spotube</a></li>
-                <li><a href="https://github.com/xiaoyaocz/flutter_dmzj" target="_blank" rel="noopener noreferrer">动漫之家</a></li>
-                <li><a href="https://github.com/JoeanAmier/TikTokDownloader" target="_blank" rel="noopener noreferrer">TikTok下载</a></li>
-                <li><a href="https://github.com/Richasy/Bili.Uwp" target="_blank" rel="noopener noreferrer">Bili.Uwp</a></li>
-                <li><a href="https://github.com/videolan" target="_blank" rel="noopener noreferrer">VLC</a></li>
-                <li><a href="https://github.com/WhiteMinds/LiveAutoRecord" target="_blank" rel="noopener noreferrer">直播录制</a></li>
-                <li><a href="https://github.com/Fackblack/douyinlive" target="_blank" rel="noopener noreferrer">DYLive</a></li>
-                <li><a href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener noreferrer">YT-dlp</a></li>
-                <li><a href="https://github.com/yuliskov/SmartTubeNext" target="_blank" rel="noopener noreferrer">SmartTube</a></li>
-                <li><a href="https://github.com/WEIFENG2333/VideoCaptioner" target="_blank" rel="noopener noreferrer">卡卡字幕</a></li>
-                <li><a href="https://github.com/kovidgoyal/calibre" target="_blank" rel="noopener noreferrer">Calibre</a></li>
-                <li><a href="https://github.com/OpenBoard-org/OpenBoard" target="_blank" rel="noopener noreferrer">OpenBoard</a></li>
-                <li><a href="https://github.com/josStorer/chatGPTBox" target="_blank" rel="noopener noreferrer">ChatGPTBox</a></li>
-                <li><a href="https://github.com/CherryHQ/cherry-studio" target="_blank" rel="noopener noreferrer">Cherry Studio</a></li>
-                <li><a href="https://github.com/RVC-Boss/GPT-SoVITS" target="_blank" rel="noopener noreferrer">GPT-SoVITS</a></li>
-                <li><a href="https://github.com/WebStackPage/WebStackPage.github.io" target="_blank" rel="noopener noreferrer">WebStackPage</a></li>
-                <li><a href="https://github.com/cjx82630/cjxlist" target="_blank" rel="noopener noreferrer">CJXlist</a></li>
-                <li><a href="https://github.com/TG-Twilight/AWAvenue-Adblock-Rule" target="_blank" rel="noopener noreferrer">秋风广告规则</a></li>
-                <li><a href="https://github.com/troyeguo/koodo-reader" target="_blank" rel="noopener noreferrer">Koodo Reader</a></li>
-                <li><a href="https://github.com/gedoor/legado" target="_blank" rel="noopener noreferrer">Legado</a></li>
-                <li><a href="https://github.com/Sigil-Ebook/Sigil" target="_blank" rel="noopener noreferrer">Sigil</a></li>
-                <li><a href="https://github.com/sandboxie-plus/Sandboxie" target="_blank" rel="noopener noreferrer">Sandboxie</a></li>
-                <li><a href="https://github.com/Nigh/I-wanna-clean-keyboard" target="_blank" rel="noopener noreferrer">keyboard</a></li>
-                <li><a href="https://github.com/NickeManarin/ScreenToGif" target="_blank" rel="noopener noreferrer">ScreenToGif</a></li>
-                <li><a href="https://github.com/zhongyang219/TrafficMonitor" target="_blank" rel="noopener noreferrer">TrafficMonitor</a></li>
-                <li><a href="https://github.com/BluePointLilac/ContextMenuManager" target="_blank" rel="noopener noreferrer">右键菜单</a></li>
-                <li><a href="https://github.com/abbodi1406/vcredist" target="_blank" rel="noopener noreferrer">Vcredist</a></li>
-                <li><a href="https://github.com/Wechat-ggGitHub/Awesome-GitHub-Repo" target="_blank" rel="noopener noreferrer">开源项目</a></li>
-                <li><a href="https://github.com/d2phap/ImageGlass" target="_blank" rel="noopener noreferrer">ImageGlass</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">🎮</i> 游戏动漫</h2>
-            <ul class="link-list">
-                <li><a href="https://store.steampowered.com/" target="_blank" rel="noopener noreferrer">Steam</a></li>
-				<li><a href="http://www.nexusmods.com/" target="_blank" rel="noopener noreferrer">Nexusmods</a></li>
-                <li><a href="https://bbs.nga.cn/" target="_blank" rel="noopener noreferrer">NGA</a></li>
-				<li><a href="https://bbs.hupu.com/" target="_blank" rel="noopener noreferrer">虎扑</a></li>
-                <li><a href="http://bbs.3dmgame.com" target="_blank" rel="noopener noreferrer">3DM 论坛</a></li>
-                <li><a href="http://patch.ali213.net/" target="_blank" rel="noopener noreferrer">游侠网</a></li>
-                <li><a href="http://www.gamersky.com/" target="_blank" rel="noopener noreferrer">游民星空</a></li>
-                <li><a href="http://www.3dmgame.com/" target="_blank" rel="noopener noreferrer">3DMGAME</a></li>
-                <li><a href="http://www.9dmsgame.com/" target="_blank" rel="noopener noreferrer">9DM</a></li>
-                <li><a href="http://war3.uuu9.com/" target="_blank" rel="noopener noreferrer">悠久</a></li>
-                <li><a href="http://www.ou99.com/" target="_blank" rel="noopener noreferrer">OU99</a></li>
-                <li><a href="http://gjqt.gamebar.com/" target="_blank" rel="noopener noreferrer">古剑奇谭</a></li>
-                <li><a href="http://pal5.baiyou100.com/" target="_blank" rel="noopener noreferrer">仙剑奇侠</a></li>
-                <li><a href="http://gbtgame.ysepan.com/" target="_blank" rel="noopener noreferrer">GBT 小组</a></li>
-                <li><a href="https://www.gog.com/" target="_blank" rel="noopener noreferrer">GOG</a></li>
-                <li><a href="http://fitgirl-repacks.site/" target="_blank" rel="noopener noreferrer">FitGirl</a></li>
-                <li><a href="https://www.sonkwo.com/" target="_blank" rel="noopener noreferrer">杉果</a></li>
-                <li><a href="https://zodgame.xyz/" target="_blank" rel="noopener noreferrer">ZOD 论坛</a></li>
-                <li><a href="https://bbs.sumisora.net/" target="_blank" rel="noopener noreferrer">澄空学园</a></li>
-                <li><a href="http://manhuabudang.com/" target="_blank" rel="noopener noreferrer">漫画补档</a></li>
-                <li><a href="http://www.opfans.org/" target="_blank" rel="noopener noreferrer">枫雪动漫</a></li>
-                <li><a href="http://www.ytd2.com/" target="_blank" rel="noopener noreferrer">YT 暗黑</a></li>
-                <li><a href="https://www.xiaohulu.com/" target="_blank" rel="noopener noreferrer">小葫芦</a></li>
-                <li><a href="https://www.pubg8x.com/" target="_blank" rel="noopener noreferrer">八倍镜</a></li>
-
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">🚀</i> 科学上网</h2>
-            <ul class="link-list">
-                 <li><a href="https://flowercloud.net/" target="_blank" rel="noopener noreferrer">花云</a></li>
-                <li><a href="https://maying.co/" target="_blank" rel="noopener noreferrer">魅影</a></li>
-                <li><a href="https://y-too.com/" target="_blank" rel="noopener noreferrer">YToo</a></li>
-                <li><a href="https://www.amytele.net/" target="_blank" rel="noopener noreferrer">Amytele</a></li>
-                <li><a href="https://www.itdog.cn/" target="_blank" rel="noopener noreferrer">IT 狗</a></li>
-                <li><a href="https://www.evan888.top/" target="_blank" rel="noopener noreferrer">爱分享</a></li>
-                <li><a href="https://github.com/tindy2013" target="_blank" rel="noopener noreferrer">Sub Master</a></li>
-                <li><a href="https://github.com/libnyanpasu/clash-nyanpasu" target="_blank" rel="noopener noreferrer">Nyanpasu</a></li>
-                <li><a href="https://github.com/getsurfboard" target="_blank" rel="noopener noreferrer">Surfboard</a></li>
-                <li><a href="https://github.com/MatsuriDayo" target="_blank" rel="noopener noreferrer">NekoBox</a></li>
-                <li><a href="https://github.com/FQrabbit/SSTap-Rule" target="_blank" rel="noopener noreferrer">SSTap-Rule</a></li>
-                <li><a href="https://github.com/xxf098/shadowsocksr-v2ray-trojan-android/releases" target="_blank" rel="noopener noreferrer">SSR-V2</a></li>
-                <li><a href="https://github.com/v2ray/v2ray-core" target="_blank" rel="noopener noreferrer">V2Ray Core</a></li>
-                <li><a href="https://github.com/2dust" target="_blank" rel="noopener noreferrer">v2rayNG</a></li>
-                <li><a href="https://github.com/zzzgydi/clash-verge" target="_blank" rel="noopener noreferrer">Clash_V</a></li>
-                <li><a href="https://api.nameless13.com/" target="_blank" rel="noopener noreferrer">Clash 转换</a></li>
-                <li><a href="https://github.com/ACL4SSR/ACL4SSR" target="_blank" rel="noopener noreferrer">ACL4SSR</a></li>
-            </ul>
-        </section>
-		
-        <section class="category">
-            <h2><i class="icon">☁️</i> 网盘搜索</h2>
-            <ul class="link-list">
-                <li><a href="https://pan.baidu.com/" target="_blank" rel="noopener noreferrer">百度网盘</a></li>
-                <li><a href="https://www.aliyundrive.com/" target="_blank" rel="noopener noreferrer">阿里云盘</a></li>
-                <li><a href="https://mypikpak.com/" target="_blank" rel="noopener noreferrer">PikPak</a></li>
-                <li><a href="https://www.lzpanx.com/" target="_blank" rel="noopener noreferrer">懒盘搜索</a></li>
-                <li><a href="https://115.com" target="_blank" rel="noopener noreferrer">115</a></li>
-                <li><a href="https://app.koofr.net/" target="_blank" rel="noopener noreferrer">Koofr</a></li>
-                <li><a href="https://www.jianguoyun.com/" target="_blank" rel="noopener noreferrer">坚果云</a></li>
-				<li><a href="https://drive.google.com/" target="_blank" rel="noopener noreferrer">Google Drive</a></li>
-				<li><a href="https://onedrive.live.com/" target="_blank" rel="noopener noreferrer">OneDrive</a></li>
-				<li><a href="https://www.dropbox.com/" target="_blank" rel="noopener noreferrer">Dropbox</a></li>
-            </ul>
-        </section>
-		
-        <section class="category">
-            <h2><i class="icon">🏠</i> 生活服务类</h2>
-            <ul class="link-list">
-                <li><a href="http://sz.91160.com/" target="_blank" rel="noopener noreferrer">医院挂号</a></li>
-                <li><a href="http://www.qunar.com/" target="_blank" rel="noopener noreferrer">去哪儿网</a></li>
-                <li><a href="http://www.meishij.net/" target="_blank" rel="noopener noreferrer">美食网</a></li>
-                <li><a href="http://service.szgas.com.cn/" target="_blank" rel="noopener noreferrer">深圳深燃煤气</a></li>
-                <li><a href="http://gd.189.cn/" target="_blank" rel="noopener noreferrer">深圳电信</a></li>
-                <li><a href="http://map.sz.bendibao.com/" target="_blank" rel="noopener noreferrer">深圳本地宝</a></li>
-				<li><a href="https://toolsdar.com/" target="_blank" rel="noopener noreferrer">工具达人</a></li>
-                <li><a href="https://tool.lu/" target="_blank" rel="noopener noreferrer">在线工具</a></li>
-                <li><a href="http://www.ip138.com/" target="_blank" rel="noopener noreferrer">IP 查询</a></li>
-                <li><a href="https://ip.skk.moe/" target="_blank" rel="noopener noreferrer">IP 国家查询</a></li>
-                <li><a href="https://speed.cloudflare.com" target="_blank" rel="noopener noreferrer">speed2</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">🌐</i> 门户综合</h2>
-            <ul class="link-list">
-                 <li><a href="http://www.sina.com.cn/" target="_blank" rel="noopener noreferrer">新浪</a></li>
-                <li><a href="http://www.qq.com/" target="_blank" rel="noopener noreferrer">腾讯</a></li>
-                <li><a href="http://www.sohu.com/" target="_blank" rel="noopener noreferrer">搜狐</a></li>
-                <li><a href="http://www.163.com/" target="_blank" rel="noopener noreferrer">网易</a></li>
-                <li><a href="http://www.xinhuanet.com/" target="_blank" rel="noopener noreferrer">新华网</a></li>
-                <li><a href="http://www.people.com.cn/" target="_blank" rel="noopener noreferrer">人民网</a></li>
-                <li><a href="http://cn.yahoo.com/" target="_blank" rel="noopener noreferrer">雅虎</a></li>
-                <li><a href="http://cn.msn.com/" target="_blank" rel="noopener noreferrer">MSN 中文网</a></li>
-                <li><a href="http://www.tom.com/" target="_blank" rel="noopener noreferrer">TOM</a></li>
-                <li><a href="http://www.hexun.com/" target="_blank" rel="noopener noreferrer">和讯</a></li>
-                <li><a href="http://www.cctv.com/" target="_blank" rel="noopener noreferrer">CCTV</a></li>
-                <li><a href="http://www.ifeng.com/" target="_blank" rel="noopener noreferrer">凤凰网</a></li>
-                <li><a href="http://www.chinaren.com/" target="_blank" rel="noopener noreferrer">ChinaRen</a></li>
-                <li><a href="http://www.sz.net.cn/" target="_blank" rel="noopener noreferrer">深圳之窗</a></li>
-                <li><a href="https://yandex.com/" target="_blank" rel="noopener noreferrer">Yandex</a></li>
-				<li><a href="https://swisscows.com/" target="_blank" rel="noopener noreferrer">Swisscows</a></li>
-				<li><a href="https://search.brave.com/" target="_blank" rel="noopener noreferrer">Brave Search</a></li>
-            </ul>
-        </section>
-
-        <section class="category">
-            <h2><i class="icon">🔖</i> 其他收藏</h2>
-            <ul class="link-list">
-                 <li><a href="http://login.live.com/" target="_blank" rel="noopener noreferrer">Win Live</a></li>
-                <li><a href="http://www.amd.com/cn/pages/amdhomepage.aspx" target="_blank" rel="noopener noreferrer">AMD</a></li>
-                <li><a href="http://www.meizu.com/" target="_blank" rel="noopener noreferrer">魅族科技</a></li>
-                <li><a href="http://www.familydoctor.com.cn/" target="_blank" rel="noopener noreferrer">家庭医生</a></li>
-                <li><a href="http://sz.ganji.com/" target="_blank" rel="noopener noreferrer">赶集网</a></li>
-                <li><a href="http://sz.58.com/" target="_blank" rel="noopener noreferrer">58 同城</a></li>
-                <li><a href="http://www.dianping.com/" target="_blank" rel="noopener noreferrer">大众点评</a></li>
-                <li><a href="http://www.koubei.com/" target="_blank" rel="noopener noreferrer">口碑网</a></li>
-                <li><a href="http://bbs.rayli.com.cn/" target="_blank" rel="noopener noreferrer">瑞丽论坛</a></li>
-                <li><a href="http://www.forbeschina.com/" target="_blank" rel="noopener noreferrer">福布斯中文</a></li>
-                <li><a href="http://chrome.360.cn/" target="_blank" rel="noopener noreferrer">360 极速</a></li>
-                <li><a href="https://www.360totalsecurity.com/" target="_blank" rel="noopener noreferrer">360 国际版</a></li>
-                <li><a href="https://tt-rss.org/" target="_blank" rel="noopener noreferrer">TT-RSS</a></li>
-                <li><a href="http://sunbox.cc/" target="_blank" rel="noopener noreferrer">阳光盒子</a></li>
-                <li><a href="http://www.jinhu.me/" target="_blank" rel="noopener noreferrer">金狐电脑</a></li>
-                <li><a href="http://shop.lovehifi.com/" target="_blank" rel="noopener noreferrer">音响论坛</a></li>
-                <li><a href="http://www.4k123.com/" target="_blank" rel="noopener noreferrer">4K中国</a></li>
-                <li><a href="http://www.txzqw.me/" target="_blank" rel="noopener noreferrer">天下足球</a></li>
-                <li><a href="http://yyets.com/" target="_blank" rel="noopener noreferrer">人人影视</a></li>
-                <li><a href="http://tv.cctv.com/" target="_blank" rel="noopener noreferrer">央视网</a></li>
-                <li><a href="http://www.w3school.com.cn/" target="_blank" rel="noopener noreferrer">W3School</a></li>
-                <li><a href="https://wx.qq.com/" target="_blank" rel="noopener noreferrer">微信网页版</a></li>
-                <li><a href="http://bbs.pcbeta.com/" target="_blank" rel="noopener noreferrer">远景</a></li>
-                <li><a href="http://www.pchome.net/" target="_blank" rel="noopener noreferrer">太平洋电脑网</a></li>
-                <li><a href="http://www.pconline.com.cn/" target="_blank" rel="noopener noreferrer">Pconline</a></li>
-                <li><a href="http://www.zol.com.cn/" target="_blank" rel="noopener noreferrer">中关村在线</a></li>
-                <li><a href="http://www.enet.com.cn/" target="_blank" rel="noopener noreferrer">硅谷动力</a></li>
-                <li><a href="https://vcb-s.com/" target="_blank" rel="noopener noreferrer">vcb-s</a></li>
-                <li><a href="https://www.cnblogs.com/" target="_blank" rel="noopener noreferrer">博客园</a></li>
-                <li><a href="http://www.right.com.cn/" target="_blank" rel="noopener noreferrer">恩山论坛</a></li>
-                <li><a href="https://www.videolan.org/" target="_blank" rel="noopener noreferrer">Videolan</a></li>
-                <li><a href="http://www.shafa.com/" target="_blank" rel="noopener noreferrer">沙发网</a></li>
-                <li><a href="http://www.7po.com/" target="_blank" rel="noopener noreferrer">奇珀网</a></li>
-                <li><a href="https://chrome.google.com/webstore" target="_blank" rel="noopener noreferrer">铬商店</a></li>
-                <li><a href="http://chromecj.com/" target="_blank" rel="noopener noreferrer">铬插件之家</a></li>
-                <li><a href="https://www.allavsoft.com/" target="_blank" rel="noopener noreferrer">Allavsoft</a></li>
-                <li><a href="http://tool.chinaz.com/" target="_blank" rel="noopener noreferrer">站长工具</a></li>
-                <li><a href="https://www.hongen.com/" target="_blank" rel="noopener noreferrer">洪恩教育</a></li>
-                <li><a href="https://memuplay.com/" target="_blank" rel="noopener noreferrer">MEmu</a></li>
-                <li><a href="https://tw.bignox.com/" target="_blank" rel="noopener noreferrer">夜神模拟器</a></li>
-                <li><a href="http://bbs.feng.com/" target="_blank" rel="noopener noreferrer">威锋网</a></li>
-                <li><a href="http://www.tomatolei.com/" target="_blank" rel="noopener noreferrer">番茄花园</a></li>
-                <li><a href="https://yandex.com/" target="_blank" rel="noopener noreferrer">Yandex</a></li>
-                <li><a href="https://www.ikanbot.com/" target="_blank" rel="noopener noreferrer">IKanBot</a></li>
-                <li><a href="https://gaze.run/" target="_blank" rel="noopener noreferrer">注视星球</a></li>
-                <li><a href="https://www.duboku.tv/" target="_blank" rel="noopener noreferrer">独播库</a></li>
-                <li><a href="https://www.libvio.pro/" target="_blank" rel="noopener noreferrer">Libvio</a></li>
-                <li><a href="https://ddys.pro/" target="_blank" rel="noopener noreferrer">低端影视</a></li>
-                <li><a href="https://www.xinpianchang.com/" target="_blank" rel="noopener noreferrer">新片场</a></li>
-                <li><a href="http://www.BBQDDQ.com" target="_blank" rel="noopener noreferrer">蓝光影音</a></li>
-            </ul>
-        </section>
-        </main>
+	<div class="container">
+		<div class="top-common-links">
+			<a href="https://www.toolhelper.cn/" class="top-link-card" target="_blank" rel="noopener noreferrer">锤子工具</a>
+			<a href="https://tool.lu/" class="top-link-card" target="_blank" rel="noopener noreferrer">在线工具</a>
+			<a href="https://fanyi.baidu.com/#en/zh/" class="top-link-card" target="_blank" rel="noopener noreferrer">百度翻译</a>
+			<a href="https://translate.google.com/?source=gtx" class="top-link-card" target="_blank" rel="noopener noreferrer">Google翻译</a>
+			<a href="https://www.amap.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">高德地图</a>
+			<a href="https://map.baidu.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">百度地图</a>
+			<a href="https://maps.google.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">谷歌地图</a>
+			<a href="http://www.12306.cn/" class="top-link-card" target="_blank" rel="noopener noreferrer">12306</a>
+			<a href="http://www.xiachufang.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">下厨房</a>
+			<a href="https://www.speedtest.net/" class="top-link-card" target="_blank" rel="noopener noreferrer">Speedtest</a>
+			<a href="https://zoom.us/" class="top-link-card" target="_blank" rel="noopener noreferrer">Zoom</a>
+			<a href="https://github.com/HaiLa1902" class="top-link-card" target="_blank" rel="noopener noreferrer">GitHub(HaiLa)</a>
+			<a href="导航10.1.html" class="top-link-card" target="_blank" rel="noopener noreferrer">导航10.1</a>
+			<a href="凯格尔助手.html" class="top-link-card" target="_blank" rel="noopener noreferrer">凯格尔助手</a>
+			<a href="英语启蒙.html" class="top-link-card" target="_blank" rel="noopener noreferrer">英语启蒙</a>
 		</div>
-		<footer> <p>© 2025 我的网址导航 V12</p>
-        <p>当前时间 (北京时间): <span id="current-time">--:--:--</span></p> </footer>
-
-    <script>
-        // --- 主题切换逻辑 ---
-        // 获取 DOM 元素
-        const themeToggleButton = document.getElementById("theme-toggle-button"); // 获取切换按钮
-        const bodyElement = document.body; // 获取 body 元素，用于添加/移除 .dark-mode 类
-        // 检测用户系统的颜色偏好设置
-        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-        // 从 localStorage 读取之前保存的主题设置 (如果存在)
-        const currentTheme = localStorage.getItem("theme");
-
-        // 定义应用主题的函数
-        function applyTheme(theme) { // 接收 "light" 或 "dark" 作为参数
-            if (theme === "dark") {
-                bodyElement.classList.add("dark-mode"); // 如果是 dark，给 body 添加 .dark-mode 类
-            } else {
-                bodyElement.classList.remove("dark-mode"); // 否则 (light)，移除 body 的 .dark-mode 类
-            }
-            // CSS 中的 .dark-mode 规则会根据类的有无自动生效或失效
-        }
-
-        // 初始化页面主题
-        if (currentTheme) {
-            // 如果 localStorage 中有保存的主题，则应用该主题
-            applyTheme(currentTheme);
-        } else if (prefersDarkScheme.matches) {
-            // 否则，如果系统偏好是深色模式，则应用深色主题
-            applyTheme("dark");
-        } else {
-            // 再否则 (系统偏好浅色或无法检测)，应用浅色主题 (默认)
-            applyTheme("light");
-        }
-
-        // 给主题切换按钮添加点击事件监听器
-        themeToggleButton.addEventListener("click", () => {
-            // 判断当前是否处于深色模式
-            let newTheme = bodyElement.classList.contains("dark-mode") ? "light" : "dark"; // 如果是，则新主题为 light，否则为 dark
-            // 应用新主题
-            applyTheme(newTheme);
-            // 将新主题保存到 localStorage，以便下次访问时记住用户的选择
-            localStorage.setItem("theme", newTheme);
-        });
-
-        // 监听系统颜色偏好变化事件
-        prefersDarkScheme.addEventListener("change", (event) => {
-            // 检查 localStorage 中是否 *没有* 保存用户手动设置的主题
-            if (!localStorage.getItem("theme")) {
-                // 如果没有手动设置过，则根据系统偏好的变化自动切换主题
-                applyTheme(event.matches ? "dark" : "light"); // event.matches 为 true 表示系统变为深色
-            }
-        });
-
-        // --- 当前时间更新逻辑 ---
-        // 定义更新时间的函数
-        function updateTime() {
-            const now = new Date(); // 创建一个新的 Date 对象，获取当前客户端时间
-            const timeZone = "Asia/Shanghai"; // 设置目标时区为亚洲/上海 (北京时间)
-
-            // 将时间格式化为 "HH:mm:ss GMT+8" 格式
-            const timeString = now.toLocaleString("zh-CN", { // 使用中文区域设置
-                timeZone: timeZone, // 指定时区
-                hour: "2-digit",    // 小时 (两位数)
-                minute: "2-digit",  // 分钟 (两位数)
-                second: "2-digit",  // 秒钟 (两位数)
-                hour12: false,     // 使用 24 小时制
-                timeZoneName: "shortOffset" // 显示时区偏移量 (如 GMT+8)
-            });
-
-             // 将日期格式化为 "YYYY年M月D日" 格式
-             const dateString = now.toLocaleDateString("zh-CN", { // 使用中文区域设置
-                 timeZone: timeZone, // 指定时区
-                 year: "numeric",   // 年份 (数字)
-                 month: "long",     // 月份 (完整名称，如 "五月")
-                 day: "numeric"     // 日期 (数字)
-             });
-
-            // 获取用于显示时间的 span 元素
-            const timeElement = document.getElementById("current-time");
-            // 如果元素存在
-            if (timeElement) {
-                // 更新其文本内容为 "日期 时间"
-                timeElement.textContent = `${dateString} ${timeString}`;
-            }
-        }
-
-        // 页面加载完成后立即调用一次 updateTime 函数，显示初始时间
-        updateTime();
-        // 设置定时器，每隔 1000 毫秒 (1秒) 调用一次 updateTime 函数，实现时间动态更新
-        setInterval(updateTime, 1000);
-    </script>
-
-</body> </html>
+		<div class="marquee-container">
+			<marquee behavior="alternate" scrolldelay="100"> 谨以此纪念那些上网的日子 <font>孟</font>
+			</marquee>
+		</div>
+		<nav class="common-links">
+			<a href="https://www.baidu.com/" target="_blank" rel="noopener noreferrer">Baidu</a>
+			<a href="https://www.bing.com/" target="_blank" rel="noopener noreferrer">Bing</a>
+			<a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">Google</a>
+			<a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Youtube</a>
+			<a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">Gemini</a>
+			<a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">Deepseek</a>
+			<a href="http://www.bilibili.com/" target="_blank" rel="noopener noreferrer">Bilibili</a>
+			<a href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer">抖音</a>
+			<a href="https://www.52pojie.cn/" target="_blank" rel="noopener noreferrer">吾爱破解</a>
+			<a href="http://www.mydrivers.com/" target="_blank" rel="noopener noreferrer">驱动之家</a>
+			<a href="http://www.jd.com/" target="_blank" rel="noopener noreferrer">京东商城</a>
+			<a href="https://www.10jqka.com.cn/" target="_blank" rel="noopener noreferrer">同花顺</a>
+		</nav>
+		<main>
+			<section class="category">
+				<h2><i class="icon">🤖</i> AI工具</h2>
+				<ul class="link-list">
+					<li><a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">Deepseek</a></li>
+					<li><a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">Gemini</a></li>
+					<li><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT</a></li>
+					<li><a href="https://grok.com/" target="_blank" rel="noopener noreferrer">Grok</a></li>
+					<li><a href="https://yiyan.baidu.com/" target="_blank" rel="noopener noreferrer">文心一言</a></li>
+					<li><a href="https://yuanbao.tencent.com/" target="_blank" rel="noopener noreferrer">元宝</a></li>
+					<li><a href="https://www.doubao.com/" target="_blank" rel="noopener noreferrer">豆包</a></li>
+					<li><a href="https://tongyi.aliyun.com/" target="_blank" rel="noopener noreferrer">通义千问</a></li>
+					<li><a href="https://kimi.moonshot.cn/" target="_blank" rel="noopener noreferrer">Kimi</a></li>
+					<li><a href="https://xiaoyi.huawei.com/" target="_blank" rel="noopener noreferrer">小艺</a></li>
+					<li><a href="https://hailuoai.com/" target="_blank" rel="noopener noreferrer">海螺</a></li>
+					<li><a href="https://jimeng.jianying.com/ai-tool/home" target="_blank" rel="noopener noreferrer">即梦</a></li>
+					<li><a href="https://www.coze.cn/" target="_blank" rel="noopener noreferrer">Coze</a></li>
+					<li><a href="https://www.volcengine.com/" target="_blank" rel="noopener noreferrer">火山引擎</a></li>
+					<li><a href="https://www.deepseek.com/" target="_blank" rel="noopener noreferrer">深度求索</a></li>
+					<li><a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer">Google AI Studio</a></li>
+					<li><a href="https://aigcpanel.com/" target="_blank" rel="noopener noreferrer">AIGCPanel</a></li>
+					<li><a href="https://www.lang123.top/" target="_blank" rel="noopener noreferrer">朗朗配音</a></li>
+					<li><a href="https://www.text-to-speech.cn/" target="_blank" rel="noopener noreferrer">To-Speech</a></li>
+					<li><a href="https://ttsmaker.cn/" target="_blank" rel="noopener noreferrer">TTSMaker</a></li>
+					<li><a href="https://siliconflow.cn/" target="_blank" rel="noopener noreferrer">硅基流动</a></li>
+					<li><a href="https://ai.seoml.com/" target="_blank" rel="noopener noreferrer">AIKey</a></li>
+					<li><a href="https://ai-bot.cn/" target="_blank" rel="noopener noreferrer">ai工具集</a></li>
+					<li><a href="https://so.n.cn/" target="_blank" rel="noopener noreferrer">纳米搜索</a></li>
+					<li><a href="https://metaso.cn/" target="_blank" rel="noopener noreferrer">秘塔搜索</a></li>
+					<li><a href="https://duckduckgo.com/" target="_blank" rel="noopener noreferrer">DuckDuckGo</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">💬</i> 社交资讯类</h2>
+				<ul class="link-list">
+					<li><a href="https://www.kadaza.com/" target="_blank" rel="noopener noreferrer">Kadaza</a></li>
+					<li><a href="https://www.shuziyimin.org/" target="_blank" rel="noopener noreferrer">移民导航</a></li>
+					<li><a href="https://tophub.today/" target="_blank" rel="noopener noreferrer">热榜导航</a></li>
+					<li><a href="https://www.bbc.com/news" target="_blank" rel="noopener noreferrer">BBC News</a></li>
+					<li><a href="https://www.cnn.com/" target="_blank" rel="noopener noreferrer">CNN</a></li>
+					<li><a href="https://www.reuters.com/" target="_blank" rel="noopener noreferrer">路透社</a></li>
+					<li><a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">美联社</a></li>
+					<li><a href="https://www.nytimes.com/" target="_blank" rel="noopener noreferrer">纽约时报</a></li>
+					<li><a href="https://www.wsj.com/" target="_blank" rel="noopener noreferrer">华尔街日报</a></li>
+					<li><a href="https://www.theguardian.com/international" target="_blank" rel="noopener noreferrer">卫报</a></li>
+					<li><a href="https://www.aljazeera.com/" target="_blank" rel="noopener noreferrer">半岛电视台</a></li>
+					<li><a href="https://news.google.com/" target="_blank" rel="noopener noreferrer">Google News</a></li>
+					<li><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+					<li><a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">X / Twitter</a></li>
+					<li><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+					<li><a href="https://www.reddit.com/" target="_blank" rel="noopener noreferrer">Reddit</a></li>
+					<li><a href="https://www.quora.com/" target="_blank" rel="noopener noreferrer">Quora (美知乎)</a></li>
+					<li><a href="http://www.chiphell.com/" target="_blank" rel="noopener noreferrer">Chiphell</a></li>
+					<li><a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer">稀土掘金</a></li>
+					<li><a href="http://www.v2ex.com/" target="_blank" rel="noopener noreferrer">V2EX</a></li>
+					<li><a href="https://www.chongbuluo.com/" target="_blank" rel="noopener noreferrer">虫部落</a></li>
+					<li><a href="https://weibo.com" target="_blank" rel="noopener noreferrer">微博</a></li>
+					<li><a href="https://www.newsmth.net/" target="_blank" rel="noopener noreferrer">水木社区</a></li>
+					<li><a href="http://www.ithome.com/" target="_blank" rel="noopener noreferrer">IT 之家</a></li>
+					<li><a href="http://www.mydrivers.com/" target="_blank" rel="noopener noreferrer">驱动之家</a></li>
+					<li><a href="http://www.eastmoney.com/" target="_blank" rel="noopener noreferrer">东方财富</a></li>
+					<li><a href="https://www.10jqka.com.cn/" target="_blank" rel="noopener noreferrer">同花顺</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🛒</i> 商城网购</h2>
+				<ul class="link-list">
+					<li><a href="http://www.jd.com/" target="_blank" rel="noopener noreferrer">京东商城</a></li>
+					<li><a href="http://www.apple.com.cn/" target="_blank" rel="noopener noreferrer">Apple中国</a></li>
+					<li><a href="http://www.dangdang.com/" target="_blank" rel="noopener noreferrer">当当网</a></li>
+					<li><a href="https://www.1688.com/" target="_blank" rel="noopener noreferrer">1688</a></li>
+					<li><a href="http://www.vip.com/" target="_blank" rel="noopener noreferrer">唯品会</a></li>
+					<li><a href="http://www.mi.com/" target="_blank" rel="noopener noreferrer">小米</a></li>
+					<li><a href="https://www.hihonor.com/" target="_blank" rel="noopener noreferrer">荣耀</a></li>
+					<li><a href="http://www.vmall.com/" target="_blank" rel="noopener noreferrer">华为商城</a></li>
+					<li><a href="https://www.gmarket.co.kr/" target="_blank" rel="noopener noreferrer">Gmarket</a></li>
+					<li><a href="http://www.taobao.com/" target="_blank" rel="noopener noreferrer">淘宝网</a></li>
+					<li><a href="https://www.tmall.com/" target="_blank" rel="noopener noreferrer">天猫</a></li>
+					<li><a href="http://www.smzdm.com/" target="_blank" rel="noopener noreferrer">什么值得买</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🎓</i> 成长教育类</h2>
+				<ul class="link-list">
+					<li><a href="https://zh.z-lib.gs/" target="_blank" rel="noopener noreferrer">Z-Library</a></li>
+					<li><a href="http://www.xxttq.com/" target="_blank" rel="noopener noreferrer">甜甜圈</a></li>
+					<li><a href="https://www.ebama.net/" target="_blank" rel="noopener noreferrer">爸妈网</a></li>
+					<li><a href="https://www.kidsa-z.com" target="_blank" rel="noopener noreferrer">RAZ 孩子学</a></li>
+					<li><a href="https://www.leleketang.com/cr/" target="_blank" rel="noopener noreferrer">天天练</a></li>
+					<li><a href="https://www.liepin.com/" target="_blank" rel="noopener noreferrer">猎聘网</a></li>
+					<li><a href="http://www.cjol.com/" target="_blank" rel="noopener noreferrer">人才热线</a></li>
+					<li><a href="http://www.chinahr.com/" target="_blank" rel="noopener noreferrer">中华英才网</a></li>
+					<li><a href="http://www.51job.com/" target="_blank" rel="noopener noreferrer">前程无忧</a></li>
+					<li><a href="http://www.zhaopin.com/" target="_blank" rel="noopener noreferrer">智联招聘</a></li>
+					<li><a href="https://cn.linkedin.com/" target="_blank" rel="noopener noreferrer">领英</a></li>
+					<li><a href="http://mail.163.com/" target="_blank" rel="noopener noreferrer">网易邮箱</a></li>
+					<li><a href="http://www.kidsbox365.com/" target="_blank" rel="noopener noreferrer">Kidsbox</a></li>
+					<li><a href="https://lexile.com/" target="_blank" rel="noopener noreferrer">蓝思网</a></li>
+					<li><a href="http://www.ixfc.net/" target="_blank" rel="noopener noreferrer">小帆船字体</a></li>
+					<li><a href="https://www.wikipedia.org/" target="_blank" rel="noopener noreferrer">Wikipedia</a></li>
+					<li><a href="https://www.coursera.org/" target="_blank" rel="noopener noreferrer">Coursera</a></li>
+					<li><a href="https://www.edx.org/" target="_blank" rel="noopener noreferrer">edX (在线课程)</a></li>
+					<li><a href="https://www.khanacademy.org/" target="_blank" rel="noopener noreferrer">Khan Academy</a></li>
+					<li><a href="https://www.duolingo.com/" target="_blank" rel="noopener noreferrer">Duolingo</a></li>
+					<li><a href="https://archive.org/" target="_blank" rel="noopener noreferrer">互联网档案馆</a></li>
+					<li><a href="https://www.britannica.com/" target="_blank" rel="noopener noreferrer">大英百科全书</a></li>
+					<li><a href="https://www.merriam-webster.com/" target="_blank" rel="noopener noreferrer">韦氏词典</a></li>
+					<li><a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">谷歌学术</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🎬</i> 影音娱乐</h2>
+				<ul class="link-list">
+					<li><a href="https://git.unlock-music.dev/um" target="_blank" rel="noopener noreferrer">Um React</a></li>
+					<li><a href="https://www.1lou.me/" target="_blank" rel="noopener noreferrer">BT 之家</a></li>
+					<li><a href="http://www.bilibili.com/" target="_blank" rel="noopener noreferrer">Bilibili</a></li>
+					<li><a href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer">抖音</a></li>
+					<li><a href="https://www.tiktok.com/foryou" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+					<li><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+					<li><a href="https://music.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube Music</a></li>
+					<li><a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer">Spotify</a></li>
+					<li><a href="https://music.apple.com/" target="_blank" rel="noopener noreferrer">Apple Music</a></li>
+					<li><a href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer">Disney+</a></li>
+					<li><a href="https://www.netflix.com/" target="_blank" rel="noopener noreferrer">Netflix</a></li>
+					<li><a href="https://www.hulu.com/" target="_blank" rel="noopener noreferrer">Hulu</a></li>
+					<li><a href="https://www.twitch.tv/" target="_blank" rel="noopener noreferrer">Twitch</a></li>
+					<li><a href="http://www.afreecatv.com/" target="_blank" rel="noopener noreferrer">Afreeca</a></li>
+					<li><a href="https://tunein.com/" target="_blank" rel="noopener noreferrer">TuneIn</a></li>
+					<li><a href="https://www.miaoaaa.com/" target="_blank" rel="noopener noreferrer">喵导航</a></li>
+					<li><a href="https://www.yinfans.me/" target="_blank" rel="noopener noreferrer">音范丝</a></li>
+					<li><a href="https://www.btnull.org/" target="_blank" rel="noopener noreferrer">片库</a></li>
+					<li><a href="https://rarbg.so/" target="_blank" rel="noopener noreferrer">RARBG</a></li>
+					<li><a href="https://www.4khdr.cn/" target="_blank" rel="noopener noreferrer">4kHDR</a></li>
+					<li><a href="http://zmk.pw/" target="_blank" rel="noopener noreferrer">字幕库</a></li>
+					<li><a href="https://tv.cctv.com/" target="_blank" rel="noopener noreferrer">CCTV</a></li>
+					<li><a href="https://www.migu.cn/" target="_blank" rel="noopener noreferrer">咪咕</a></li>
+					<li><a href="https://www.ximalaya.com/" target="_blank" rel="noopener noreferrer">喜马拉雅</a></li>
+					<li><a href="http://v.qq.com/" target="_blank" rel="noopener noreferrer">QQ 视频</a></li>
+					<li><a href="http://www.qiyi.com/" target="_blank" rel="noopener noreferrer">奇艺</a></li>
+					<li><a href="http://www.huya.com/" target="_blank" rel="noopener noreferrer">虎牙直播</a></li>
+					<li><a href="https://www.douyu.com/" target="_blank" rel="noopener noreferrer">斗鱼</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">💻</i> 数软科技</h2>
+				<ul class="link-list">
+					<li><a href="https://www.52pojie.cn/" target="_blank" rel="noopener noreferrer">吾爱破解</a></li>
+					<li><a href="https://www.423down.com/" target="_blank" rel="noopener noreferrer">423down</a></li>
+					<li><a href="https://www.luochenzhimu.com/" target="_blank" rel="noopener noreferrer">落尘之木</a></li>
+					<li><a href="https://www.yxssp.com/" target="_blank" rel="noopener noreferrer">异星空间</a></li>
+					<li><a href="http://bbs.kafan.cn/" target="_blank" rel="noopener noreferrer">卡饭论坛</a></li>
+					<li><a href="http://www.appinn.com/" target="_blank" rel="noopener noreferrer">小众软件</a></li>
+					<li><a href="https://iao.su/" target="_blank" rel="noopener noreferrer">不死鸟</a></li>
+					<li><a href="http://bbs.kafan.cn/" target="_blank" rel="noopener noreferrer">卡饭论坛</a></li>
+					<li><a href="https://alist.nn.ci/zh/" target="_blank" rel="noopener noreferrer">AList</a></li>
+					<li><a href="https://greasyfork.org/zh-CN" target="_blank" rel="noopener noreferrer">Greasyfork</a></li>
+					<li><a href="https://apkpure.com/cn/" target="_blank" rel="noopener noreferrer">APKPure</a></li>
+					<li><a href="http://www.yckceo.com/" target="_blank" rel="noopener noreferrer">源仓库</a></li>
+					<li><a href="https://gedoor.github.io/" target="_blank" rel="noopener noreferrer">阅读</a></li>
+					<li><a href="https://anydesk.com/" target="_blank" rel="noopener noreferrer">Anydesk</a></li>
+					<li><a href="https://www.todesk.com/" target="_blank" rel="noopener noreferrer">Todesk</a></li>
+					<li><a href="https://sunlogin.oray.com/" target="_blank" rel="noopener noreferrer">向日葵</a></li>
+					<li><a href="https://rufus.ie/" target="_blank" rel="noopener noreferrer">Rufus</a></li>
+					<li><a href="https://www.wepe.com.cn/" target="_blank" rel="noopener noreferrer">微PE</a></li>
+					<li><a href="http://sparanoid.com/lab/7z/" target="_blank" rel="noopener noreferrer">7-Zip 中文网</a></li>
+					<li><a href="https://notepad-plus-plus.org/" target="_blank" rel="noopener noreferrer">Notepad++</a></li>
+					<li><a href="http://www.fishlee.net/" target="_blank" rel="noopener noreferrer">鱼后花园</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🔗</i> GitHub集合</h2>
+				<ul class="link-list">
+					<li><a href="https://github.com/yaobiao131/downkyicore" target="_blank" rel="noopener noreferrer">哔哩下载姬</a></li>
+					<li><a href="https://github.com/lucinhu/bili_you" target="_blank" rel="noopener noreferrer">Bili You</a></li>
+					<li><a href="https://github.com/xiaoyaocz/dart_simple_live" target="_blank" rel="noopener noreferrer">Simple Live</a></li>
+					<li><a href="https://github.com/moriafly/SaltPlayerSource" target="_blank" rel="noopener noreferrer">椒盐</a></li>
+					<li><a href="https://github.com/lyswhut" target="_blank" rel="noopener noreferrer">洛雪音乐</a></li>
+					<li><a href="https://github.com/maotoumao" target="_blank" rel="noopener noreferrer">MusicFree</a></li>
+					<li><a href="https://github.com/BtbN/FFmpeg-Builds" target="_blank" rel="noopener noreferrer">FFmpeg</a></li>
+					<li><a href="https://github.com/1265578519/ShanaEncoder" target="_blank" rel="noopener noreferrer">ShanaEncoder</a></li>
+					<li><a href="https://github.com/Aleksoid1978/MPC-BE" target="_blank" rel="noopener noreferrer">MPC-BE</a></li>
+					<li><a href="https://github.com/KRTirtho/spotube" target="_blank" rel="noopener noreferrer">Spotube</a></li>
+					<li><a href="https://github.com/xiaoyaocz/flutter_dmzj" target="_blank" rel="noopener noreferrer">动漫之家</a></li>
+					<li><a href="https://github.com/JoeanAmier/TikTokDownloader" target="_blank" rel="noopener noreferrer">TikTok下载</a></li>
+					<li><a href="https://github.com/Richasy/Bili.Uwp" target="_blank" rel="noopener noreferrer">Bili.Uwp</a></li>
+					<li><a href="https://github.com/videolan" target="_blank" rel="noopener noreferrer">VLC</a></li>
+					<li><a href="https://github.com/WhiteMinds/LiveAutoRecord" target="_blank" rel="noopener noreferrer">直播录制</a></li>
+					<li><a href="https://github.com/Fackblack/douyinlive" target="_blank" rel="noopener noreferrer">DYLive</a></li>
+					<li><a href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener noreferrer">YT-dlp</a></li>
+					<li><a href="https://github.com/yuliskov/SmartTubeNext" target="_blank" rel="noopener noreferrer">SmartTube</a></li>
+					<li><a href="https://github.com/WEIFENG2333/VideoCaptioner" target="_blank" rel="noopener noreferrer">卡卡字幕</a></li>
+					<li><a href="https://github.com/kovidgoyal/calibre" target="_blank" rel="noopener noreferrer">Calibre</a></li>
+					<li><a href="https://github.com/OpenBoard-org/OpenBoard" target="_blank" rel="noopener noreferrer">OpenBoard</a></li>
+					<li><a href="https://github.com/josStorer/chatGPTBox" target="_blank" rel="noopener noreferrer">ChatGPTBox</a></li>
+					<li><a href="https://github.com/CherryHQ/cherry-studio" target="_blank" rel="noopener noreferrer">Cherry Studio</a></li>
+					<li><a href="https://github.com/RVC-Boss/GPT-SoVITS" target="_blank" rel="noopener noreferrer">GPT-SoVITS</a></li>
+					<li><a href="https://github.com/WebStackPage/WebStackPage.github.io" target="_blank" rel="noopener noreferrer">WebStackPage</a></li>
+					<li><a href="https://github.com/cjx82630/cjxlist" target="_blank" rel="noopener noreferrer">CJXlist</a></li>
+					<li><a href="https://github.com/TG-Twilight/AWAvenue-Adblock-Rule" target="_blank" rel="noopener noreferrer">秋风广告规则</a></li>
+					<li><a href="https://github.com/troyeguo/koodo-reader" target="_blank" rel="noopener noreferrer">Koodo Reader</a></li>
+					<li><a href="https://github.com/gedoor/legado" target="_blank" rel="noopener noreferrer">Legado</a></li>
+					<li><a href="https://github.com/Sigil-Ebook/Sigil" target="_blank" rel="noopener noreferrer">Sigil</a></li>
+					<li><a href="https://github.com/sandboxie-plus/Sandboxie" target="_blank" rel="noopener noreferrer">Sandboxie</a></li>
+					<li><a href="https://github.com/Nigh/I-wanna-clean-keyboard" target="_blank" rel="noopener noreferrer">keyboard</a></li>
+					<li><a href="https://github.com/NickeManarin/ScreenToGif" target="_blank" rel="noopener noreferrer">ScreenToGif</a></li>
+					<li><a href="https://github.com/zhongyang219/TrafficMonitor" target="_blank" rel="noopener noreferrer">TrafficMonitor</a></li>
+					<li><a href="https://github.com/BluePointLilac/ContextMenuManager" target="_blank" rel="noopener noreferrer">右键菜单</a></li>
+					<li><a href="https://github.com/abbodi1406/vcredist" target="_blank" rel="noopener noreferrer">Vcredist</a></li>
+					<li><a href="https://github.com/Wechat-ggGitHub/Awesome-GitHub-Repo" target="_blank" rel="noopener noreferrer">开源项目</a></li>
+					<li><a href="https://github.com/d2phap/ImageGlass" target="_blank" rel="noopener noreferrer">ImageGlass</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🎮</i> 游戏动漫</h2>
+				<ul class="link-list">
+					<li><a href="https://store.steampowered.com/" target="_blank" rel="noopener noreferrer">Steam</a></li>
+					<li><a href="http://www.nexusmods.com/" target="_blank" rel="noopener noreferrer">Nexusmods</a></li>
+					<li><a href="https://bbs.nga.cn/" target="_blank" rel="noopener noreferrer">NGA</a></li>
+					<li><a href="https://bbs.hupu.com/" target="_blank" rel="noopener noreferrer">虎扑</a></li>
+					<li><a href="http://bbs.3dmgame.com" target="_blank" rel="noopener noreferrer">3DM 论坛</a></li>
+					<li><a href="http://patch.ali213.net/" target="_blank" rel="noopener noreferrer">游侠网</a></li>
+					<li><a href="http://www.gamersky.com/" target="_blank" rel="noopener noreferrer">游民星空</a></li>
+					<li><a href="http://www.3dmgame.com/" target="_blank" rel="noopener noreferrer">3DMGAME</a></li>
+					<li><a href="http://www.9dmsgame.com/" target="_blank" rel="noopener noreferrer">9DM</a></li>
+					<li><a href="http://war3.uuu9.com/" target="_blank" rel="noopener noreferrer">悠久</a></li>
+					<li><a href="http://www.ou99.com/" target="_blank" rel="noopener noreferrer">OU99</a></li>
+					<li><a href="http://gjqt.gamebar.com/" target="_blank" rel="noopener noreferrer">古剑奇谭</a></li>
+					<li><a href="http://pal5.baiyou100.com/" target="_blank" rel="noopener noreferrer">仙剑奇侠</a></li>
+					<li><a href="http://gbtgame.ysepan.com/" target="_blank" rel="noopener noreferrer">GBT 小组</a></li>
+					<li><a href="https://www.gog.com/" target="_blank" rel="noopener noreferrer">GOG</a></li>
+					<li><a href="http://fitgirl-repacks.site/" target="_blank" rel="noopener noreferrer">FitGirl</a></li>
+					<li><a href="https://www.sonkwo.com/" target="_blank" rel="noopener noreferrer">杉果</a></li>
+					<li><a href="https://zodgame.xyz/" target="_blank" rel="noopener noreferrer">ZOD 论坛</a></li>
+					<li><a href="https://bbs.sumisora.net/" target="_blank" rel="noopener noreferrer">澄空学园</a></li>
+					<li><a href="http://manhuabudang.com/" target="_blank" rel="noopener noreferrer">漫画补档</a></li>
+					<li><a href="http://www.opfans.org/" target="_blank" rel="noopener noreferrer">枫雪动漫</a></li>
+					<li><a href="http://www.ytd2.com/" target="_blank" rel="noopener noreferrer">YT 暗黑</a></li>
+					<li><a href="https://www.xiaohulu.com/" target="_blank" rel="noopener noreferrer">小葫芦</a></li>
+					<li><a href="https://www.pubg8x.com/" target="_blank" rel="noopener noreferrer">八倍镜</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🚀</i> 科学上网</h2>
+				<ul class="link-list">
+					<li><a href="https://flowercloud.net/" target="_blank" rel="noopener noreferrer">花云</a></li>
+					<li><a href="https://maying.co/" target="_blank" rel="noopener noreferrer">魅影</a></li>
+					<li><a href="https://y-too.com/" target="_blank" rel="noopener noreferrer">YToo</a></li>
+					<li><a href="https://www.amytele.net/" target="_blank" rel="noopener noreferrer">Amytele</a></li>
+					<li><a href="https://www.itdog.cn/" target="_blank" rel="noopener noreferrer">IT 狗</a></li>
+					<li><a href="https://www.evan888.top/" target="_blank" rel="noopener noreferrer">爱分享</a></li>
+					<li><a href="https://github.com/tindy2013" target="_blank" rel="noopener noreferrer">Sub Master</a></li>
+					<li><a href="https://github.com/libnyanpasu/clash-nyanpasu" target="_blank" rel="noopener noreferrer">Nyanpasu</a></li>
+					<li><a href="https://github.com/getsurfboard" target="_blank" rel="noopener noreferrer">Surfboard</a></li>
+					<li><a href="https://github.com/MatsuriDayo" target="_blank" rel="noopener noreferrer">NekoBox</a></li>
+					<li><a href="https://github.com/FQrabbit/SSTap-Rule" target="_blank" rel="noopener noreferrer">SSTap-Rule</a></li>
+					<li><a href="https://github.com/xxf098/shadowsocksr-v2ray-trojan-android/releases" target="_blank" rel="noopener noreferrer">SSR-V2</a></li>
+					<li><a href="https://github.com/v2ray/v2ray-core" target="_blank" rel="noopener noreferrer">V2Ray Core</a></li>
+					<li><a href="https://github.com/2dust" target="_blank" rel="noopener noreferrer">v2rayNG</a></li>
+					<li><a href="https://github.com/zzzgydi/clash-verge" target="_blank" rel="noopener noreferrer">Clash_V</a></li>
+					<li><a href="https://api.nameless13.com/" target="_blank" rel="noopener noreferrer">Clash 转换</a></li>
+					<li><a href="https://github.com/ACL4SSR/ACL4SSR" target="_blank" rel="noopener noreferrer">ACL4SSR</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">☁️</i> 网盘搜索</h2>
+				<ul class="link-list">
+					<li><a href="https://pan.baidu.com/" target="_blank" rel="noopener noreferrer">百度网盘</a></li>
+					<li><a href="https://www.aliyundrive.com/" target="_blank" rel="noopener noreferrer">阿里云盘</a></li>
+					<li><a href="https://mypikpak.com/" target="_blank" rel="noopener noreferrer">PikPak</a></li>
+					<li><a href="https://www.lzpanx.com/" target="_blank" rel="noopener noreferrer">懒盘搜索</a></li>
+					<li><a href="https://115.com" target="_blank" rel="noopener noreferrer">115</a></li>
+					<li><a href="https://app.koofr.net/" target="_blank" rel="noopener noreferrer">Koofr</a></li>
+					<li><a href="https://www.jianguoyun.com/" target="_blank" rel="noopener noreferrer">坚果云</a></li>
+					<li><a href="https://drive.google.com/" target="_blank" rel="noopener noreferrer">Google Drive</a></li>
+					<li><a href="https://onedrive.live.com/" target="_blank" rel="noopener noreferrer">OneDrive</a></li>
+					<li><a href="https://www.dropbox.com/" target="_blank" rel="noopener noreferrer">Dropbox</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🏠</i> 生活服务类</h2>
+				<ul class="link-list">
+					<li><a href="http://sz.91160.com/" target="_blank" rel="noopener noreferrer">医院挂号</a></li>
+					<li><a href="http://www.qunar.com/" target="_blank" rel="noopener noreferrer">去哪儿网</a></li>
+					<li><a href="http://www.meishij.net/" target="_blank" rel="noopener noreferrer">美食网</a></li>
+					<li><a href="http://service.szgas.com.cn/" target="_blank" rel="noopener noreferrer">深圳深燃煤气</a></li>
+					<li><a href="http://gd.189.cn/" target="_blank" rel="noopener noreferrer">深圳电信</a></li>
+					<li><a href="http://map.sz.bendibao.com/" target="_blank" rel="noopener noreferrer">深圳本地宝</a></li>
+					<li><a href="https://toolsdar.com/" target="_blank" rel="noopener noreferrer">工具达人</a></li>
+					<li><a href="https://tool.lu/" target="_blank" rel="noopener noreferrer">在线工具</a></li>
+					<li><a href="http://www.ip138.com/" target="_blank" rel="noopener noreferrer">IP 查询</a></li>
+					<li><a href="https://ip.skk.moe/" target="_blank" rel="noopener noreferrer">IP 国家查询</a></li>
+					<li><a href="https://speed.cloudflare.com" target="_blank" rel="noopener noreferrer">speed2</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🌐</i> 门户综合</h2>
+				<ul class="link-list">
+					<li><a href="http://www.sina.com.cn/" target="_blank" rel="noopener noreferrer">新浪</a></li>
+					<li><a href="http://www.qq.com/" target="_blank" rel="noopener noreferrer">腾讯</a></li>
+					<li><a href="http://www.sohu.com/" target="_blank" rel="noopener noreferrer">搜狐</a></li>
+					<li><a href="http://www.163.com/" target="_blank" rel="noopener noreferrer">网易</a></li>
+					<li><a href="http://www.xinhuanet.com/" target="_blank" rel="noopener noreferrer">新华网</a></li>
+					<li><a href="http://www.people.com.cn/" target="_blank" rel="noopener noreferrer">人民网</a></li>
+					<li><a href="http://cn.yahoo.com/" target="_blank" rel="noopener noreferrer">雅虎</a></li>
+					<li><a href="http://cn.msn.com/" target="_blank" rel="noopener noreferrer">MSN 中文网</a></li>
+					<li><a href="http://www.tom.com/" target="_blank" rel="noopener noreferrer">TOM</a></li>
+					<li><a href="http://www.hexun.com/" target="_blank" rel="noopener noreferrer">和讯</a></li>
+					<li><a href="http://www.cctv.com/" target="_blank" rel="noopener noreferrer">CCTV</a></li>
+					<li><a href="http://www.ifeng.com/" target="_blank" rel="noopener noreferrer">凤凰网</a></li>
+					<li><a href="http://www.chinaren.com/" target="_blank" rel="noopener noreferrer">ChinaRen</a></li>
+					<li><a href="http://www.sz.net.cn/" target="_blank" rel="noopener noreferrer">深圳之窗</a></li>
+					<li><a href="https://yandex.com/" target="_blank" rel="noopener noreferrer">Yandex</a></li>
+					<li><a href="https://swisscows.com/" target="_blank" rel="noopener noreferrer">Swisscows</a></li>
+					<li><a href="https://search.brave.com/" target="_blank" rel="noopener noreferrer">Brave Search</a></li>
+				</ul>
+			</section>
+			<section class="category">
+				<h2><i class="icon">🔖</i> 其他收藏</h2>
+				<ul class="link-list">
+					<li><a href="http://login.live.com/" target="_blank" rel="noopener noreferrer">Win Live</a></li>
+					<li><a href="http://www.amd.com/cn/pages/amdhomepage.aspx" target="_blank" rel="noopener noreferrer">AMD</a></li>
+					<li><a href="http://www.meizu.com/" target="_blank" rel="noopener noreferrer">魅族科技</a></li>
+					<li><a href="http://www.familydoctor.com.cn/" target="_blank" rel="noopener noreferrer">家庭医生</a></li>
+					<li><a href="http://sz.ganji.com/" target="_blank" rel="noopener noreferrer">赶集网</a></li>
+					<li><a href="http://sz.58.com/" target="_blank" rel="noopener noreferrer">58 同城</a></li>
+					<li><a href="http://www.dianping.com/" target="_blank" rel="noopener noreferrer">大众点评</a></li>
+					<li><a href="http://www.koubei.com/" target="_blank" rel="noopener noreferrer">口碑网</a></li>
+					<li><a href="http://bbs.rayli.com.cn/" target="_blank" rel="noopener noreferrer">瑞丽论坛</a></li>
+					<li><a href="http://www.forbeschina.com/" target="_blank" rel="noopener noreferrer">福布斯中文</a></li>
+					<li><a href="http://chrome.360.cn/" target="_blank" rel="noopener noreferrer">360 极速</a></li>
+					<li><a href="https://www.360totalsecurity.com/" target="_blank" rel="noopener noreferrer">360 国际版</a></li>
+					<li><a href="https://tt-rss.org/" target="_blank" rel="noopener noreferrer">TT-RSS</a></li>
+					<li><a href="http://sunbox.cc/" target="_blank" rel="noopener noreferrer">阳光盒子</a></li>
+					<li><a href="http://www.jinhu.me/" target="_blank" rel="noopener noreferrer">金狐电脑</a></li>
+					<li><a href="http://shop.lovehifi.com/" target="_blank" rel="noopener noreferrer">音响论坛</a></li>
+					<li><a href="http://www.4k123.com/" target="_blank" rel="noopener noreferrer">4K中国</a></li>
+					<li><a href="http://www.txzqw.me/" target="_blank" rel="noopener noreferrer">天下足球</a></li>
+					<li><a href="http://yyets.com/" target="_blank" rel="noopener noreferrer">人人影视</a></li>
+					<li><a href="http://tv.cctv.com/" target="_blank" rel="noopener noreferrer">央视网</a></li>
+					<li><a href="http://www.w3school.com.cn/" target="_blank" rel="noopener noreferrer">W3School</a></li>
+					<li><a href="https://wx.qq.com/" target="_blank" rel="noopener noreferrer">微信网页版</a></li>
+					<li><a href="http://bbs.pcbeta.com/" target="_blank" rel="noopener noreferrer">远景</a></li>
+					<li><a href="http://www.pchome.net/" target="_blank" rel="noopener noreferrer">太平洋电脑网</a></li>
+					<li><a href="http://www.pconline.com.cn/" target="_blank" rel="noopener noreferrer">Pconline</a></li>
+					<li><a href="http://www.zol.com.cn/" target="_blank" rel="noopener noreferrer">中关村在线</a></li>
+					<li><a href="http://www.enet.com.cn/" target="_blank" rel="noopener noreferrer">硅谷动力</a></li>
+					<li><a href="https://vcb-s.com/" target="_blank" rel="noopener noreferrer">vcb-s</a></li>
+					<li><a href="https://www.cnblogs.com/" target="_blank" rel="noopener noreferrer">博客园</a></li>
+					<li><a href="http://www.right.com.cn/" target="_blank" rel="noopener noreferrer">恩山论坛</a></li>
+					<li><a href="https://www.videolan.org/" target="_blank" rel="noopener noreferrer">Videolan</a></li>
+					<li><a href="http://www.shafa.com/" target="_blank" rel="noopener noreferrer">沙发网</a></li>
+					<li><a href="http://www.7po.com/" target="_blank" rel="noopener noreferrer">奇珀网</a></li>
+					<li><a href="https://chrome.google.com/webstore" target="_blank" rel="noopener noreferrer">铬商店</a></li>
+					<li><a href="http://chromecj.com/" target="_blank" rel="noopener noreferrer">铬插件之家</a></li>
+					<li><a href="https://www.allavsoft.com/" target="_blank" rel="noopener noreferrer">Allavsoft</a></li>
+					<li><a href="http://tool.chinaz.com/" target="_blank" rel="noopener noreferrer">站长工具</a></li>
+					<li><a href="https://www.hongen.com/" target="_blank" rel="noopener noreferrer">洪恩教育</a></li>
+					<li><a href="https://memuplay.com/" target="_blank" rel="noopener noreferrer">MEmu</a></li>
+					<li><a href="https://tw.bignox.com/" target="_blank" rel="noopener noreferrer">夜神模拟器</a></li>
+					<li><a href="http://bbs.feng.com/" target="_blank" rel="noopener noreferrer">威锋网</a></li>
+					<li><a href="http://www.tomatolei.com/" target="_blank" rel="noopener noreferrer">番茄花园</a></li>
+					<li><a href="https://yandex.com/" target="_blank" rel="noopener noreferrer">Yandex</a></li>
+					<li><a href="https://www.ikanbot.com/" target="_blank" rel="noopener noreferrer">IKanBot</a></li>
+					<li><a href="https://gaze.run/" target="_blank" rel="noopener noreferrer">注视星球</a></li>
+					<li><a href="https://www.duboku.tv/" target="_blank" rel="noopener noreferrer">独播库</a></li>
+					<li><a href="https://www.libvio.pro/" target="_blank" rel="noopener noreferrer">Libvio</a></li>
+					<li><a href="https://ddys.pro/" target="_blank" rel="noopener noreferrer">低端影视</a></li>
+					<li><a href="https://www.xinpianchang.com/" target="_blank" rel="noopener noreferrer">新片场</a></li>
+					<li><a href="http://www.BBQDDQ.com" target="_blank" rel="noopener noreferrer">蓝光影音</a></li>
+				</ul>
+			</section>
+		</main>
+	</div>
+	<footer>
+		<p>© 2025 我的网址导航 V14</p>
+		<p>当前时间 (北京时间): <span id="current-time">--:--:--</span></p>
+	</footer>
+	<script>
+		// --- 主题切换逻辑 ---
+		// 获取 DOM 元素
+		const themeToggleButton = document.getElementById("theme-toggle-button"); // 获取切换按钮
+		const bodyElement = document.body; // 获取 body 元素，用于添加/移除 .dark-mode 类
+		// 检测用户系统的颜色偏好设置
+		const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+		// 从 localStorage 读取之前保存的主题设置 (如果存在)
+		const currentTheme = localStorage.getItem("theme");
+		
+		// 定义应用主题的函数
+		function applyTheme(theme) { // 接收 "light" 或 "dark" 作为参数
+		    if (theme === "dark") {
+		        bodyElement.classList.add("dark-mode"); // 如果是 dark，给 body 添加 .dark-mode 类
+		    } else {
+		        bodyElement.classList.remove("dark-mode"); // 否则 (light)，移除 body 的 .dark-mode 类
+		    }
+		    // CSS 中的 .dark-mode 规则会根据类的有无自动生效或失效
+		}
+		
+		// 初始化页面主题
+		if (currentTheme) {
+		    // 如果 localStorage 中有保存的主题，则应用该主题
+		    applyTheme(currentTheme);
+		} else if (prefersDarkScheme.matches) {
+		    // 否则，如果系统偏好是深色模式，则应用深色主题
+		    applyTheme("dark");
+		} else {
+		    // 再否则 (系统偏好浅色或无法检测)，应用浅色主题 (默认)
+		    applyTheme("light");
+		}
+		
+		// 给主题切换按钮添加点击事件监听器
+		themeToggleButton.addEventListener("click", () => {
+		    // 判断当前是否处于深色模式
+		    let newTheme = bodyElement.classList.contains("dark-mode") ? "light" : "dark"; // 如果是，则新主题为 light，否则为 dark
+		    // 应用新主题
+		    applyTheme(newTheme);
+		    // 将新主题保存到 localStorage，以便下次访问时记住用户的选择
+		    localStorage.setItem("theme", newTheme);
+		});
+		
+		// 监听系统颜色偏好变化事件
+		prefersDarkScheme.addEventListener("change", (event) => {
+		    // 检查 localStorage 中是否 *没有* 保存用户手动设置的主题
+		    if (!localStorage.getItem("theme")) {
+		        // 如果没有手动设置过，则根据系统偏好的变化自动切换主题
+		        applyTheme(event.matches ? "dark" : "light"); // event.matches 为 true 表示系统变为深色
+		    }
+		});
+		
+		// --- 当前时间更新逻辑 ---
+		// 定义更新时间的函数
+		function updateTime() {
+		    const now = new Date(); // 创建一个新的 Date 对象，获取当前客户端时间
+		    const timeZone = "Asia/Shanghai"; // 设置目标时区为亚洲/上海 (北京时间)
+		
+		    // 将时间格式化为 "HH:mm:ss GMT+8" 格式
+		    const timeString = now.toLocaleString("zh-CN", { // 使用中文区域设置
+		        timeZone: timeZone, // 指定时区
+		        hour: "2-digit",    // 小时 (两位数)
+		        minute: "2-digit",  // 分钟 (两位数)
+		        second: "2-digit",  // 秒钟 (两位数)
+		        hour12: false,     // 使用 24 小时制
+		        timeZoneName: "shortOffset" // 显示时区偏移量 (如 GMT+8)
+		    });
+		
+		     // 将日期格式化为 "YYYY年M月D日" 格式
+		     const dateString = now.toLocaleDateString("zh-CN", { // 使用中文区域设置
+		         timeZone: timeZone, // 指定时区
+		         year: "numeric",   // 年份 (数字)
+		         month: "long",     // 月份 (完整名称，如 "五月")
+		         day: "numeric"     // 日期 (数字)
+		     });
+		
+		    // 获取用于显示时间的 span 元素
+		    const timeElement = document.getElementById("current-time");
+		    // 如果元素存在
+		    if (timeElement) {
+		        // 更新其文本内容为 "日期 时间"
+		        timeElement.textContent = `${dateString} ${timeString}`;
+		    }
+		}
+		
+		// 页面加载完成后立即调用一次 updateTime 函数，显示初始时间
+		updateTime();
+		// 设置定时器，每隔 1000 毫秒 (1秒) 调用一次 updateTime 函数，实现时间动态更新
+		setInterval(updateTime, 1000);
+	</script>
+</body>
+</html>
