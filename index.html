@@ -718,19 +718,19 @@
 		// 给主题切换按钮添加点击事件监听器
 		themeToggleButton.addEventListener("click", () => {
 		    // 判断当前是否处于深色模式
-		    let newTheme = bodyElement。classList。contains("dark-mode") ? "light" : "dark"; // 如果是，则新主题为 light，否则为 dark
+		    let newTheme = bodyElement.classList.contains("dark-mode") ? "light" : "dark"; // 如果是，则新主题为 light，否则为 dark
 		    // 应用新主题
 		    applyTheme(newTheme);
 		    // 将新主题保存到 localStorage，以便下次访问时记住用户的选择
-		    localStorage。setItem("theme"， newTheme);
+		    localStorage.setItem("theme", newTheme);
 		});
 		
 		// 监听系统颜色偏好变化事件
-		prefersDarkScheme。addEventListener("change"， (event) => {
+		prefersDarkScheme.addEventListener("change", (event) => {
 		    // 检查 localStorage 中是否 *没有* 保存用户手动设置的主题
 		    if (!localStorage.getItem("theme")) {
 		        // 如果没有手动设置过，则根据系统偏好的变化自动切换主题
-		        applyTheme(event。matches ? "dark" : "light"); // event.matches 为 true 表示系统变为深色
+		        applyTheme(event.matches ? "dark" : "light"); // event.matches 为 true 表示系统变为深色
 		    }
 		});
 		
@@ -741,7 +741,7 @@
 		    const timeZone = "Asia/Shanghai"; // 设置目标时区为亚洲/上海 (北京时间)
 		
 		    // 将时间格式化为 "HH:mm:ss GMT+8" 格式
-		    const timeString = 当前。toLocaleString("zh-CN"， { // 使用中文区域设置
+		    const timeString = now.toLocaleString("zh-CN", { // 使用中文区域设置
 		        timeZone: timeZone, // 指定时区
 		        hour: "2-digit",    // 小时 (两位数)
 		        minute: "2-digit",  // 分钟 (两位数)
@@ -753,7 +753,7 @@
 		     // 将日期格式化为 "YYYY年M月D日" 格式
 		     const dateString = now.toLocaleDateString("zh-CN", { // 使用中文区域设置
 		         timeZone: timeZone, // 指定时区
-		         year: "numeric"，   // 年份 (数字)
+		         year: "numeric",   // 年份 (数字)
 		         month: "long",     // 月份 (完整名称，如 "五月")
 		         day: "numeric"     // 日期 (数字)
 		     });
@@ -763,14 +763,14 @@
 		    // 如果元素存在
 		    if (timeElement) {
 		        // 更新其文本内容为 "日期 时间"
-		        timeElement。textContent = `${dateString} ${timeString}`;
+		        timeElement.textContent = `${dateString} ${timeString}`;
 		    }
 		}
 		
 		// 页面加载完成后立即调用一次 updateTime 函数，显示初始时间
 		updateTime();
 		// 设置定时器，每隔 1000 毫秒 (1秒) 调用一次 updateTime 函数，实现时间动态更新
-		setInterval(updateTime， 1000);
+		setInterval(updateTime, 1000);
 	</script>
 </body>
 </html>
