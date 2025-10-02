@@ -148,7 +148,7 @@
 		    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 		}
 		/* 通用链接区域内链接的悬停效果 */
-		。common-links a:hover {
+		.common-links a:hover {
 		    background-color: var(--link-hover-bg); color: var(--link-hover-text);
 		    border: 1px solid var(--link-hover-border); transform: translateY(-2px);
 		    box-shadow: var(--shadow-sm); text-decoration: none;
@@ -156,48 +156,48 @@
 		/* 深色模式下的样式由变量自动处理 */
 		
 		/* --- 动画 Keyframes --- */
-		@keyframes fadeIn { from { opacity: 0; } 到 { opacity: 1; } }
+		@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 		
 		/* --- 分类区域样式 (.category) --- */
-		。category { /* ... (样式保持不变) ... */
+		.category { /* ... (样式保持不变) ... */
 		    background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
 		    margin-bottom: 10px; padding: 15px 20px; box-shadow: var(--shadow-sm);
-		    transition: background-color var(--transition-smooth)， border-color var(--transition-smooth)， box-shadow var(--transition-smooth);
+		    transition: background-color var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
 		    opacity: 0; animation: fadeIn 0.5s 0.1s ease-out forwards; position: relative; overflow: visible;
 		}
-		。category:hover { box-shadow: var(--shadow-md); }
-		。category h2 { /* ... (样式保持不变) ... */
+		.category:hover { box-shadow: var(--shadow-md); }
+		.category h2 { /* ... (样式保持不变) ... */
 		    font-size: 1.0em; color: var(--text-primary); margin: 0 0 12px 0; padding-bottom: 6px;
 		    border-bottom: 1px solid var(--border-color); display: flex; align-items: center; font-weight: 600;
-		    transition: color var(--transition-smooth)， border-color var(--transition-smooth);
+		    transition: color var(--transition-smooth), border-color var(--transition-smooth);
 		}
-		。category h2 .icon { margin-right: 6px; font-size: 0.95em; color: var(--accent-base); transition: color var(--transition-smooth); }
+		.category h2 .icon { margin-right: 6px; font-size: 0.95em; color: var(--accent-base); transition: color var(--transition-smooth); }
 		
 		/* --- 链接列表网格布局 (.link-list) --- */
-		。link-list { /* ... (样式保持不变) ... */
-		    list-style: none; padding: 0; display: grid; grid-template-columns: repeat(7， 1fr); gap: 12px; margin-left: 0;
+		.link-list { /* ... (样式保持不变) ... */
+		    list-style: none; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-left: 0;
 		}
 		
 		/* --- 卡片内链接项样式 (li > a) --- */
-		。link-list li a { /* ... (样式保持不变) ... */
+		.link-list li a { /* ... (样式保持不变) ... */
 		    display: block; padding: 9px 16px; text-decoration: none; color: var(--link-text); font-size: 1.0em; font-weight: 500;
 		    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; background-color: var(--link-bg);
 		    border-radius: var(--radius-md); border: 1px solid var(--link-border); box-shadow: none;
-		    transition: color var(--transition-fast)， background-color var(--transition-fast)， box-shadow var(--transition-fast)， border-color var(--transition-fast)， transform var(--transition-fast);
+		    transition: color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
 		}
-		。link-list li a:hover { /* ... (样式保持不变) ... */
+		.link-list li a:hover { /* ... (样式保持不变) ... */
 		    color: var(--link-hover-text); background-color: var(--link-hover-bg); border: 1px solid var(--link-hover-border);
 		    box-shadow: var(--shadow-md); transform: translateY(-3px) scale(1.02);
 		}
-		。link-list li a:focus-visible { /* ... (样式保持不变) ... */
-		     outline: none; box-shadow: var(--shadow-md)， var(--link-focus-shadow); border-color: var(--accent-base);
+		.link-list li a:focus-visible { /* ... (样式保持不变) ... */
+		     outline: none; box-shadow: var(--shadow-md), var(--link-focus-shadow); border-color: var(--accent-base);
 		     color: var(--link-hover-text); background-color: var(--link-hover-bg); transform: translateY(-3px) scale(1.02);
 		}
 		
 		/* --- 页脚样式 --- */
 		footer { /* ... (样式保持不变) ... */
 		    text-align: center; margin-top: 40px; padding: 20px 0; font-size: 0.9em; color: var(--text-muted);
-		    border-top: 1px solid var(--border-color); transition: color var(--transition-smooth)， border-color var(--transition-smooth);
+		    border-top: 1px solid var(--border-color); transition: color var(--transition-smooth), border-color var(--transition-smooth);
 		}
 		footer #current-time { /* ... (样式保持不变) ... */
 		    display: block; margin-top: 6px; font-size: 0.98em; font-family: var(--font-monospace); color: var(--text-secondary);
@@ -208,36 +208,36 @@
 		/* ★ 移除了之前对 .common-links a 的字体大小和内边距的响应式调整，以强制应用 1.50em */
 		
 		@media (max-width: 1400px) {
-		    。link-list { grid-template-columns: repeat(6, 1fr); }
+		    .link-list { grid-template-columns: repeat(6, 1fr); }
 		}
 		@media (max-width: 1200px) {
-		    。common-links { grid-template-columns: repeat(5， 1fr); } /* 5列 */
-		    。link-list { grid-template-columns: repeat(6， 1fr); }
+		    .common-links { grid-template-columns: repeat(5, 1fr); } /* 5列 */
+		    .link-list { grid-template-columns: repeat(6, 1fr); }
 		}
 		@media (max-width: 992px) {
-		    。container { padding: 0 20px; }
-		    。common-links { grid-template-columns: repeat(4， 1fr); gap: 8px; padding: 12px; } /* 4列 */
+		    .container { padding: 0 20px; }
+		    .common-links { grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px; } /* 4列 */
 		    /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
-		    。link-list { grid-template-columns: repeat(5， 1fr); gap: 12px; }
-		     。category { padding: 20px 25px; margin-bottom: 18px;}
-		     。category h2 { font-size: 0.9em; }
-		     。link-list li a { padding: 8px 15px; font-size: 0.95em; }
-		     。top-common-links { gap: 8px; margin-bottom: 20px; padding-bottom: 12px;}
-		     。top-link-card { padding: 4px 12px; font-size: 0.8em;}
-		     。marquee-container { padding: 6px 0; margin-bottom: 15px; font-size: 0.85em; }
+		    .link-list { grid-template-columns: repeat(5, 1fr); gap: 12px; }
+		     .category { padding: 20px 25px; margin-bottom: 18px;}
+		     .category h2 { font-size: 0.9em; }
+		     .link-list li a { padding: 8px 15px; font-size: 0.95em; }
+		     .top-common-links { gap: 8px; margin-bottom: 20px; padding-bottom: 12px;}
+		     .top-link-card { padding: 4px 12px; font-size: 0.8em;}
+		     .marquee-container { padding: 6px 0; margin-bottom: 15px; font-size: 0.85em; }
 		     footer { font-size: 0.88em; }
 		}
 		@media (max-width: 768px) {
-		    。container { padding: 0 15px; margin-top: 25px; }
-		    。common-links { grid-template-columns: repeat(3， 1fr); gap: 8px; } /* 3列 */
+		    .container { padding: 0 15px; margin-top: 25px; }
+		    .common-links { grid-template-columns: repeat(3, 1fr); gap: 8px; } /* 3列 */
 		     /* ★ 移除 .common-links a 的 font-size 和 padding 调整 */
-		    。link-list { grid-template-columns: repeat(4， 1fr); gap: 10px; }
-		     。category { padding: 18px 20px; margin-bottom: 15px;}
-		     。category h2 { font-size: 0.9em; margin-bottom: 12px; padding-bottom: 6px; }
-		     。link-list li a { font-size: 0.92em; padding: 8px 12px;}
-		     。top-common-links { margin-top: 50px; margin-bottom: 15px; }
-		     。top-link-card { padding: 4px 10px; font-size: 0.78em;}
-		     。marquee-container { padding: 5px 0; margin-bottom: 12px; font-size: 0.8em; }
+		    .link-list { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+		     .category { padding: 18px 20px; margin-bottom: 15px;}
+		     .category h2 { font-size: 0.9em; margin-bottom: 12px; padding-bottom: 6px; }
+		     .link-list li a { font-size: 0.92em; padding: 8px 12px;}
+		     .top-common-links { margin-top: 50px; margin-bottom: 15px; }
+		     .top-link-card { padding: 4px 10px; font-size: 0.78em;}
+		     .marquee-container { padding: 5px 0; margin-bottom: 12px; font-size: 0.8em; }
 		     footer { font-size: 0.85em; }
 		     .theme-switch { top: 15px; right: 15px; padding: 5px 10px; font-size: 0.8em;}
 		     .theme-switch .icon::before { font-size: 1.1em; }
@@ -716,7 +716,7 @@
 		}
 		
 		// 给主题切换按钮添加点击事件监听器
-		themeToggleButton。addEventListener("click"， () => {
+		themeToggleButton.addEventListener("click", () => {
 		    // 判断当前是否处于深色模式
 		    let newTheme = bodyElement。classList。contains("dark-mode") ? "light" : "dark"; // 如果是，则新主题为 light，否则为 dark
 		    // 应用新主题
@@ -728,7 +728,7 @@
 		// 监听系统颜色偏好变化事件
 		prefersDarkScheme。addEventListener("change"， (event) => {
 		    // 检查 localStorage 中是否 *没有* 保存用户手动设置的主题
-		    if (!localStorage。getItem("theme")) {
+		    if (!localStorage.getItem("theme")) {
 		        // 如果没有手动设置过，则根据系统偏好的变化自动切换主题
 		        applyTheme(event。matches ? "dark" : "light"); // event.matches 为 true 表示系统变为深色
 		    }
@@ -737,24 +737,24 @@
 		// --- 当前时间更新逻辑 ---
 		// 定义更新时间的函数
 		function updateTime() {
-		    const 当前 = new Date(); // 创建一个新的 Date 对象，获取当前客户端时间
+		    const now = new Date(); // 创建一个新的 Date 对象，获取当前客户端时间
 		    const timeZone = "Asia/Shanghai"; // 设置目标时区为亚洲/上海 (北京时间)
 		
 		    // 将时间格式化为 "HH:mm:ss GMT+8" 格式
 		    const timeString = 当前。toLocaleString("zh-CN"， { // 使用中文区域设置
-		        timeZone: timeZone， // 指定时区
+		        timeZone: timeZone, // 指定时区
 		        hour: "2-digit",    // 小时 (两位数)
-		        minute: "2-digit"，  // 分钟 (两位数)
+		        minute: "2-digit",  // 分钟 (两位数)
 		        second: "2-digit",  // 秒钟 (两位数)
-		        hour12: false，     // 使用 24 小时制
+		        hour12: false,     // 使用 24 小时制
 		        timeZoneName: "shortOffset" // 显示时区偏移量 (如 GMT+8)
 		    });
 		
 		     // 将日期格式化为 "YYYY年M月D日" 格式
-		     const dateString = 当前。toLocaleDateString("zh-CN", { // 使用中文区域设置
+		     const dateString = now.toLocaleDateString("zh-CN", { // 使用中文区域设置
 		         timeZone: timeZone, // 指定时区
-		         year: "numeric",   // 年份 (数字)
-		         month: "long"，     // 月份 (完整名称，如 "五月")
+		         year: "numeric"，   // 年份 (数字)
+		         month: "long",     // 月份 (完整名称，如 "五月")
 		         day: "numeric"     // 日期 (数字)
 		     });
 		
