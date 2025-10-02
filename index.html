@@ -64,9 +64,9 @@
 		    --top-link-text: var(--accent-base);
 		    --top-link-hover-bg: var(--accent-base);
 		    --top-link-hover-text: var(--bg-primary);
-		    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
-		    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
-		    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+		    --shadow-sm: 0 1px 2px 0 rgba(0， 0， 0， 0.15);
+		    --shadow-md: 0 4px 6px -1px rgba(0， 0， 0， 0.2)， 0 2px 4px -1px rgba(0, 0, 0, 0.15);
+		    --shadow-lg: 0 10px 15px -3px rgba(0， 0， 0， 0.25)， 0 4px 6px -2px rgba(0, 0, 0, 0.2);
 		    /* 切换按钮深色变量 */
 		    --switch-bg: #4a5568;
 		    --switch-hover-bg: #5a6675;
@@ -81,63 +81,63 @@
 		    font-family: var(--font-sans); line-height: 1.7; background-color: var(--bg-primary);
 		    color: var(--text-primary); font-size: 17px; font-weight: 400; letter-spacing: 0.01em;
 		    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-		    transition: background-color var(--transition-smooth), color var(--transition-smooth);
+		    transition: background-color var(--transition-smooth)， color var(--transition-smooth);
 		}
 		
 		/* --- 主容器 --- */
-		.container {
+		。container {
 		    max-width: 1600px; margin: 30px auto 50px auto; padding: 0 30px;
 		}
 		
 		/* --- 主题切换按钮 --- */
-		.theme-switch { /* ... (样式保持不变) ... */
+		。theme-switch { /* ... (样式保持不变) ... */
 		    position: fixed; top: 20px; right: 20px; z-index: 1000; background-color: var(--switch-bg);
 		    border: 1px solid var(--switch-border-color); border-radius: var(--radius-md); width: auto; height: auto;
 		    padding: 6px 12px; font-size: 0.85em; display: inline-flex; align-items: center; justify-content: center;
 		    gap: 6px; cursor: pointer; box-shadow: var(--shadow-sm);
-		    transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-smooth);
+		    transition: background-color var(--transition-fast)， transform var(--transition-fast)， box-shadow var(--transition-fast)， border-color var(--transition-smooth);
 		}
-		.theme-switch:hover { background-color: var(--switch-hover-bg); transform: scale(1.05); box-shadow: var(--shadow-md); }
-		.theme-switch .icon { display: inline-block; line-height: 1; }
-		.theme-switch .icon::before { display: inline-block; transition: color var(--transition-smooth); font-size: 1.2em; }
-		body:not(.dark-mode) .theme-switch .icon::before { content: '🌙'; color: #2a3341; }
+		。theme-switch:hover { background-color: var(--switch-hover-bg); transform: scale(1.05); box-shadow: var(--shadow-md); }
+		。theme-switch .icon { display: inline-block; line-height: 1; }
+		。theme-switch .icon::before { display: inline-block; transition: color var(--transition-smooth); font-size: 1.2em; }
+		body:not(。dark-mode) 。theme-switch .icon::before { content: '🌙'; color: #2a3341; }
 		body.dark-mode .theme-switch .icon::before { content: '☀️'; color: #facc15; }
-		.theme-switch .text { display: inline-block; line-height: 1; color: var(--switch-text-color); transition: color var(--transition-smooth); font-weight: 500; }
-		body:not(.dark-mode) .theme-switch .text::before { content: '深色'; }
+		。theme-switch .text { display: inline-block; line-height: 1; color: var(--switch-text-color); transition: color var(--transition-smooth); font-weight: 500; }
+		body:not(.dark-mode) 。theme-switch 。text::before { content: '深色'; }
 		body.dark-mode .theme-switch .text::before { content: '浅色'; }
 		
 		/* --- 顶部通用链接区域 --- */
-		.top-common-links { /* ... (样式保持不变) ... */
+		。top-common-links { /* ... (样式保持不变) ... */
 		    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 0; margin-bottom: 10px;
 		    padding-bottom: 10px; border-bottom: 1px solid var(--border-color); transition: border-color var(--transition-smooth);
 		}
-		.top-link-card { /* ... (样式保持不变) ... */
+		。top-link-card { /* ... (样式保持不变) ... */
 		    display: inline-block; padding: 4px 14px; font-size: 0.82em; font-weight: 500; color: var(--top-link-text);
 		    background-color: var(--top-link-bg); border-radius: 14px; text-decoration: none;
-		    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+		    transition: background-color var(--transition-fast)， color var(--transition-fast)， transform var(--transition-fast)， box-shadow var(--transition-fast);
 		    box-shadow: none; border: 1px solid transparent;
 		}
-		.top-link-card:hover { background-color: var(--top-link-hover-bg); color: var(--top-link-hover-text); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+		。top-link-card:hover { background-color: var(--top-link-hover-bg); color: var(--top-link-hover-text); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 		
 		/* --- 滚动文字区域 (.marquee-container) --- */
-		.marquee-container { /* ... (样式保持不变) ... */
+		。marquee-container { /* ... (样式保持不变) ... */
 		    background-color: #e9ecef; color: #e74c3c; padding: 4px 0; margin-bottom: 10px; border-radius: 4px;
 		    font-size: 0.9em; overflow: hidden; border: 1px solid var(--border-color);
-		    transition: background-color var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth);
+		    transition: background-color var(--transition-smooth)， border-color var(--transition-smooth)， color var(--transition-smooth);
 		}
 		。marquee-container marquee { display: block; width: 100%; }
-		.marquee-container font { font-size: smaller; vertical-align: middle; }
+		。marquee-container font { font-size: smaller; vertical-align: middle; }
 		body.dark-mode .marquee-container { background-color: #343a40; color: #f0ad4e; }
 		
 		/* --- ★★★ 通用链接区域 (.common-links) (字体大小调整) ★★★ --- */
-		.common-links {
-		    display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+		。common-links {
+		    display: grid; grid-template-columns: repeat(6， 1fr); gap: 10px;
 		    margin-bottom: 10px; padding: 15px; background-color: var(--bg-secondary);
 		    border-radius: 6px; border: 1px solid var(--border-color);
-		    transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+		    transition: background-color var(--transition-smooth)， border-color var(--transition-smooth);
 		}
 		/* 通用链接区域内的链接 (a 标签) */
-		.common-links a {
+		。common-links a {
 		    display: block; text-decoration: none; color: var(--link-text);
 		    /* ★ 调整：字体大小设置为 1.50em (根据用户要求) */
 		    font-size: 1.50em;
@@ -145,10 +145,10 @@
 		    padding: 8px 15px;
 		    text-align: center; background-color: var(--link-bg); border-radius: var(--radius-md);
 		    border: 1px solid var(--link-border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-		    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+		    transition: background-color var(--transition-fast)， color var(--transition-fast)， border-color var(--transition-fast)， box-shadow var(--transition-fast)， transform var(--transition-fast);
 		}
 		/* 通用链接区域内链接的悬停效果 */
-		.common-links a:hover {
+		。common-links a:hover {
 		    background-color: var(--link-hover-bg); color: var(--link-hover-text);
 		    border: 1px solid var(--link-hover-border); transform: translateY(-2px);
 		    box-shadow: var(--shadow-sm); text-decoration: none;
@@ -249,7 +249,7 @@
 		     .category { padding: 15px 18px; margin-bottom: 15px;}
 		     .category h2 { font-size: 0.9em; }
 		     .link-list li a { font-size: 0.9em; padding: 7px 10px;}
-		     。top-common-links { gap: 6px; }
+		     .top-common-links { gap: 6px; }
 		     .top-link-card { padding: 3px 8px; font-size: 0.75em;}
 		     .marquee-container { padding: 4px 0; margin-bottom: 10px; font-size: 0.78em; }
 		     .theme-switch { padding: 4px 8px; gap: 4px;}
@@ -282,10 +282,11 @@
 			<a href="https://www.speedtest.net/" class="top-link-card" target="_blank" rel="noopener noreferrer">Speedtest</a>
 			<a href="https://zoom.us/" class="top-link-card" target="_blank" rel="noopener noreferrer">Zoom</a>
 			<a href="https://github.com/HaiLa1902" class="top-link-card" target="_blank" rel="noopener noreferrer">GitHub</a>
-			<a href="导航10.1.html" class="top-link-card" target="_blank" rel="noopener noreferrer">导航10.1</a>
+			<a href="https://bbs.nga.cn/" class="top-link-card" target="_blank" rel="noopener noreferrer">NGA</a>
 			<a href="https://zh.z-lib.gd/" class="top-link-card" target="_blank" rel="noopener noreferrer">z-lib</a>
 			<a href="https://www.lzpanx.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">懒盘</a>
-			<a href="英语启蒙.html" class="top-link-card" target="_blank" rel="noopener noreferrer">英语启蒙</a>
+			<a href="https://www.nexusmods.com/" class="top-link-card" target="_blank" rel="noopener noreferrer">N网</a>
+			<a href="https://join-screenshots.zhanghai.me/" class="top-link-card" target="_blank" rel="noopener noreferrer">拼图</a>
 		</div>
 		<div class="marquee-container">
 			<marquee behavior="alternate" scrolldelay="100"> 谨以此纪念那些上网的日子 <font>孟</font>
@@ -418,7 +419,7 @@
 			<section class="category">
 				<h2><i class="icon">🎬</i> 影音娱乐</h2>
 				<ul class="link-list">
-					<li><a href="https://git.unlock-music.dev/um" target="_blank" rel="noopener noreferrer">Um React</a></li>
+					<li><a href="https://xl01.com.de/" target="_blank" rel="noopener noreferrer">修罗影视</a></li>
 					<li><a href="https://www.1lou.me/" target="_blank" rel="noopener noreferrer">BT 之家</a></li>
 					<li><a href="http://www.bilibili.com/" target="_blank" rel="noopener noreferrer">Bilibili</a></li>
 					<li><a href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer">抖音</a></li>
@@ -435,7 +436,7 @@
 					<li><a href="https://tunein.com/" target="_blank" rel="noopener noreferrer">TuneIn</a></li>
 					<li><a href="https://www.miaoaaa.com/" target="_blank" rel="noopener noreferrer">喵导航</a></li>
 					<li><a href="https://www.yinfans.me/" target="_blank" rel="noopener noreferrer">音范丝</a></li>
-					<li><a href="https://www.btnull.org/" target="_blank" rel="noopener noreferrer">片库</a></li>
+					<li><a href="https://www.gying.net/" target="_blank" rel="noopener noreferrer">片库</a></li>
 					<li><a href="https://rarbg.so/" target="_blank" rel="noopener noreferrer">RARBG</a></li>
 					<li><a href="https://www.4khdr.cn/" target="_blank" rel="noopener noreferrer">4kHDR</a></li>
 					<li><a href="http://zmk.pw/" target="_blank" rel="noopener noreferrer">字幕库</a></li>
@@ -528,7 +529,7 @@
 					<li><a href="http://patch.ali213.net/" target="_blank" rel="noopener noreferrer">游侠网</a></li>
 					<li><a href="http://www.gamersky.com/" target="_blank" rel="noopener noreferrer">游民星空</a></li>
 					<li><a href="http://www.3dmgame.com/" target="_blank" rel="noopener noreferrer">3DMGAME</a></li>
-					<li><a href="http://www.9dmsgame.com/" target="_blank" rel="noopener noreferrer">9DM</a></li>
+					<li><a href="http://www.9dmgamemod.com/" target="_blank" rel="noopener noreferrer">9DM</a></li>
 					<li><a href="http://war3.uuu9.com/" target="_blank" rel="noopener noreferrer">悠久</a></li>
 					<li><a href="http://www.ou99.com/" target="_blank" rel="noopener noreferrer">OU99</a></li>
 					<li><a href="http://gjqt.gamebar.com/" target="_blank" rel="noopener noreferrer">古剑奇谭</a></li>
@@ -715,61 +716,61 @@
 		}
 		
 		// 给主题切换按钮添加点击事件监听器
-		themeToggleButton.addEventListener("click", () => {
+		themeToggleButton。addEventListener("click"， () => {
 		    // 判断当前是否处于深色模式
-		    let newTheme = bodyElement.classList.contains("dark-mode") ? "light" : "dark"; // 如果是，则新主题为 light，否则为 dark
+		    let newTheme = bodyElement。classList。contains("dark-mode") ? "light" : "dark"; // 如果是，则新主题为 light，否则为 dark
 		    // 应用新主题
 		    applyTheme(newTheme);
 		    // 将新主题保存到 localStorage，以便下次访问时记住用户的选择
-		    localStorage.setItem("theme", newTheme);
+		    localStorage。setItem("theme"， newTheme);
 		});
 		
 		// 监听系统颜色偏好变化事件
-		prefersDarkScheme.addEventListener("change", (event) => {
+		prefersDarkScheme。addEventListener("change"， (event) => {
 		    // 检查 localStorage 中是否 *没有* 保存用户手动设置的主题
 		    if (!localStorage.getItem("theme")) {
 		        // 如果没有手动设置过，则根据系统偏好的变化自动切换主题
-		        applyTheme(event.matches ? "dark" : "light"); // event.matches 为 true 表示系统变为深色
+		        applyTheme(event。matches ? "dark" : "light"); // event.matches 为 true 表示系统变为深色
 		    }
 		});
 		
 		// --- 当前时间更新逻辑 ---
 		// 定义更新时间的函数
 		function updateTime() {
-		    const now = new Date(); // 创建一个新的 Date 对象，获取当前客户端时间
+		    const 当前 = new Date(); // 创建一个新的 Date 对象，获取当前客户端时间
 		    const timeZone = "Asia/Shanghai"; // 设置目标时区为亚洲/上海 (北京时间)
 		
 		    // 将时间格式化为 "HH:mm:ss GMT+8" 格式
-		    const timeString = now.toLocaleString("zh-CN", { // 使用中文区域设置
-		        timeZone: timeZone, // 指定时区
+		    const timeString = 当前。toLocaleString("zh-CN"， { // 使用中文区域设置
+		        timeZone: timeZone， // 指定时区
 		        hour: "2-digit",    // 小时 (两位数)
-		        minute: "2-digit",  // 分钟 (两位数)
-		        second: "2-digit",  // 秒钟 (两位数)
-		        hour12: false,     // 使用 24 小时制
+		        minute: "2-digit"，  // 分钟 (两位数)
+		        second: "2-digit"，  // 秒钟 (两位数)
+		        hour12: false，     // 使用 24 小时制
 		        timeZoneName: "shortOffset" // 显示时区偏移量 (如 GMT+8)
 		    });
 		
 		     // 将日期格式化为 "YYYY年M月D日" 格式
-		     const dateString = now.toLocaleDateString("zh-CN", { // 使用中文区域设置
+		     const dateString = 当前。toLocaleDateString("zh-CN"， { // 使用中文区域设置
 		         timeZone: timeZone, // 指定时区
 		         year: "numeric",   // 年份 (数字)
-		         month: "long",     // 月份 (完整名称，如 "五月")
+		         month: "long"，     // 月份 (完整名称，如 "五月")
 		         day: "numeric"     // 日期 (数字)
 		     });
 		
 		    // 获取用于显示时间的 span 元素
-		    const timeElement = document.getElementById("current-time");
+		    const timeElement = document。getElementById("current-time");
 		    // 如果元素存在
 		    if (timeElement) {
 		        // 更新其文本内容为 "日期 时间"
-		        timeElement.textContent = `${dateString} ${timeString}`;
+		        timeElement。textContent = `${dateString} ${timeString}`;
 		    }
 		}
 		
 		// 页面加载完成后立即调用一次 updateTime 函数，显示初始时间
 		updateTime();
 		// 设置定时器，每隔 1000 毫秒 (1秒) 调用一次 updateTime 函数，实现时间动态更新
-		setInterval(updateTime, 1000);
+		setInterval(updateTime， 1000);
 	</script>
 </body>
 </html>
